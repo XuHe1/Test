@@ -6,8 +6,10 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * 并发场景调用get会进入死循环??
+ * 容量大于总量*负载因子发生扩容时会出现环形链表从而导致死循环
  */
 public class TestHashMap {
+
     private static Map<Integer, Integer> map = new HashMap<>(2, 0.75f);
     static {
         map.put(5, 55);

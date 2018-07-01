@@ -25,7 +25,7 @@ public class TestJava8 {
     private LongAdder count1;
     private DateTimeFormatter formatter;
     public int getCount() {
-        ConcurrentHashMap<String,LongAdder> freqs = new ConcurrentHashMap<>(); //CAS(put), Lock() todo：使用了多把锁？？
+        ConcurrentHashMap<String,LongAdder> freqs = new ConcurrentHashMap<>(); //CAS(put), Lock() todo：使用了多把锁？？ segments[]
         //freqs.computeIfAbsent("c"->new LongAdder().increment());
         return count.getAndIncrement();
     }

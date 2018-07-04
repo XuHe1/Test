@@ -51,6 +51,7 @@ import java.nio.CharBuffer;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+import java.util.concurrent.CountDownLatch;
 
 
 public class TimeQuery {
@@ -79,6 +80,7 @@ public class TimeQuery {
 
             // Connect
             sc = SocketChannel.open();
+            //sc.configureBlocking(false); //
             sc.connect(isa);
 
             // Read the time from the remote host.  For simplicity we assume
@@ -101,14 +103,32 @@ public class TimeQuery {
 
     public static void main(String[] args) {
 
-            //String host = "127.0.0.1"; connection refused
-            String host = "192.168.2.110";
-            port = 8013;
-            try {
-                query(host);
-            } catch (IOException x) {
-                System.err.println(host + ": " + x);
-            }
+        CountDownLatch latch = new CountDownLatch(10);
+
+        String host = "192.168.2.117";
+        port = 8900;
+
+        for (int i = 0; i < 10; i++) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        latch.await();
+                        try {
+                            query(host);
+                        } catch (IOException x) {
+                            System.err.println(host + ": " + x);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+            latch.countDown();
+
         }
+
+     }
 
 }

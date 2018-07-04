@@ -91,11 +91,13 @@ public class NBTimeServer {
                 SelectionKey.OP_ACCEPT);
 
         int keysAdded = 0;
-
+        System.out.println("waiting connecting....");
         // Here's where everything happens. The select method will
         // return when any operations registered above have occurred, the
         // thread has been interrupted, etc.
+
         while ((keysAdded = acceptSelector.select()) > 0) {
+            System.out.println(keysAdded);
             // Someone is ready for I/O, get the ready keys
             Set readyKeys = acceptSelector.selectedKeys();
             Iterator i = readyKeys.iterator();
@@ -103,13 +105,16 @@ public class NBTimeServer {
             // Walk through the ready keys collection and process date requests.
             while (i.hasNext()) {
                 SelectionKey sk = (SelectionKey)i.next();
+                System.out.println(sk);
                 i.remove();
                 // The key indexes into the selector so you
                 // can retrieve the socket that's ready for I/O
                 ServerSocketChannel nextReady =
                         (ServerSocketChannel)sk.channel();
+                System.out.println(nextReady);
                 // Accept the date request and send back the date string
                 Socket s = nextReady.accept().socket();
+                System.out.println(s);
                 // Write the current time to the socket
                 PrintWriter out = new PrintWriter(s.getOutputStream(), true);
                 Date now = new Date();

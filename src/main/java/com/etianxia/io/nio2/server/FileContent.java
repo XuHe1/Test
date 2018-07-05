@@ -41,7 +41,6 @@ package com.etianxia.io.nio2.server;/*
 import java.io.*;
 import java.net.*;
 import java.nio.channels.*;
-import java.nio.charset.*;
 
 /**
  * A Content type that provides for transferring files.

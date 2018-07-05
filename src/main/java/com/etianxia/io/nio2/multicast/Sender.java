@@ -42,7 +42,6 @@ import java.nio.channels.*;
 import java.nio.charset.Charset;
 import java.net.*;
 import java.io.IOException;
-import java.util.*;
 
 /**
  * Sample multicast sender to send a message in a multicast datagram

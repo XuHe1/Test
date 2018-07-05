@@ -7,9 +7,9 @@ public class Main {
 
 //        System.out.println( PacketHandler.class.isAnnotationPresent(PacketMapping.class));
 //        System.out.println(PacketHandler.class.getMethods().length);
-//        Class cal = ClassLoader.getSystemClassLoader().loadClass("com.etianxia.PacketHandler");
+//        Class cal = ClassLoader.getSystemClassLoader().loadClass("PacketHandler");
 
-        UploadMessageQueueManagerBak.SP.start();
+        com.etianxia.UploadMessageQueueManagerBak.SP.start();
 
 
 

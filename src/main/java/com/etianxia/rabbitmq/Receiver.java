@@ -9,13 +9,14 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by kaiitsugyou on 16/12/21.
  */
 public class Receiver {
     private final static String QUEUE_NAME = "hello";
-    public static void main(String[] args) throws IOException,InterruptedException{
+    public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         factory.setPort(5672);

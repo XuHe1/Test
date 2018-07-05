@@ -6,6 +6,7 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by kaiitsugyou on 16/12/21.
@@ -15,7 +16,7 @@ public class Sender {
     private final static String exchange = "data-server";
     private final static String routingKey = "MAIN.DT.#"; // 会通配 MAIN.DT.NEW.#
     //private final static String routingKey = "MAIN.DT.NEW.#";
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         factory.setPort(5672);

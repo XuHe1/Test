@@ -9,3 +9,4 @@ package com.etianxia.concurrent;
 public interface CacheLoadable<T> {
     T load();
 }
+

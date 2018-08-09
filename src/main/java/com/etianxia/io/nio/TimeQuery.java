@@ -46,8 +46,7 @@ package com.etianxia.io.nio;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
+import java.nio.*;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
@@ -68,6 +67,9 @@ public class TimeQuery {
 
     // Direct byte buffer for reading
     private static ByteBuffer dbuf = ByteBuffer.allocateDirect(1024);
+
+    // todo: buffer使用
+    // CharBuffer   ByteBuffer  IntBuffer ShortBuffer LongBuffer   FloatBuffer     DoubleBuffer
 
     // Ask the given host what time it is
     //
@@ -90,7 +92,7 @@ public class TimeQuery {
             sc.read(dbuf);
 
             // Print the remote address and the received time
-            dbuf.flip();
+            dbuf.flip();  // 复位，读操作需要复位
             CharBuffer cb = decoder.decode(dbuf);
             System.out.print(isa + " : " + cb);
 

@@ -1,4 +1,4 @@
-package com.etianxia.io.nio;
+package com.etianxia.io.nio2;
 
 /*
  * @(#)NBTimeServer.java	1.4 01/12/13
@@ -42,16 +42,11 @@ package com.etianxia.io.nio;
  * maintenance of any nuclear facility.
  */
 
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.*;
 import java.nio.channels.spi.SelectorProvider;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
@@ -70,99 +65,43 @@ import java.util.Set;
  *
  */
 
-public class NBTimeServer {
+public class AIOTimeServer {
     private static final int DEFAULT_TIME_PORT = 8900;
 
     private static Charset charset = Charset.forName("US-ASCII");
     private static CharsetEncoder encoder = charset.newEncoder();
 
     // Constructor with no arguments creates a time server on default port.
-    public NBTimeServer() throws Exception {
+    public AIOTimeServer() throws Exception {
         acceptConnections(this.DEFAULT_TIME_PORT);
     }
 
     // Constructor with port argument creates a time server on specified port.
-    public NBTimeServer(int port) throws Exception {
+    public AIOTimeServer(int port) throws Exception {
         acceptConnections(port);
     }
 
     // Accept connections for current time. Lazy Exception thrown.
-    private static void acceptConnections(int port) throws Exception {
-        // Selector for incoming time requests
-        Selector acceptSelector = SelectorProvider.provider().openSelector();
-
+    private void acceptConnections(int port) throws Exception {
         // Create a new server socket and set to non blocking mode
-        ServerSocketChannel ssc = ServerSocketChannel.open();
-        ssc.configureBlocking(false);
+        AsynchronousServerSocketChannel  ssc = AsynchronousServerSocketChannel.open();
 
-        // todo: multiply serverSocketChannel ?
-        ServerSocketChannel ssc1 = ServerSocketChannel.open();
-        ssc1.configureBlocking(false);
-
-        System.out.println("ssc: " + ssc);
-        System.out.println("ssc1: " + ssc1);
         // Bind the server socket to the local host and port
-
         InetAddress lh = InetAddress.getLocalHost();
         InetSocketAddress isa = new InetSocketAddress(lh, port);
-        ssc.socket().bind(isa);
+        ssc.bind(isa);
 
-        // Register accepts on the server socket with the selector. This
-        // step tells the selector that the socket wants to be put on the
-        // ready list when accept operations occur, so allowing multiplexed
-        // non-blocking I/O to take place.
-        SelectionKey acceptKey = ssc.register(acceptSelector,
-                SelectionKey.OP_ACCEPT);
+        ssc.accept(this, new CompletionHandler<AsynchronousSocketChannel, AIOTimeServer>() {
+            @Override
+            public void completed(AsynchronousSocketChannel result, AIOTimeServer attachment) {
+                //attachment.
+            }
 
-        // selectionKey represent the registration of a selectable channel
-        System.out.println(acceptKey);
-
-        ssc1.register(acceptSelector, SelectionKey.OP_ACCEPT);
-
-        int keysAdded = 0;
-        System.out.println("waiting connecting....");
-        // Here's where everything happens. The select method will
-        // return when any operations registered above have occurred, the
-        // thread has been interrupted, etc.
-
-        while ((keysAdded = acceptSelector.select()) > 0) {
-            System.out.println(keysAdded);
-            // Someone is ready for I/O, get the ready keys
-            Set readyKeys = acceptSelector.selectedKeys();
-            Iterator i = readyKeys.iterator();
-
-            // Walk through the ready keys collection and process date requests.
-            while (i.hasNext()) {
-                SelectionKey sk = (SelectionKey)i.next();
-                System.out.println(sk); // equal to acceptKey
-                i.remove();
-                // The key indexes into the selector so you
-                // can retrieve the socket that's ready for I/O
-                ServerSocketChannel nextReady =
-                        (ServerSocketChannel)sk.channel();
-                System.out.println("nextReady: " + nextReady);
-                // Accept the date request and send back the date string
-
-                Date now = new Date();
-
-
-//                Socket s = nextReady.accept().socket();
-//                System.out.println(s);
-//                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-//                out.println(now);
-//                out.close();
-
-                // ServerSocket serverSocket = nextReady.socket();
-
-                // write the current timestamp to buffer
-                ByteBuffer writeBuf = ByteBuffer.allocateDirect(1024);
-                writeBuf.putLong(now.getTime());
-                nextReady.accept().configureBlocking(false);
-                nextReady.accept().write(encoder.encode(CharBuffer.wrap(now.toString() + "\r\n")));
-
+            @Override
+            public void failed(Throwable exc, AIOTimeServer attachment) {
 
             }
-        }
+        });
     }
 
     // Entry point.
@@ -170,7 +109,7 @@ public class NBTimeServer {
         // Parse command line arguments and
         // create a new time server (no arguments yet)
         try {
-            NBTimeServer nbt = new NBTimeServer();
+            AIOTimeServer nbt = new AIOTimeServer();
         } catch(Exception e) {
             e.printStackTrace();
         }

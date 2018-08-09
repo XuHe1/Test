@@ -1,9 +1,12 @@
 package com.etianxia.concurrent;
 
 import com.etianxia.User;
+import sun.misc.Unsafe;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,6 +17,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  **/
 
 public class TestConcurrent {
+
+    private static final Unsafe unsafe = Unsafe.getUnsafe();
+
 
     volatile boolean  stop = false;
 
@@ -34,6 +40,9 @@ public class TestConcurrent {
 
     // 链表，分段， 锁
     ConcurrentHashMap<String, Object> cacheMap = new ConcurrentHashMap();
+
+    HashMap<String, String> hashMap = new HashMap<String, String>();//
+
 
     public void increase() {
        // inc++; // 非原子操作 包括读取变量的原始值、进行加1操作、写入工作内存
@@ -69,6 +78,9 @@ public class TestConcurrent {
             Thread.yield();
 
         System.out.println(test.inc);
+
+
+        test.hashMap.put("name", "Tom");
 
 
 //

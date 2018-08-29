@@ -26,7 +26,7 @@ public class TestConcurrent {
     //private volatile int inc = 0;
 
     // 同ConcurrentLinkedQueue实现原理 CAS  Compare And Swap
-    // todo: what is CAS? 从底层内存上面的原子命令，
+    // todo: what is CAS? 从底层内存上面的原子命令，AQS AbstractQueuedSynchronizer
     // 利用JNI(java native interface),通过C调用cpu的CAS指令
     // It compares the contents of a memory location with a given value and, only if they are the same, modifies the contents of that memory location to a new given value. This is done as a single atomic operatio
     private AtomicInteger inc = new AtomicInteger();

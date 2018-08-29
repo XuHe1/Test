@@ -15,18 +15,23 @@ import java.util.Set;
 public class TestCollectionNull {
     public static void main(String[] args) {
         Map<Integer, String> table = new Hashtable<>();  //线程安全的，每个方法都synchronized
-        //table.put(null, null);  //error!
+        // table.put(null, null);  //error!
         System.out.println("==========Test Table=======");
 //        System.out.println(table.get(null));
 
         Map<Integer, String> map = new HashMap<>();
         map.put(1, null);
         map.put(2, null);
+        map.put(new Integer(3), "3");
         map.put(null, null);
+        map.put(null, "NULL");
         System.out.println("==========Test Map=======");
         System.out.println(map.get(1));
         System.out.println(map.get(2));
+        System.out.println(map.get(3));
         System.out.println(map.get(null));
+
+        Map<User, String> objKeyMap = new HashMap<>();
 
         List<User>  userList1 = new ArrayList<>();
         List<User>  userList2 = new ArrayList<>(); //允许重复元素->  多个null
@@ -40,6 +45,12 @@ public class TestCollectionNull {
             userSet.add(u);
             userSet.add(null);
 
+            objKeyMap.put(u, u.getName());
+
+        }
+
+        for (User user : objKeyMap.keySet()) {
+            System.out.println(user + ": " + objKeyMap.get(user));
         }
 
         for (int i = 10; i < 20; i++) {
@@ -71,6 +82,8 @@ public class TestCollectionNull {
 //        for (User u: userLists) {  // NPE
 //            System.out.println(u.getName());
 //        }
+
+
 
         Map<String, String> map1 = new HashMap<>();
         map1.put("1", "1");

@@ -1,4 +1,4 @@
-package com.etianxia;
+package com.etianxia.concurrent;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;

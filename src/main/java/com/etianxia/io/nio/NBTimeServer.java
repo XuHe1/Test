@@ -62,7 +62,9 @@ import java.util.Set;
 // Listen on a port for connections and write back the current time.
 
 /**
- *
+ *  nio featues:
+ *      1. socket-->channel-->selector
+ *      2.buffer
  * https://docs.oracle.com/javase/6/docs/api/java/nio/channels/Channel.html
  * https://docs.oracle.com/javase/6/docs/api/java/nio/channels/SelectableChannel.html
  * https://docs.oracle.com/javase/6/docs/api/java/nio/channels/ServerSocketChannel.html

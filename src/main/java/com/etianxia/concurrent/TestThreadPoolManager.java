@@ -1,7 +1,5 @@
 package com.etianxia.concurrent;
 
-import com.etianxia.ThreadPoolManager;
-
 /**
  * @author h.xu
  * @create 2017-11-17 上午10:10

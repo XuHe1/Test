@@ -38,7 +38,7 @@ public class TestJava8 {
 
     public static void main(String[] args) {
 
-        String str = "test";
+        String str = null;
         Optional<String> optional = Optional.ofNullable(str);
         optional.ifPresent(new Consumer<String>() {  // todo: Consumer接口可以new??
             @Override

@@ -6,6 +6,7 @@ package com.etianxia;
  **/
 
 public class TestProcessAndThreads {
+    public static  int count = 0;
     public static void main(String[] args) throws InterruptedException {
         //String str = "46,EISGov_DT1LoCurr_mp,[s],0x4C343C,4,SLONG,,"; // split length 6
         String str = "46,EISGov_DT1LoCurr_mp,[s],0x4C343C,4,SLONG, , ";
@@ -17,6 +18,7 @@ public class TestProcessAndThreads {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                count = count + 1;
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {

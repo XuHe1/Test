@@ -145,6 +145,10 @@ public class NBTimeServer {
                 System.out.println("nextReady: " + nextReady);
                 // Accept the date request and send back the date string
 
+                if (sk.isAcceptable()) {
+
+                }
+
                 Date now = new Date();
 
 
@@ -157,14 +161,19 @@ public class NBTimeServer {
                 // ServerSocket serverSocket = nextReady.socket();
 
                 // write the current timestamp to buffer
+                sk.attachment();
+
                 ByteBuffer writeBuf = ByteBuffer.allocateDirect(1024);
                 writeBuf.putLong(now.getTime());
                 nextReady.accept().configureBlocking(false);
+                Thread.sleep(10000l);
                 nextReady.accept().write(encoder.encode(CharBuffer.wrap(now.toString() + "\r\n")));
+                System.out.println("Do next thing");
 
 
             }
         }
+
     }
 
     // Entry point.

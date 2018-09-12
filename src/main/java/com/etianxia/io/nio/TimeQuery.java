@@ -56,7 +56,7 @@ import java.util.concurrent.CountDownLatch;
 public class TimeQuery {
 
     // The standard daytime port
-    private static int DAYTIME_PORT = 13;
+    private static int DAYTIME_PORT = 8900;
 
     // The port we'll actually use
     private static int port = DAYTIME_PORT;
@@ -84,17 +84,19 @@ public class TimeQuery {
             sc = SocketChannel.open();
             //sc.configureBlocking(false); //
             sc.connect(isa);
+            System.out.println(sc.isBlocking());
 
             // Read the time from the remote host.  For simplicity we assume
             // that the time comes back to us in a single packet, so that we
             // only need to read once.
             dbuf.clear();
             sc.read(dbuf);
-
             // Print the remote address and the received time
             dbuf.flip();  // 复位，读操作需要复位
             CharBuffer cb = decoder.decode(dbuf);
             System.out.print(isa + " : " + cb);
+
+            System.out.println("Do next thing");
 
         } finally {
             // Make sure we close the channel (and hence the socket)
@@ -108,7 +110,7 @@ public class TimeQuery {
         CountDownLatch latch = new CountDownLatch(10);
 
         String host = "192.168.2.117";
-        port = 8900;
+        port = 8080;
 
         for (int i = 0; i < 10; i++) {
             Thread thread = new Thread(new Runnable() {

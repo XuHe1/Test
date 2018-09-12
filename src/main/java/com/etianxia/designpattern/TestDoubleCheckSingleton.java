@@ -2,6 +2,7 @@ package com.etianxia.designpattern;
 
 import com.sun.xml.internal.bind.api.TypeReference;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -85,6 +86,25 @@ public class TestDoubleCheckSingleton{
     }
 
     public static void main(String[] args) {
+        int a = 1;
+        int b = a;
+        /**
+         *   todo: 汇编语言
+         *   non-atomic: javap -c  classfile
+         *        4: iload_1
+         *        5: iconst_2
+         *        6: iadd
+         *        7: istore_1
+         *
+         */
+
+        a = a + 2;
+
+        AtomicInteger count = new AtomicInteger(0);
+        count.getAndIncrement();
+        System.out.println(count.intValue());
+
         TestDoubleCheckSingleton.getInstance();
+
     }
 }

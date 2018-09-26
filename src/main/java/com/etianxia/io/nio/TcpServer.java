@@ -1,5 +1,7 @@
 package com.etianxia.io.nio;
 
+import sun.nio.ch.DirectBuffer;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -67,6 +69,13 @@ public class TcpServer {
 //        buf.flip();
         SocketChannel sc = (SocketChannel) key.channel();
         Date now = new Date();
+        try {
+            Thread.sleep(10000l);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            ByteBuffer.allocateDirect(1024);
+        }
+
         sc.write(encoder.encode(CharBuffer.wrap(now.toString() + "\r\n")));
         sc.register(key.selector(), SelectionKey.OP_READ,ByteBuffer.allocateDirect(BUF_SIZE));
     }

@@ -52,6 +52,7 @@ import java.nio.CharBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
@@ -100,7 +101,7 @@ public class NBTimeServer {
         // todo: multiply serverSocketChannel ?
         ServerSocketChannel ssc1 = ServerSocketChannel.open();
         ssc1.configureBlocking(false);
-
+        // 只有一个ServerSocketChannel
         System.out.println("ssc: " + ssc);
         System.out.println("ssc1: " + ssc1);
         // Bind the server socket to the local host and port
@@ -144,30 +145,21 @@ public class NBTimeServer {
                         (ServerSocketChannel)sk.channel();
                 System.out.println("nextReady: " + nextReady);
                 // Accept the date request and send back the date string
-
-                if (sk.isAcceptable()) {
-
-                }
-
                 Date now = new Date();
-
-
-//                Socket s = nextReady.accept().socket();
-//                System.out.println(s);
-//                PrintWriter out = new PrintWriter(s.getOutputStream(), true);
-//                out.println(now);
-//                out.close();
-
-                // ServerSocket serverSocket = nextReady.socket();
-
                 // write the current timestamp to buffer
-                sk.attachment();
-
                 ByteBuffer writeBuf = ByteBuffer.allocateDirect(1024);
                 writeBuf.putLong(now.getTime());
-                nextReady.accept().configureBlocking(false);
-                Thread.sleep(10000l);
-                nextReady.accept().write(encoder.encode(CharBuffer.wrap(now.toString() + "\r\n")));
+
+                SocketChannel socketChannel = nextReady.accept();
+                socketChannel.configureBlocking(false);
+               // Thread.sleep(10000l); // block client, client won't block
+                // socketChannel.write(encoder.encode(CharBuffer.wrap(now.toString() + "\r\n")));
+                StringBuffer sb = new StringBuffer(now.toString());
+                for (int j = 0; j < 1000; j++) {
+                    sb.append(now.toString());
+                }
+                int written = socketChannel.write(encoder.encode(CharBuffer.wrap(sb.toString() + "\r\n")));
+                System.out.println("written: " + written);
                 System.out.println("Do next thing");
 
 

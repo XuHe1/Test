@@ -59,7 +59,7 @@ public class TimeServer {
 
     // We can't use the normal daytime port (unless we're running as root,
     // which is unlikely), so we use this one instead
-    private static int PORT = 8013;
+    private static int PORT = 8900;
 
     // The port we'll actually use
     private static int port = PORT;

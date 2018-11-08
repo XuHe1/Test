@@ -1,4 +1,4 @@
-package com.etianxia;
+package com.exception;
 
 /**
  *

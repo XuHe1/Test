@@ -77,26 +77,31 @@ public class TimeQuery {
         InetSocketAddress isa
                 = new InetSocketAddress(InetAddress.getByName(host), port);
         SocketChannel sc = null;
-
+        // Direct byte buffer for reading
+        ByteBuffer dbuf = ByteBuffer.allocateDirect(1024);
         try {
 
             // Connect
             sc = SocketChannel.open();
-            //sc.configureBlocking(false); //
-            sc.connect(isa);
+            sc.configureBlocking(false); //
+            sc.connect(isa); // non-blocking: connect() return right now, may fail to connect, must call next step
+            sc.finishConnect();
             System.out.println(sc.isBlocking());
+
 
             // Read the time from the remote host.  For simplicity we assume
             // that the time comes back to us in a single packet, so that we
             // only need to read once.
             dbuf.clear();
-            sc.read(dbuf);
+            sc.read(dbuf); // non-block: 立即返回， block: 阻塞直到读取到内容
             // Print the remote address and the received time
             dbuf.flip();  // 复位，读操作需要复位
             CharBuffer cb = decoder.decode(dbuf);
-            System.out.print(isa + " : " + cb);
+            System.out.println(Thread.currentThread().getName() + " : " + cb);
 
-            System.out.println("Do next thing");
+            System.out.println(Thread.currentThread().getName() + ": Do next thing");
+
+
 
         } finally {
             // Make sure we close the channel (and hence the socket)
@@ -107,12 +112,12 @@ public class TimeQuery {
 
     public static void main(String[] args) {
 
-        CountDownLatch latch = new CountDownLatch(10);
+        CountDownLatch latch = new CountDownLatch(1);
 
         String host = "192.168.2.117";
-        port = 8080;
+        port = 8900;
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1; i++) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {

@@ -33,6 +33,40 @@ public class TestDoubleCheckSingleton{
 
     private TestDoubleCheckSingleton(){}
 
+
+    /**
+     *  虚拟机指令
+     *       0: getstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
+     *        3: ifnonnull     45
+     *        6: ldc           #6                  // class com/etianxia/designpattern/TestDoubleCheckSingleton
+     *        8: dup
+     *        9: astore_0
+     *       10: monitorenter
+     *       11: getstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
+     *       14: ifnonnull     35
+     *       17: getstatic     #7                  // Field java/lang/System.out:Ljava/io/PrintStream;
+     *       20: ldc           #8                  // String 实例化
+     *       22: invokevirtual #9                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     *       25: new           #6                  // class com/etianxia/designpattern/TestDoubleCheckSingleton
+     *       28: dup
+     *       29: invokespecial #10                 // Method "<init>":()V
+     *       32: putstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
+     *       35: aload_0
+     *       36: monitorexit
+     *       37: goto          45
+     *       40: astore_1
+     *       41: aload_0
+     *       42: monitorexit
+     *       43: aload_1
+     *       44: athrow
+     *       45: getstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
+     *       48: areturn
+     *
+     *
+     *
+     *
+     */
+
     public static TestDoubleCheckSingleton getInstance(){
         if(INSTANCE == null){
             synchronized(TestDoubleCheckSingleton.class){
@@ -53,9 +87,38 @@ public class TestDoubleCheckSingleton{
     }
 
 
+    /**
+     *
+     *        0: getstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
+     *        3: ifnonnull     39
+     *        6: ldc           #6                  // class com/etianxia/designpattern/TestDoubleCheckSingleton
+     *        8: dup
+     *        9: astore_0
+     *       10: monitorenter
+     *       11: getstatic     #7                  // Field java/lang/System.out:Ljava/io/PrintStream;
+     *       14: ldc           #8                  // String 实例化
+     *       16: invokevirtual #9                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     *       19: new           #6                  // class com/etianxia/designpattern/TestDoubleCheckSingleton
+     *       22: dup
+     *       23: invokespecial #10                 // Method "<init>":()V
+     *       26: putstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
+     *       29: aload_0
+     *       30: monitorexit
+     *       31: goto          39
+     *       34: astore_1
+     *       35: aload_0
+     *       36: monitorexit
+     *       37: aload_1
+     *       38: athrow
+     *       39: getstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
+     *       42: areturn
+     *
+     *
+     * @return
+     */
     public static TestDoubleCheckSingleton getInstance1(){
         if(INSTANCE == null){
-            // 无double check 还是会多次实例
+            // 无double check 还是会多次实例,高并发情况下，线程都执行了if语句后到此，排队进锁实例
             synchronized(TestDoubleCheckSingleton.class){
                     System.out.println("实例化");
                     INSTANCE = new TestDoubleCheckSingleton();

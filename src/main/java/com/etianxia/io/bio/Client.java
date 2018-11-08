@@ -16,10 +16,15 @@ public class Client {
         try {
             socket = new Socket("localhost", 8888);
             DataInputStream dis = new DataInputStream(socket.getInputStream());
-            //System.out.println(dis.readUTF()); //阻塞，等待有数据写入
-            // System.out.println(dis.readUTF()); //阻塞，等待有数据写入
+            System.out.println(dis.readUTF()); //阻塞，等待有数据写入
+            Thread.sleep(10000l);
+            for (int i = 0; i < 10; i ++) {
+                System.out.println(dis.readUTF()); //阻塞，等待有数据写入
+            }
             System.out.println("do next thing");
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
 

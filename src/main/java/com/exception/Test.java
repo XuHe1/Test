@@ -80,8 +80,31 @@ public class Test {
         }
     }
 
+    /**
+     *  The {@code Throwable} class is the superclass of all errors and
+     *  exceptions in the Java language.
+     *  Only objects that are instances of this
+     *  class (or one of its subclasses) are thrown by the Java Virtual Machine or
+     *  can be thrown by the Java {@code throw} statement
+     *
+     * 用户自定义异常，需要用户手动抛出，系统定义异常，由JVM自动抛出，即使没有通过代码抛出
+     *
+     * @throws ArrayIndexOutOfBoundsException
+     */
+    public void testThrowable() throws ArrayIndexOutOfBoundsException{
+        try {
+            int a[] = new int[5];
+            int b = 2/0; // jvm 抛出
+            a[5] = 5;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw e; // 代码抛出
+        }
+
+    }
+
 
     public static void main(String[] args) throws IllegalAccessException {
+
 
         // Checked Exception: 非RuntimeException，IOException, InterruptedException
         try {
@@ -115,7 +138,13 @@ public class Test {
         //test.heapLeakByObject();
        // test.stackLeakByThread();
         //test.permanOMM();
-        test.allocateByUnsafe();
+       // test.allocateByUnsafe();
+        try {
+            test.testThrowable();
+        } catch (Exception e) {
+            System.out.println(e.getClass().getName());
+        }
+
 
     }
 }

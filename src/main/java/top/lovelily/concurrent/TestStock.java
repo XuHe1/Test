@@ -245,7 +245,7 @@ public class TestStock {
      * 执行lua脚本，返回秒杀数量，0失败，大于0成功
      * todo: lua
      */
-    private void spike(int userId) {
+    private void spike() {
         Jedis jedis = new Jedis("localhost", 6379);
         // EVALSHA 332db26ff2ac0cc85572ba12a42c4937e347a9ec 1 goodsId 1
         String script = "332db26ff2ac0cc85572ba12a42c4937e347a9ec";
@@ -256,6 +256,37 @@ public class TestStock {
             return;
         }
         System.out.println("秒杀成功");
+
+    }
+
+
+    @Test
+    public void cacheStock() {
+        Jedis jedis = new Jedis("localhost", 6379);
+        jedis.set("start", "1");
+        jedis.set("total", "10");
+        jedis.set("booked", "0");
+    }
+
+    /**
+     * redis操作是原子的，但是程序非原子
+     * @param userId
+     */
+    private void spike(int userId) {
+        Jedis jedis = new Jedis("localhost", 6379);
+        int isStart = Integer.parseInt(jedis.get("start"));
+        if (isStart == 0) {
+            System.out.println("活动未开始");
+            return;
+        }
+        long booked = Integer.parseInt(jedis.get("booked"));
+        int total = Integer.parseInt(jedis.get("total")); //
+        if (booked < total) { // 多个线程同时行执行到此，都拿到了相同的total
+            jedis.incr("booked"); // 出现超卖现象
+            System.out.println("User-" + userId + "秒杀成功");
+            return;
+        }
+        System.out.println("User-" + userId +"秒杀失败，下次再来");
 
 
     }
@@ -271,12 +302,19 @@ public class TestStock {
     public void testSpike() {
 
         CountDownLatch latch = new CountDownLatch(100);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             int finalI = i;
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    spike(finalI);
+                    try {
+                        latch.await();
+                        // spike(finalI);
+                        spike();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
 

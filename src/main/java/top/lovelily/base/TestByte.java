@@ -1,5 +1,7 @@
 package top.lovelily.base;
 
+import java.nio.charset.Charset;
+
 /**
  * Created by kaiitsugyou on 16/12/8.
  */
@@ -39,6 +41,17 @@ public class TestByte {
 
         System.out.println(min + "——" + max);
 
+        // hashmap table[(len-1) & hash(key)]
+        System.out.println(1 & 1);
+
+        String zw = "我";
+        // utf-8 3个字节
+        System.out.println("一个中文： " + zw.getBytes(Charset.defaultCharset()).length);
+        // gbk 2个字节
+        System.out.println("一个中文：" + zw.getBytes(Charset.forName("GBK")).length);
+        String yw = "a";
+        // 1个字节
+        System.out.println("一个非中文："  + yw.getBytes().length);
 
     }
 }

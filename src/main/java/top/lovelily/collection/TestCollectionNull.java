@@ -2,14 +2,7 @@ package top.lovelily.collection;
 
 import top.lovelily.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by XuHe on 17/4/27.
@@ -86,18 +79,33 @@ public class TestCollectionNull {
 //        }
 
 
-
-        Map<String, String> map1 = new HashMap<>();
-        map1.put("1", "1");
-        map1.put("2", "1");
-        map1.put("3", "1");
-        Set<String> set = map1.keySet();
-        set.add("4");  // unsupport
-        set.add("1");
-        for (String str: set) {
-            System.out.println(str);
+        // HashMap无序的：遍历顺序与放入顺序不一致
+        Map<String, String> hashMap = new HashMap<>();
+        hashMap.put("1", "one");
+        hashMap.put("3", "three");
+        hashMap.put("2", "two");
+        Set<String> set = hashMap.keySet();
+        // set.add("4");  // unsupport
+        // set.add("1");
+        iterator = set.iterator();
+        while (iterator.hasNext()) {
+            String key = (String)iterator.next();
+            System.out.println(key);
         }
 
+        // LinkedHashMap有序：遍历顺序与放入顺序一致
+        Map<String, String> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap.put("1", "one");
+        linkedHashMap.put("3", "three");
+        linkedHashMap.put("2", "two");
+        set = linkedHashMap.keySet();
+        // set.add("4");  // unsupport
+        // set.add("1");
+        iterator = set.iterator();
+        while (iterator.hasNext()) {
+            String key = (String)iterator.next();
+            System.out.println(key);
+        }
 
 
     }

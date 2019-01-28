@@ -15,7 +15,7 @@ public class Main {
         System.out.println(packetMappings.value());
         Class clz = ClassLoader.getSystemClassLoader().loadClass("top.lovelily.PacketHandler");
 
-       // UploadMessageQueueManagerBak.SP.start();
+        UploadMessageQueueManagerBak.SP.start();
 
 
 

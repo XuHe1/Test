@@ -88,12 +88,13 @@ public class TestCollectionNull {
         // set.add("4");  // unsupport
         // set.add("1");
         iterator = set.iterator();
+        System.out.println(iterator.getClass().getName());
         while (iterator.hasNext()) {
             String key = (String)iterator.next();
             System.out.println(key);
         }
 
-        // LinkedHashMap有序：遍历顺序与放入顺序一致
+        // LinkedHashMap有序：遍历顺序与放入顺序一致, 额外维护了一个双向链表来保存放入顺序
         Map<String, String> linkedHashMap = new LinkedHashMap<>();
         linkedHashMap.put("1", "one");
         linkedHashMap.put("3", "three");
@@ -102,6 +103,7 @@ public class TestCollectionNull {
         // set.add("4");  // unsupport
         // set.add("1");
         iterator = set.iterator();
+        System.out.println(iterator.getClass().getName());
         while (iterator.hasNext()) {
             String key = (String)iterator.next();
             System.out.println(key);

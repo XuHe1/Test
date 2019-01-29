@@ -71,7 +71,7 @@ public class TestDoubleCheckSingleton{
      *       29: invokespecial #10                 // Method "<init>":()V
      *       32: putstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
      *       35: aload_0
-     *       36: monitorexit                       // todo: 内存屏障 volatile
+     *       36: monitorexit                       // todo: 内存屏障 volatile， 多核CPU架构下，防止其他cpu执行的指令重排到实例化语句前
      *       37: goto          45
      *       40: astore_1
      *       41: aload_0

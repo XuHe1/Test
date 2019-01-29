@@ -87,7 +87,7 @@ public class TestThreadBase {
          *                 |
          *                 |
          *        start()  |     sleep()
-         *   NEW -----> RUNNABLE-----> TIMED_WAITING
+         *   NEW -----> RUNNABLE-----> TIMED_WAITING---> TERMINATED
          *                 |
          *                 |
          *                 V

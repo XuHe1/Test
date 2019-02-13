@@ -18,6 +18,7 @@ public class FutureTask_Test {
         System.out.println("FutureTask2 output=" + futureTask2.get());
 
         executor.shutdown();
+        System.out.println("MAIN");
     }
 
     static class MyCallable implements Callable<String> {

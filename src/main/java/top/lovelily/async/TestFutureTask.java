@@ -27,7 +27,7 @@ public class TestFutureTask {
 
         System.out.println("do other thing");
 
-        User user = task.get(); // call方法已经在执行了,get阻塞直到处理完毕
+        User user = task.get(); // call方法已经在执行了,get阻塞直到处理完毕, java8提供了CompletableFuture真正实现了异步获取处理结果
         System.out.println(user.getName());
         exec.shutdown();
 

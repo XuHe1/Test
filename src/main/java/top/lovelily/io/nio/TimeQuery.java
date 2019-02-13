@@ -47,10 +47,12 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.*;
+import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 
 
 public class TimeQuery {
@@ -76,9 +78,20 @@ public class TimeQuery {
     private static void query(String host) throws IOException {
         InetSocketAddress isa
                 = new InetSocketAddress(InetAddress.getByName(host), port);
+
+        ByteBuffer dbuf = ByteBuffer.allocateDirect(1024);
+
+        // async
+        AsynchronousSocketChannel asc = AsynchronousSocketChannel.open();
+        asc.connect(isa);
+        Future<Integer> future =  asc.read(dbuf);
+        // future.get();
+
+
+
         SocketChannel sc = null;
         // Direct byte buffer for reading
-        ByteBuffer dbuf = ByteBuffer.allocateDirect(1024);
+        //ByteBuffer dbuf = ByteBuffer.allocateDirect(1024);
         try {
 
             // Connect
@@ -114,7 +127,7 @@ public class TimeQuery {
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        String host = "192.168.2.117";
+        String host = "192.168.2.22";
         port = 8900;
 
         for (int i = 0; i < 1; i++) {

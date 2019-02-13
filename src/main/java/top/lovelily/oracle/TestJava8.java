@@ -40,6 +40,7 @@ public class TestJava8 {
 
         String str = null;
         Optional<String> optional = Optional.ofNullable(str);
+        System.out.println(optional.isPresent());  // 用来检查 NPE
         optional.ifPresent(new Consumer<String>() {  // todo: Consumer接口可以new??
             @Override
             public void accept(String s) {

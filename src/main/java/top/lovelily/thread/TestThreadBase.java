@@ -77,8 +77,9 @@ public class TestThreadBase {
         t1.start();
         t2.start();
         System.out.println(t1.getState());
-        t1.join();
-        t2.join();
+        // t1.join();
+        // t2.join();
+        Thread.yield(); // 让出cpu，但无法再获取cpu，所以下面代码不再执行。
         System.out.println("MAIN");
 
         /**

@@ -12,14 +12,15 @@ public class TestException {
     public static void main(String[] args) throws Exception {
         try {
 
-            int a = 10/0;
-           // return;
+            int a = 10/1;
+            return; // 先执行finally，再执行return，所以如果finally里有return，本行就不再执行。
         } catch (Exception e) {
             System.out.println(e);
             return; // catch 后程序会继续往下走，所以如果是致命性异常，需要return， 或者手动抛出去
         } finally {
             // 不管前面有没有return， 都会执行
             System.out.println("finally");
+            return;
         }
         //System.out.println("hello");
 

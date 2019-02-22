@@ -1,18 +1,20 @@
 package top.lovelily.oracle;
 
+import org.junit.Test;
 import top.lovelily.User;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author h.xu
  * @create 2018-02-05 下午5:08
  **/
 
-public class Test {
+public class TestJVM {
 
     // StackOverflowError: stack
     public void recurse() {
@@ -27,10 +29,10 @@ public class Test {
      */
     public void heapLeakByObject() {
         List<User> userList = new ArrayList<>();
-        while (true) {
+        for (int i = 0; i < 10000; i ++){
             User user = new User(1, "xuhe", 28, 175, "Shanghai.China");
             // 下面一行注释掉，todo: 逃逸
-            userList.add(user);
+           // userList.add(user);
         }
     }
 
@@ -106,7 +108,6 @@ public class Test {
 
     public static void main(String[] args) throws IllegalAccessException {
 
-
         // Checked Exception: 非RuntimeException，IOException, InterruptedException
         try {
             Thread.sleep(1000l);
@@ -132,12 +133,17 @@ public class Test {
 
         }
 
-        Test test = new Test();
+        TestJVM test = new TestJVM();
         //test.recurse();
         // OutOfMemoryError : stack  heap
         // StackOverflowError: stack
-        //test.heapLeakByObject();
-       // test.stackLeakByThread();
+        test.heapLeakByObject();
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // test.stackLeakByThread();
         //test.permanOMM();
        // test.allocateByUnsafe();
         try {

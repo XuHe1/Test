@@ -11,7 +11,7 @@ public class TestCollectionNull {
     public static void main(String[] args) {
         // map结构
         Map<Integer, String> table = new Hashtable<>();  //线程安全的，每个方法都synchronized
-        table.put(1, null);  // NullPointerException
+//        table.put(1, null);  // NullPointerException
         System.out.println("==========Test Table=======");
 //        System.out.println(table.get(null));
 
@@ -85,7 +85,7 @@ public class TestCollectionNull {
         hashMap.put("1", "one");
         hashMap.put("3", "three");
         hashMap.put("2", "two");
-        hashMap.put(null, null); // key
+        hashMap.put(null, null); // key可以为null, hash(null) = 0;
         Set<String> set = hashMap.keySet();
         // set.add("4");  // unsupport
         // set.add("1");

@@ -87,8 +87,8 @@ public class TestThreadBase {
          *                 ^
          *                 |
          *                 |
-         *        start()  |     sleep()
-         *   NEW -----> RUNNABLE-----> TIMED_WAITING---> TERMINATED
+         *        start()  |     sleep()             interrupt()
+         *   NEW -----> RUNNABLE-----> TIMED_WAITING -----------> TERMINATED
          *                 |
          *                 |
          *                 V
@@ -109,7 +109,10 @@ public class TestThreadBase {
         System.out.println(thread.getState());  // NEW
         thread.start(); // RUNNABLE
         System.out.println(thread.getState());
+        thread.interrupt();
+        System.out.println(thread.getState());
         Thread.sleep(2000l);
+
         System.out.println(thread.getState());
 
     }

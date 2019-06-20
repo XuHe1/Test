@@ -1,4 +1,4 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,18 +40,48 @@ package top.lovelily.io.nio2.server;/*
 
 import java.io.*;
 import java.nio.channels.*;
+import java.util.*;
 
 /**
- * Base class for the Dispatchers.
+ * A single-threaded dispatcher.
  * <P>
- * Servers use these to obtain ready status, and then to dispatch jobs.
+ * When a SelectionKey is ready, it dispatches the job in this
+ * thread.
  *
  * @author Mark Reinhold
  * @author Brad R. Wetmore
  */
-interface Dispatcher extends Runnable {
+class Dispatcher1 implements Dispatcher {
 
-    void register(SelectableChannel ch, int ops, Handler h)
-        throws IOException;
+    private Selector sel;
 
+    Dispatcher1() throws IOException {
+        sel = Selector.open();
+    }
+
+    // Doesn't really need to be runnable
+    public void run() {
+        for (;;) {
+            try {
+                dispatch();
+            } catch (IOException x) {
+                x.printStackTrace();
+            }
+        }
+    }
+
+    private void dispatch() throws IOException {
+        sel.select();
+        for (Iterator i = sel.selectedKeys().iterator(); i.hasNext(); ) {
+            SelectionKey sk = (SelectionKey)i.next();
+            i.remove();
+            Handler h = (Handler)sk.attachment();
+            h.handle(sk);
+        }
+    }
+
+    public void register(SelectableChannel ch, int ops, Handler h)
+            throws IOException {
+        ch.register(sel, ops, h);
+    }
 }

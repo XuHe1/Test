@@ -1,4 +1,4 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,34 +38,24 @@ package top.lovelily.io.nio2.server;/*
  */
 
 
-import java.nio.channels.*;
+import java.io.*;
 
 /**
- * A blocking/single-threaded server which completely services
- * each connection before moving to the next.
+ * Method definitions used for preparing, sending, and release
+ * content.
  *
  * @author Mark Reinhold
  * @author Brad R. Wetmore
  */
-public class B1 extends Server {
+interface Sendable {
 
-    B1(int port, int backlog, boolean secure) throws Exception {
-        super(port, backlog, secure);
-    }
+    void prepare() throws IOException;
 
-    void runServer() throws Exception {
-        for (;;) {
+    // Sends (some) content to the given channel.
+    // Returns true if more bytes remain to be written.
+    // Throws IllegalStateException if not prepared.
+    //
+    boolean send(ChannelIO cio) throws IOException;
 
-            SocketChannel sc = ssc.accept();
-
-            ChannelIO cio = (sslContext != null ?
-                ChannelIOSecure.getInstance(
-                    sc, true /* blocking */, sslContext) :
-                ChannelIO.getInstance(
-                    sc, true /* blocking */));
-
-            RequestServicer svc = new RequestServicer(cio);
-            svc.run();
-        }
-    }
+    void release() throws IOException;
 }

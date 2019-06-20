@@ -1,4 +1,4 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,13 +42,32 @@ import java.io.*;
 import java.nio.channels.*;
 
 /**
- * Base class for the Handlers.
+ * A Blocking/Multi-threaded Server which creates a new thread for each
+ * connection.  This is not efficient for large numbers of connections.
  *
  * @author Mark Reinhold
  * @author Brad R. Wetmore
  */
-interface Handler {
+public class BN extends Server {
 
-    void handle(SelectionKey sk) throws IOException;
+    BN(int port, int backlog, boolean secure) throws Exception {
+        super(port, backlog, secure);
+    }
 
+    void runServer() throws IOException {
+        for (;;) {
+
+            SocketChannel sc = ssc.accept();
+
+            ChannelIO cio = (sslContext != null ?
+                ChannelIOSecure.getInstance(
+                    sc, true /* blocking */, sslContext) :
+                ChannelIO.getInstance(
+                    sc, true /* blocking */));
+
+            RequestServicer svc = new RequestServicer(cio);
+            Thread th = new Thread(svc);
+            th.start();
+        }
+    }
 }

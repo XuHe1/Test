@@ -1,4 +1,5 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;
+/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,46 +41,18 @@ package top.lovelily.io.nio2.server;/*
 
 import java.io.*;
 import java.nio.channels.*;
-import javax.net.ssl.*;
 
 /**
- * A single threaded Handler that performs accepts SocketChannels and
- * registers the Channels with the read/write Selector.
+ * Base class for the Dispatchers.
+ * <P>
+ * Servers use these to obtain ready status, and then to dispatch jobs.
  *
  * @author Mark Reinhold
  * @author Brad R. Wetmore
  */
-class AcceptHandler implements Handler {
+interface Dispatcher extends Runnable {
 
-    private ServerSocketChannel channel;
-    private Dispatcher dsp;
+    void register(SelectableChannel ch, int ops, Handler h)
+        throws IOException;
 
-    private SSLContext sslContext;
-
-    AcceptHandler(ServerSocketChannel ssc, Dispatcher dsp,
-            SSLContext sslContext) {
-        channel = ssc;
-        this.dsp = dsp;
-        this.sslContext = sslContext;
-    }
-
-    public void handle(SelectionKey sk) throws IOException {
-
-        if (!sk.isAcceptable())
-            return;
-
-        SocketChannel sc = channel.accept();
-        if (sc == null) {
-            return;
-        }
-
-        ChannelIO cio = (sslContext != null ?
-            ChannelIOSecure.getInstance(
-                sc, false /* non-blocking */, sslContext) :
-            ChannelIO.getInstance(
-                sc, false /* non-blocking */));
-
-        RequestHandler rh = new RequestHandler(cio);
-        dsp.register(cio.getSocketChannel(), SelectionKey.OP_READ, rh);
-    }
 }

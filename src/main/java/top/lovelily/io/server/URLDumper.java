@@ -1,4 +1,4 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,51 +38,43 @@ package top.lovelily.io.nio2.server;/*
  */
 
 
-import javax.net.ssl.SSLContext;
-import java.io.IOException;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
+import java.io.*;
+import java.net.*;
 
 /**
- * A Runnable class which sits in a loop accepting SocketChannels,
- * then registers the Channels with the read/write Selector.
+ * A simple example to illustrate using a URL to access a resource
+ * and then store the result to a File.
+ * <P>
+ * Any type of URL can be used:  http, https, ftp, etc.
  *
- * @author Mark Reinhold
  * @author Brad R. Wetmore
+ * @author Mark Reinhold
  */
-class Acceptor implements Runnable {
+public class URLDumper {
+    public static void main(String[] args) throws Exception {
 
-    private ServerSocketChannel ssc;
-    private Dispatcher d;
-
-    private SSLContext sslContext;
-
-    Acceptor(ServerSocketChannel ssc, Dispatcher d, SSLContext sslContext) {
-        this.ssc = ssc;
-        this.d = d;
-        this.sslContext = sslContext;
-    }
-
-    public void run() {
-        for (;;) {
-            try {
-                SocketChannel sc = ssc.accept();
-
-                ChannelIO cio = (sslContext != null ?
-                    ChannelIOSecure.getInstance(
-                        sc, false /* non-blocking */, sslContext) :
-                    ChannelIO.getInstance(
-                        sc, false /* non-blocking */));
-
-                RequestHandler rh = new RequestHandler(cio);
-
-                d.register(cio.getSocketChannel(), SelectionKey.OP_READ, rh);
-
-            } catch (IOException x) {
-                x.printStackTrace();
-                break;
-            }
+        if (args.length != 2) {
+            System.out.println("Usage:  URLDumper <URL> <file>");
+            System.exit(1);
         }
+
+        String location = args[0];
+        String file = args[1];
+
+        URL url = new URL(location);
+        FileOutputStream fos = new FileOutputStream(file);
+
+        byte [] bytes = new byte [4096];
+
+        InputStream is = url.openStream();
+
+        int read;
+
+        while ((read = is.read(bytes)) != -1) {
+            fos.write(bytes, 0, read);
+        }
+
+        is.close();
+        fos.close();
     }
 }

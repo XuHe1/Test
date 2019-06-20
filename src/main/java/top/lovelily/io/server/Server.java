@@ -1,4 +1,5 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;
+/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -170,6 +171,8 @@ public abstract class Server {
     }
 
     static public void main(String args[]) throws Exception {
+        args = new String[1];
+        args[0] = "N1";
         Server server = createServer(args);
 
         if (server == null) {

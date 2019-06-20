@@ -1,4 +1,5 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;
+/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,21 +39,56 @@ package top.lovelily.io.nio2.server;/*
  */
 
 
+import java.io.*;
+import java.nio.channels.*;
+import java.util.*;
+
 /**
- * Exception class used when a request can't be properly parsed.
+ * A Multi-threaded dispatcher.
+ * <P>
+ * In this example, one thread does accepts, and the second
+ * does read/writes.
  *
  * @author Mark Reinhold
  * @author Brad R. Wetmore
  */
-class MalformedRequestException extends Exception {
+class DispatcherN implements Dispatcher {
 
-    MalformedRequestException() { }
+    private Selector sel;
 
-    MalformedRequestException(String msg) {
-        super(msg);
+    DispatcherN() throws IOException {
+        sel = Selector.open();
     }
 
-    MalformedRequestException(Exception x) {
-        super(x);
+    public void run() {
+        for (;;) {
+            try {
+                dispatch();
+            } catch (IOException x) {
+                x.printStackTrace();
+            }
+        }
     }
+
+    private Object gate = new Object();
+
+    private void dispatch() throws IOException {
+        sel.select();
+        for (Iterator i = sel.selectedKeys().iterator(); i.hasNext(); ) {
+            SelectionKey sk = (SelectionKey)i.next();
+            i.remove();
+            Handler h = (Handler)sk.attachment();
+            h.handle(sk);
+        }
+        synchronized (gate) { }
+    }
+
+    public void register(SelectableChannel ch, int ops, Handler h)
+            throws IOException {
+        synchronized (gate) {
+            sel.wakeup();
+            ch.register(sel, ops, h);
+        }
+    }
+
 }

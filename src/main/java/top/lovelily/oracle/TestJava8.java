@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * @author h.xu
@@ -36,6 +37,25 @@ public class TestJava8 {
         return "compute value";
     }
 
+    private static int dividedBy(int a) {
+        return 100/a;
+    }
+
+
+    /**
+     *
+     *        Optional.ofNullable(str).ifPresent(t -> {
+     *             // do something with the non-null str
+     *         });
+     *
+     *
+     *         Optional.ofNullable(str).map().filter().orElseThrow()
+     *         Optional.ofNullable(str).map().filter().orElseGet()
+     *
+     *
+     *         numList.stream().filter(c -> c > 0).map(c -> dividedBy(c)).collect(Collectors.toList());
+     */
+
     public static void main(String[] args) {
 
         String str = null;
@@ -47,6 +67,14 @@ public class TestJava8 {
                 System.out.println(s);
             }
         });
+
+
+        Optional.ofNullable(str).ifPresent(t -> {
+            // do something with the non-null str
+        });
+
+
+
 
         /**
          *
@@ -118,6 +146,18 @@ public class TestJava8 {
         // test collection stream()
         Map<String, Class> annotatedClass =  new HashMap<>();
         annotatedClass.put("Integer", Integer.class);
+
+        List<Integer> numList = new ArrayList<>();
+//        numList.add(2);
+//        numList.add(4);
+//        numList.add(8);
+        numList.add(0);
+        if (numList != null) {
+            numList = numList.stream().filter(c -> c > 0).map(c -> dividedBy(c)).collect(Collectors.toList());
+            numList.stream().forEach(num -> System.out.println(num));
+        }
+
+
 
         annotatedClass.values().stream().forEach(handler -> {
 

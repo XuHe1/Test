@@ -1,4 +1,4 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,27 +38,70 @@ package top.lovelily.io.nio2.server;/*
  */
 
 
-import java.nio.channels.*;
+import java.io.*;
+import java.nio.*;
+import java.nio.charset.*;
 
 /**
- * A non-blocking/single-threaded server.  All accept() and
- * read()/write() operations are performed by a single thread, but only
- * after being selected for those operations by a Selector.
+ * A Content type that provides for transferring Strings.
  *
  * @author Mark Reinhold
  * @author Brad R. Wetmore
  */
-public class N1 extends Server {
+class StringContent implements Content {
 
-    N1(int port, int backlog, boolean secure) throws Exception {
-        super(port, backlog, secure);
-        ssc.configureBlocking(false);
+    private static Charset ascii = Charset.forName("US-ASCII");
+
+    private String type;                // MIME type
+    private String content;
+
+    StringContent(CharSequence c, String t) {
+        content = c.toString();
+        if (!content.endsWith("\n"))
+            content += "\n";
+        type = t + "; charset=iso-8859-1";
     }
 
-    void runServer() throws Exception {
-        Dispatcher d = new Dispatcher1();
-        d.register(ssc, SelectionKey.OP_ACCEPT,
-                   new AcceptHandler(ssc, d, sslContext));
-        d.run();
+    StringContent(CharSequence c) {
+        this(c, "text/plain");
+    }
+
+    StringContent(Exception x) {
+        StringWriter sw = new StringWriter();
+        x.printStackTrace(new PrintWriter(sw));
+        type = "text/plain; charset=iso-8859-1";
+        content = sw.toString();
+    }
+
+    public String type() {
+        return type;
+    }
+
+    private ByteBuffer bb = null;
+
+    private void encode() {
+        if (bb == null)
+            bb = ascii.encode(CharBuffer.wrap(content));
+    }
+
+    public long length() {
+        encode();
+        return bb.remaining();
+    }
+
+    public void prepare() {
+        encode();
+        bb.rewind();
+    }
+
+    public boolean send(ChannelIO cio) throws IOException {
+        if (bb == null)
+            throw new IllegalStateException();
+        cio.write(bb);
+
+        return bb.hasRemaining();
+    }
+
+    public void release() throws IOException {
     }
 }

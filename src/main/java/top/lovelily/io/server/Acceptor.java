@@ -1,4 +1,5 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;
+/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,50 +39,51 @@ package top.lovelily.io.nio2.server;/*
  */
 
 
-import java.io.*;
-import java.nio.channels.*;
-import java.util.*;
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 
 /**
- * A single-threaded dispatcher.
- * <P>
- * When a SelectionKey is ready, it dispatches the job in this
- * thread.
+ * A Runnable class which sits in a loop accepting SocketChannels,
+ * then registers the Channels with the read/write Selector.
  *
  * @author Mark Reinhold
  * @author Brad R. Wetmore
  */
-class Dispatcher1 implements Dispatcher {
+class Acceptor implements Runnable {
 
-    private Selector sel;
+    private ServerSocketChannel ssc;
+    private Dispatcher d;
 
-    Dispatcher1() throws IOException {
-        sel = Selector.open();
+    private SSLContext sslContext;
+
+    Acceptor(ServerSocketChannel ssc, Dispatcher d, SSLContext sslContext) {
+        this.ssc = ssc;
+        this.d = d;
+        this.sslContext = sslContext;
     }
 
-    // Doesn't really need to be runnable
     public void run() {
         for (;;) {
             try {
-                dispatch();
+                SocketChannel sc = ssc.accept();
+
+                ChannelIO cio = (sslContext != null ?
+                    ChannelIOSecure.getInstance(
+                        sc, false /* non-blocking */, sslContext) :
+                    ChannelIO.getInstance(
+                        sc, false /* non-blocking */));
+
+                RequestHandler rh = new RequestHandler(cio);
+
+                d.register(cio.getSocketChannel(), SelectionKey.OP_READ, rh);
+
             } catch (IOException x) {
                 x.printStackTrace();
+                break;
             }
         }
-    }
-
-    private void dispatch() throws IOException {
-        sel.select();
-        for (Iterator i = sel.selectedKeys().iterator(); i.hasNext(); ) {
-            SelectionKey sk = (SelectionKey)i.next();
-            i.remove();
-            Handler h = (Handler)sk.attachment();
-            h.handle(sk);
-        }
-    }
-
-    public void register(SelectableChannel ch, int ops, Handler h)
-            throws IOException {
-        ch.register(sel, ops, h);
     }
 }

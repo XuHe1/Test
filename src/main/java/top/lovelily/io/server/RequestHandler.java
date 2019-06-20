@@ -1,4 +1,4 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,6 +41,8 @@ package top.lovelily.io.nio2.server;/*
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 
 /**
  * Primary driver class used by non-blocking Servers to receive,
@@ -59,13 +61,33 @@ class RequestHandler implements Handler {
     private Reply reply = null;
 
     private static int created = 0;
-
+    private static Charset charset = Charset.forName("US-ASCII");
+    private static CharsetEncoder encoder = charset.newEncoder();
     RequestHandler(ChannelIO cio) {
         this.cio = cio;
 
         // Simple heartbeat to let user know we're alive.
         synchronized (RequestHandler.class) {
             created++;
+
+            long time = System.currentTimeMillis();
+            String responseDocument = ("<html><body>" +
+                    "Singlethreaded Server: " +  time + "</body></html>");
+
+            String responseHeader = ("HTTP/1.1 200 OK\r\n" +
+                    "Content-Type: text/html; charset=UTF-8\r\n" +
+                    "Content-Length: " + responseDocument.length() +
+                    "\r\n\r\n");
+
+            try {
+                cio.write(encoder.encode(CharBuffer.wrap(responseHeader)));
+                cio.write(encoder.encode(CharBuffer.wrap(responseDocument)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+
             if ((created % 50) == 0) {
                 System.out.println(".");
                 created = 0;

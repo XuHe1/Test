@@ -1,4 +1,5 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;
+/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -101,7 +102,7 @@ import javax.net.ssl.SSLEngineResult.*;
  * @author Brad R. Wetmore
  * @author Mark Reinhold
  */
-class ChannelIOSecure extends ChannelIO {
+public class ChannelIOSecure extends ChannelIO {
 
     private SSLEngine sslEngine = null;
 
@@ -184,7 +185,7 @@ class ChannelIOSecure extends ChannelIO {
      * based on whether we're secure or not.  We can't determine
      * this until our sslEngine is created.
      */
-    static ChannelIOSecure getInstance(SocketChannel sc, boolean blocking,
+    public static ChannelIOSecure getInstance(SocketChannel sc, boolean blocking,
             SSLContext sslc) throws IOException {
 
         ChannelIOSecure cio = new ChannelIOSecure(sc, blocking, sslc);

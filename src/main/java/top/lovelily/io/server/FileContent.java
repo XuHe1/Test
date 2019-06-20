@@ -1,4 +1,4 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,23 +39,79 @@ package top.lovelily.io.nio2.server;/*
 
 
 import java.io.*;
+import java.net.*;
+import java.nio.channels.*;
 
 /**
- * Method definitions used for preparing, sending, and release
- * content.
+ * A Content type that provides for transferring files.
  *
  * @author Mark Reinhold
  * @author Brad R. Wetmore
  */
-interface Sendable {
+class FileContent implements Content {
 
-    void prepare() throws IOException;
+    private static File ROOT = new File("root");
 
-    // Sends (some) content to the given channel.
-    // Returns true if more bytes remain to be written.
-    // Throws IllegalStateException if not prepared.
-    //
-    boolean send(ChannelIO cio) throws IOException;
+    private File fn;
 
-    void release() throws IOException;
+    FileContent(URI uri) {
+        fn = new File(ROOT,
+                      uri.getPath()
+                      .replace('/',
+                               File.separatorChar));
+    }
+
+    private String type = null;
+
+    public String type() {
+        if (type != null)
+            return type;
+        String nm = fn.getName();
+        if (nm.endsWith(".html"))
+            type = "text/html; charset=iso-8859-1";
+        else if ((nm.indexOf('.') < 0) || nm.endsWith(".txt"))
+            type = "text/plain; charset=iso-8859-1";
+        else
+            type = "application/octet-stream";
+        return type;
+    }
+
+    private FileChannel fc = null;
+    private long length = -1;
+    private long position = -1;         // NB only; >= 0 if transferring
+
+    public long length() {
+        return length;
+    }
+
+    public void prepare() throws IOException {
+        if (fc == null)
+            fc = new RandomAccessFile(fn, "r").getChannel();
+        length = fc.size();
+        position = 0;                   // NB only
+    }
+
+    public boolean send(ChannelIO cio) throws IOException {
+        if (fc == null)
+            throw new IllegalStateException();
+        if (position < 0)               // NB only
+            throw new IllegalStateException();
+
+        /*
+         * Short-circuit if we're already done.
+         */
+        if (position >= length) {
+            return false;
+        }
+
+        position += cio.transferTo(fc, position, length - position);
+        return (position < length);
+    }
+
+    public void release() throws IOException {
+        if (fc != null) {
+            fc.close();
+            fc = null;
+        }
+    }
 }

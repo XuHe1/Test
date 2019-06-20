@@ -1,4 +1,4 @@
-package top.lovelily.io.nio2.server;/*
+package top.lovelily.io.server;/*
  * Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,70 +38,34 @@ package top.lovelily.io.nio2.server;/*
  */
 
 
-import java.io.*;
-import java.nio.*;
-import java.nio.charset.*;
+import java.nio.channels.*;
 
 /**
- * A Content type that provides for transferring Strings.
+ * A blocking/single-threaded server which completely services
+ * each connection before moving to the next.
  *
  * @author Mark Reinhold
  * @author Brad R. Wetmore
  */
-class StringContent implements Content {
+public class B1 extends Server {
 
-    private static Charset ascii = Charset.forName("US-ASCII");
-
-    private String type;                // MIME type
-    private String content;
-
-    StringContent(CharSequence c, String t) {
-        content = c.toString();
-        if (!content.endsWith("\n"))
-            content += "\n";
-        type = t + "; charset=iso-8859-1";
+    B1(int port, int backlog, boolean secure) throws Exception {
+        super(port, backlog, secure);
     }
 
-    StringContent(CharSequence c) {
-        this(c, "text/plain");
-    }
+    void runServer() throws Exception {
+        for (;;) {
 
-    StringContent(Exception x) {
-        StringWriter sw = new StringWriter();
-        x.printStackTrace(new PrintWriter(sw));
-        type = "text/plain; charset=iso-8859-1";
-        content = sw.toString();
-    }
+            SocketChannel sc = ssc.accept();
 
-    public String type() {
-        return type;
-    }
+            ChannelIO cio = (sslContext != null ?
+                ChannelIOSecure.getInstance(
+                    sc, true /* blocking */, sslContext) :
+                ChannelIO.getInstance(
+                    sc, true /* blocking */));
 
-    private ByteBuffer bb = null;
-
-    private void encode() {
-        if (bb == null)
-            bb = ascii.encode(CharBuffer.wrap(content));
-    }
-
-    public long length() {
-        encode();
-        return bb.remaining();
-    }
-
-    public void prepare() {
-        encode();
-        bb.rewind();
-    }
-
-    public boolean send(ChannelIO cio) throws IOException {
-        if (bb == null)
-            throw new IllegalStateException();
-        cio.write(bb);
-
-        return bb.hasRemaining();
-    }
-
-    public void release() throws IOException {
+            RequestServicer svc = new RequestServicer(cio);
+            svc.run();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package top.lovelily.thread;
 
+import java.net.ServerSocket;
+
 /**
  * Desc: TestThreadBase
  * Author: xuhe
@@ -88,7 +90,7 @@ public class TestThreadBase {
          *                 ^
          *                 |
          *                 |
-         *        start()  |     sleep()             finished/interrupt()
+         *        start()  |     sleep()             finished/interruptException
          *   NEW -----> RUNNABLE-----> TIMED_WAITING -----------> TERMINATED
          *                 |
          *                 |
@@ -96,6 +98,10 @@ public class TestThreadBase {
          *             BLOCKED(waiting for monitor)
          *
          *
+         * 异常终止：
+         *  interrupt():
+         *          1. interruptException
+         *          2. set interrupt state(isInterrupted()=true), whether should be terminated depends on you
          *
          */
 
@@ -103,13 +109,17 @@ public class TestThreadBase {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1000);  // TIMED_WAITING
-                    System.out.println("线程在执行。。。。。。");
-                } catch (InterruptedException e) {
+                    //Thread.sleep(1000);  // TIMED_WAITING
+                    while (true) {
+                        System.out.println("线程在执行。。。。。。");
+                        System.out.println(Thread.currentThread().isInterrupted());
+                    }
+                } catch (Exception e) {
                   e.printStackTrace();
                 }
             }
         });
+        thread.setName("TEST-THREAD");
         System.out.println("1. " + thread.getState());  // NEW
         thread.start(); // RUNNABLE
         System.out.println("2. " + thread.getState()); //  TIMED_WAITING
@@ -118,9 +128,10 @@ public class TestThreadBase {
         System.out.println("3. "  + thread.getState()); // TERMINATED
 
         System.out.println(thread.isAlive()); // 线程已死（终止）
-        if (thread.isAlive()) {
-            thread.start();
-        }
+//        if (thread.isAlive()) {
+//            thread.start();
+//        }
+
         //todo:  线程会被回收吗
         System.gc();
         System.runFinalization();

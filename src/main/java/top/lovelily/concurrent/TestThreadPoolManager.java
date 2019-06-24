@@ -25,17 +25,18 @@ public class TestThreadPoolManager {
             threadPoolManager.addExecuteTask(new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    try {
-                        System.out.println(Thread.currentThread().getName() + " begin: ");
-                        if ("pool-1-thread-16".equals(Thread.currentThread().getName())) {
+                    //try {
+
+                        if ("pool-1-thread-1".equals(Thread.currentThread().getName())) {
+                            System.out.println(Thread.currentThread().getName() + " begin: ");
                           //  throw new Exception("线程异常！"); // 线程池中某一线程抛异常，不影响其他线程
                             int a = 100/0;
                         }
-                    } catch (RuntimeException e) {
+                  //  } catch (RuntimeException e) {
                         //java.lang.ArithmeticException
-                        e.printStackTrace();
-                        //这里捕获异常，在线程池中就不会意外终止线程
-                    }
+                    //    e.printStackTrace();
+                        //这里捕获异常，在线程池中的线程就不会被回收
+                    //}
 
                    // System.out.println(Thread.currentThread().getName() + " end: ");
                 }

@@ -77,9 +77,10 @@ public class TestThreadBase {
         t1.start();
         t2.start();
         System.out.println(t1.getState());
-        // t1.join();
-        // t2.join();
-        Thread.yield(); // 让出cpu，但无法再获取cpu，所以下面代码不再执行。
+        t1.join();
+        t2.join();
+        Thread.currentThread().yield(); // 让出cpu(核)，单核cpu时无法再获取cpu，所以下面代码不再执行。
+        Thread.currentThread().yield();
         System.out.println("MAIN");
 
         /**
@@ -87,12 +88,14 @@ public class TestThreadBase {
          *                 ^
          *                 |
          *                 |
-         *        start()  |     sleep()             interrupt()
+         *        start()  |     sleep()             finished/interrupt()
          *   NEW -----> RUNNABLE-----> TIMED_WAITING -----------> TERMINATED
          *                 |
          *                 |
          *                 V
          *             BLOCKED(waiting for monitor)
+         *
+         *
          *
          */
 
@@ -101,19 +104,28 @@ public class TestThreadBase {
             public void run() {
                 try {
                     Thread.sleep(1000);  // TIMED_WAITING
+                    System.out.println("线程在执行。。。。。。");
                 } catch (InterruptedException e) {
-
+                  e.printStackTrace();
                 }
             }
         });
-        System.out.println(thread.getState());  // NEW
+        System.out.println("1. " + thread.getState());  // NEW
         thread.start(); // RUNNABLE
-        System.out.println(thread.getState());
+        System.out.println("2. " + thread.getState()); //  TIMED_WAITING
+        // Thread.sleep(2000l); // wait the thread run
         thread.interrupt();
-        System.out.println(thread.getState());
-        Thread.sleep(2000l);
+        System.out.println("3. "  + thread.getState()); // TERMINATED
 
-        System.out.println(thread.getState());
+        System.out.println(thread.isAlive()); // 线程已死（终止）
+        if (thread.isAlive()) {
+            thread.start();
+        }
+        //todo:  线程会被回收吗
+        System.gc();
+        System.runFinalization();
+        System.gc();
+        System.out.println(thread);
 
     }
 }

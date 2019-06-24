@@ -57,6 +57,11 @@ public class TestJava8 {
      */
 
     public static void main(String[] args) {
+        User u = new User(1, "xuhe");
+        User u2 = u;
+        System.out.println(u == u2);
+        u2.setName("xuhe1");
+        System.out.println(u.getName());
 
         String str = null;
         Optional<String> optional = Optional.ofNullable(str);

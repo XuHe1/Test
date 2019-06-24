@@ -16,13 +16,13 @@ public class ThreadPoolManager {
 	 * <br>当提交一个任务到线程池时，线程池会创建一个线程来执行任务，即使其他空闲的基本线程能够执行新任务也会创建线程，等到需要执行的任务数大于线程池核心大小时就不再创建。
 	 * <br><b>注意：</b>一般来说，对于CPU密集型任务，此数量应该和CPU数目保持一致。
 	 */
-	private final static int CORE_POOL_SIZE = 72;
+	private final static int CORE_POOL_SIZE = 10;
 
 	/**
 	 * 线程池允许创建的最大线程数。如果队列满了，并且已创建的线程数小于最大线程数，则线程池会再创建新的线程执行任务。值得注意的是如果使用了无界的任务队列这个参数就没什么效果。
 	 * <br><b>注意：</b>此参数建议和线程池核心数量保持一直，否则会存在线程的执行顺序会不满足FIFO原则，在一些配合队列使用的特殊场景会出现问题。
 	 */
-	private final static int MAX_POOL_SIZE = CORE_POOL_SIZE;
+	private final static int MAX_POOL_SIZE = 10;
 
 	/** 线程池维护线程所允许的空闲时间 */
 	private final static int KEEP_ALIVE_TIME = 10;

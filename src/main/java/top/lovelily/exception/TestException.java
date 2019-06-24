@@ -13,16 +13,30 @@ public class TestException {
         try {
 
             int a = 10/1;
-            return; // 先执行finally，再执行return，所以如果finally里有return，本行就不再执行。
+            //return; // 先执行finally，再执行return，所以如果finally里有return，本行就不再执行。
         } catch (Exception e) {
             System.out.println(e);
-            return; // catch 后程序会继续往下走，所以如果是致命性异常，需要return， 或者手动抛出去
+            throw e;
+          //  return; // catch 后程序会继续往下走，所以如果是致命性异常，需要return， 或者手动抛出去
         } finally {
             // 不管前面有没有return， 都会执行
             System.out.println("finally");
-            return;
+            // return; // 后续不再执行
         }
         //System.out.println("hello");
+
+
+        while (true) {
+            try {
+                int b = 10/0;
+                System.out.println(b);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw e; // 跳出循环, 不catch 也会跳出循环
+            }
+
+        }
+
 
     }
 }

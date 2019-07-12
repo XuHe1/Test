@@ -87,14 +87,11 @@ public class CustomerBlockedQueue<E> {
         Thread producer = new Thread(new Runnable() {
             @Override
             public void run() {
-
-               //while (true) {
                     for (int i = 0; i < 20; i++) {
                         blockedQueue.put(i);
                     }
                 }
 
-           // }
         });
         producer.setName("Producer");
         /**

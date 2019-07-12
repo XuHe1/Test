@@ -13,10 +13,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author h.xu
  * @create 2017-11-20 上午11:13
+ * todo: 了解并发底层实现原理， 锁、CAS、AQS
+ * 1. CAS底层实现是 cpu的cmpxchg指令，由内核调用
+ * 2. AQS，state变量抽象锁、队列
+ * 3. 锁： 可中断，不可中断，如何实现的 todo：？
  **/
 
 public class TestConcurrent {
 
+    // CAS
     private static final Unsafe unsafe = Unsafe.getUnsafe();
 
 
@@ -37,7 +42,7 @@ public class TestConcurrent {
     // 自旋锁
     ConcurrentLinkedQueue<User> linkedQueue = new ConcurrentLinkedQueue<>();
 
-    // 链表，分段， 锁
+    // 链表，分段锁，java8已经弃用，重新使用了synchronized
     ConcurrentHashMap<String, Object> cacheMap = new ConcurrentHashMap();
 
     HashMap<String, String> hashMap = new HashMap<String, String>();//

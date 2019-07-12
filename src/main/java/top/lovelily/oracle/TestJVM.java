@@ -1,13 +1,11 @@
 package top.lovelily.oracle;
 
-import org.junit.Test;
 import top.lovelily.User;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author h.xu
@@ -75,6 +73,11 @@ public class TestJVM {
 
 
     public void allocateByUnsafe() throws IllegalAccessException {
+        // https://tech.meituan.com/2019/02/14/talk-about-java-magic-class-unsafe.html
+
+        Unsafe unsafe1 = Unsafe.getUnsafe();
+        unsafe1.allocateMemory(1024 * 1024);
+
         Field unsafeField = Unsafe.class.getDeclaredFields()[0];
         unsafeField.setAccessible(true);
         Unsafe unsafe = (Unsafe) unsafeField.get(null);

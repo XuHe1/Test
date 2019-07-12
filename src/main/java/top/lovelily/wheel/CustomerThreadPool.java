@@ -85,6 +85,7 @@ public class CustomerThreadPool {
             // 线程不停执行任务，直到所有任务执行完毕
             try {
                 while (firstTask != null || (firstTask = getTask()) != null) {
+                    System.out.println(firstTask);
                     try {
                         firstTask.run();
                     } finally {
@@ -138,7 +139,6 @@ public class CustomerThreadPool {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    System.out.println(Thread.currentThread());
                 }
             });
         }

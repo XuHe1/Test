@@ -1,6 +1,8 @@
 package top.lovelily.thread;
 
 import java.net.ServerSocket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Desc: TestThreadBase
@@ -110,27 +112,37 @@ public class TestThreadBase {
             public void run() {
                 try {
                     //Thread.sleep(1000);  // TIMED_WAITING
-                    while (true) {
+                    //while (true) {
                         System.out.println("线程在执行。。。。。。");
                         System.out.println(Thread.currentThread().isInterrupted());
-                    }
+                        Thread.interrupted();
+                  //  }
                 } catch (Exception e) {
                   e.printStackTrace();
                 }
             }
         });
         thread.setName("TEST-THREAD");
+
+        Map<String, Thread> threadPool = new HashMap<>();
+        threadPool.put("thread-1", thread);
+
         System.out.println("1. " + thread.getState());  // NEW
         thread.start(); // RUNNABLE
         System.out.println("2. " + thread.getState()); //  TIMED_WAITING
-        // Thread.sleep(2000l); // wait the thread run
-        thread.interrupt();
+         Thread.sleep(2000l); // wait the thread run
+       // thread.interrupt();
         System.out.println("3. "  + thread.getState()); // TERMINATED
 
         System.out.println(thread.isAlive()); // 线程已死（终止）
-//        if (thread.isAlive()) {
+
+//      线程终止后，不能重启
+//        if (!thread.isAlive()) {
+//            System.out.println("线程已死，重新启动");
 //            thread.start();
 //        }
+
+        System.out.println(threadPool.get("thread-1"));
 
         //todo:  线程会被回收吗
         System.gc();

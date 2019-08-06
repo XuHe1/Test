@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Premain-class: top.lovelily.base.InstrumentationAgent
+Can-Redefine-Classes: true

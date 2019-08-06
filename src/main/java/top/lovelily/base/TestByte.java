@@ -1,5 +1,8 @@
 package top.lovelily.base;
 
+
+import top.lovelily.User;
+
 import java.nio.charset.Charset;
 
 /**
@@ -68,5 +71,14 @@ public class TestByte {
         System.out.println(s.getBytes().length );
 
         System.out.println(10>>1);
+
+        // -javaagent:"/Users/xuhe/IdeaProject/Test/src/main/java/top/lovelily/base/InstrumentationAgent.jar"
+
+        // jar cmf MANIFEST.MF InstrumentationAgent.jar top/lovelily/base/InstrumentationAgent.class
+
+
+        System.out.println(InstrumentationAgent.getObjectSize(new Object())); // 16 字节
+        User user = new User(1, "xuhe123xuhe", 28, 173, "Shanghai, China");
+        System.out.println(InstrumentationAgent.getObjectSize(user));  // 32 bytes
     }
 }

@@ -29,6 +29,8 @@ dependencies {
     compile 'cglib:cglib:2.2'
     // Use JUnit test framework
     compile 'junit:junit:4.12'
+    compile 'com.google.zxing:core:3.3.0'
+    implementation 'com.alipay.sdk:alipay-sdk-java:4.6.0.ALL'
 }
 
 // In this section you declare where to find the dependencies of your project

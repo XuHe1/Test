@@ -26,7 +26,7 @@ public class TestHappenBefore {
     public static void main(String[] args) {
 
         // 同一个线程内部，书写在前面的代码happen-before 后面的代码，
-        new Thread(new Runnable() {
+       Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 int i = 1;
@@ -40,7 +40,15 @@ public class TestHappenBefore {
                 String name = user.getName();
                 System.out.println(name);
             }
-        }).start();
+        });
+       thread.start(); // start()先行发生于线程其他的操作
+        try {
+            thread.join(); // 调用join()方法的线程里的任意操作先行发生于main线程从join()方法成功返回（继续后续的代码）
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(Thread.currentThread().getName());
     }
 
 }

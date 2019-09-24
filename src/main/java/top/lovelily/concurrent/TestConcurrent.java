@@ -61,7 +61,7 @@ public class TestConcurrent {
     }
 
     public void stop() {
-        stop = true; // 基本类型的asign是原子操作
+        stop = true; // 基本类型的assign是原子操作
     }
 
     public static void main(String[] args) {

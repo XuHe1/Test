@@ -83,7 +83,7 @@ public class TestThreadBase {
         System.out.println(t1.getState());
         t1.join();
         t2.join();
-        Thread.currentThread().yield(); // 让出cpu(核)，单核cpu时无法再获取cpu，所以下面代码不再执行。
+        Thread.currentThread().yield(); // 让出cpu(核)，todo: 单核cpu时无法再获取cpu，所以下面代码不再执行。
         Thread.currentThread().yield();
         System.out.println("MAIN");
 

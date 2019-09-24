@@ -14,7 +14,7 @@ import java.io.OutputStream;
 
 public class SingleThreadedServer implements Runnable{
 
-    protected int          serverPort   = 8080;
+    protected int          serverPort   = 80;
     protected ServerSocket serverSocket = null;
     protected boolean      isStopped    = false;
     protected Thread       runningThread= null;
@@ -94,7 +94,7 @@ public class SingleThreadedServer implements Runnable{
     }
 
     public static void main(String[] args) {
-        SingleThreadedServer server = new SingleThreadedServer(9000);
+        SingleThreadedServer server = new SingleThreadedServer(80);
         new Thread(server).start();
 
 //        server.stop();

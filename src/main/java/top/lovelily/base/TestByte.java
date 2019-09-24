@@ -10,6 +10,8 @@ import java.nio.charset.Charset;
  */
 public class TestByte {
     public static void main(String[] args) {
+        String str = new String("L000001");
+        System.out.println(str.getBytes().length); // 7
 
         // 2^0 + 2^1 + .... + 2^n = 2^n+1 - 1
 

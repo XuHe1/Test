@@ -9,6 +9,23 @@ package top.lovelily.exception;
  * Created by xuhe on 2018/5/12.
  */
 public class TestException {
+
+    public int multiply() {
+        try {
+            int a = 10 / 1;
+            System.out.println(a);
+
+            return 1;
+
+        } catch (Exception e) {
+            return -1;
+        } finally {
+            System.out.println("finally");
+            return 0;  // finally里的return先于 try 和 catch里的 return
+        }
+    }
+
+
     public static void main(String[] args) throws Exception {
         try {
 
@@ -26,6 +43,10 @@ public class TestException {
         //System.out.println("hello");
 
 
+        TestException test = new TestException();
+        System.out.println(test.multiply());
+
+
         while (true) {
             try {
                 int b = 10/0;
@@ -36,6 +57,8 @@ public class TestException {
             }
 
         }
+
+
 
 
     }

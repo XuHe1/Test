@@ -1,6 +1,5 @@
 package top.lovelily.designpattern;
 
-import top.lovelily.concurrent.TestSnowFlake;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -18,17 +17,32 @@ public class MultiThreadClient {
 
     @Test
     public void testMultiThread() {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
 
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         latch.await();
-                        // TestDoubleCheckSingleton.getInstance();
-                       //  System.out.println(TestDoubleCheckSingleton.lock());
+                        // System.out.println(TestDoubleCheckSingleton.getInstance()); // 单例
+                        // System.out.println(TestDoubleCheckSingleton.getInstance1()); // 非单例
+                       // System.out.println(TestInternalClass.getInstance());
+                        //System.out.println(TestEagerMode.getInstance());
+                        try {
+                            //Class.forName("top.lovelily.designpattern.TestEagerMode"); // 加载类并初始化（静态变量和静态代码块
+                            ClassLoader classLoader = this.getClass().getClassLoader();
+                            Class clazz = classLoader.loadClass("top.lovelily.designpattern.TestEagerMode");
+                            clazz.newInstance();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (InstantiationException e) {
+                            e.printStackTrace();
+                        }
+                        //  System.out.println(TestDoubleCheckSingleton.lock());
                         // TestDoubleCheckSingleton.getInstance2();
-                        System.out.println(TestSnowFlake.generateSn("B"));
+                        //System.out.println(TestSnowFlake.generateSn("B"));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

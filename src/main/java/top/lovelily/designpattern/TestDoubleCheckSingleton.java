@@ -43,7 +43,9 @@ public class TestDoubleCheckSingleton{
 
     private static ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    private static  volatile TestDoubleCheckSingleton INSTANCE;
+    // private static  volatile TestDoubleCheckSingleton INSTANCE;
+
+    private static   TestDoubleCheckSingleton INSTANCE;
 
     private static  AtomicReference<TestDoubleCheckSingleton> atomicReference = new AtomicReference<>(null);
 

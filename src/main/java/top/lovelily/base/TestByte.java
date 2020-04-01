@@ -49,11 +49,11 @@ public class TestByte {
         // hashmap table[(len-1) & hash(key)]
         System.out.println(1 & 1);
 
-        String zw = "我";
+        String zw = "字";
         // utf-8 3个字节
-        System.out.println("一个中文： " + zw.getBytes(Charset.defaultCharset()).length);
+        System.out.println("一个中文UTF-8： " + zw.getBytes(Charset.forName("UTF-8")).length);
         // gbk 2个字节
-        System.out.println("一个中文：" + zw.getBytes(Charset.forName("GBK")).length);
+        System.out.println("一个中文GBK：" + zw.getBytes(Charset.forName("GBK")).length);
         String yw = "a";
         // 1个字节
         System.out.println("一个非中文："  + yw.getBytes().length);
@@ -79,8 +79,15 @@ public class TestByte {
         // jar cmf MANIFEST.MF InstrumentationAgent.jar top/lovelily/base/InstrumentationAgent.class
 
 
-        System.out.println(InstrumentationAgent.getObjectSize(new Object())); // 16 字节
-        User user = new User(1, "xuhe123xuhe", 28, 173, "Shanghai, China");
-        System.out.println(InstrumentationAgent.getObjectSize(user));  // 32 bytes
+        //System.out.println(InstrumentationAgent.getObjectSize(new Object())); // 16 字节
+        //User user = new User(1, "xuhe123xuhe", 28, 173, "Shanghai, China");
+        //System.out.println(InstrumentationAgent.getObjectSize(user));  // 32 bytes
+
+
+        byte[] company = new byte[16];
+
+        byte[] discovery = "discovery".getBytes();
+        System.arraycopy(discovery, 0, company, 0, discovery.length);
+        System.out.println(company.length);
     }
 }

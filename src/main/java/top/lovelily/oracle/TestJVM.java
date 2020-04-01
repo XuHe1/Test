@@ -1,9 +1,7 @@
 package top.lovelily.oracle;
 
 import top.lovelily.User;
-import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +11,7 @@ import java.util.List;
  **/
 
 public class TestJVM {
+    private byte[] b = new byte[1024*100]; //100KB
 
     // StackOverflowError: stack
     public void recurse() {
@@ -23,14 +22,13 @@ public class TestJVM {
     /**
      * OutOfMemoryError: Java heap space
      *
-     * -Xms1m -Xmx1m
+     * -Xms5m -Xmx5m
      */
-    public void heapLeakByObject() {
-        List<User> userList = new ArrayList<>();
-        for (int i = 0; i < 10000; i ++){
-            User user = new User(1, "xuhe", 28, 175, "Shanghai.China");
-            // 下面一行注释掉，todo: 逃逸
-           // userList.add(user);
+    public void heapLeakByObject() throws InterruptedException {
+       List<TestJVM> list = new ArrayList<>();
+        while (true) {
+            list.add(new TestJVM());
+            Thread.sleep(50);
         }
     }
 
@@ -75,15 +73,15 @@ public class TestJVM {
     public void allocateByUnsafe() throws IllegalAccessException {
         // https://tech.meituan.com/2019/02/14/talk-about-java-magic-class-unsafe.html
 
-        Unsafe unsafe1 = Unsafe.getUnsafe();
-        unsafe1.allocateMemory(1024 * 1024);
-
-        Field unsafeField = Unsafe.class.getDeclaredFields()[0];
-        unsafeField.setAccessible(true);
-        Unsafe unsafe = (Unsafe) unsafeField.get(null);
-        while (true) {
-            unsafe.allocateMemory(1024 * 1024);
-        }
+//        Unsafe unsafe1 = Unsafe.getUnsafe();
+//        unsafe1.allocateMemory(1024 * 1024);
+//
+//        Field unsafeField = Unsafe.class.getDeclaredFields()[0];
+//        unsafeField.setAccessible(true);
+//        Unsafe unsafe = (Unsafe) unsafeField.get(null);
+//        while (true) {
+//            unsafe.allocateMemory(1024 * 1024);
+//        }
     }
 
     /**
@@ -109,51 +107,58 @@ public class TestJVM {
     }
 
 
-    public static void main(String[] args) throws IllegalAccessException {
+    public static void main(String[] args) throws IllegalAccessException, InterruptedException {
 
         // Checked Exception: 非RuntimeException，IOException, InterruptedException
         try {
-            Thread.sleep(1000l);
+            Thread.sleep(10000l);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         //UncheckedException: RuntimeException, Error, and their subclasses
-        Integer num = null;
+//        Integer num = null;
 
 
-        for (int i = 0; i < 10; i++) {
-            try {
-                //    return; // finally 仍然执行
-                    //throw new NullPointerException("空指针");
-            } catch (Exception e) {
-                System.out.println(e);
-            } finally {
-                // resources(implements AutoCloseable , Closeable) should be closed
+//        for (int i = 0; i < 10; i++) {
+//            try {
+//                //    return; // finally 仍然执行
+//                    //throw new NullPointerException("空指针");
+//            } catch (Exception e) {
+//                System.out.println(e);
+//            } finally {
+//                // resources(implements AutoCloseable , Closeable) should be closed
+//
+//                System.out.println("finally block executed.");
+//            }
+//
+//        }
 
-                System.out.println("finally block executed.");
-            }
-
-        }
-
-        TestJVM test = new TestJVM();
+        // TestJVM test = new TestJVM();
         //test.recurse();
         // OutOfMemoryError : stack  heap
         // StackOverflowError: stack
-        test.heapLeakByObject();
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+       // test.heapLeakByObject();
+
+        List<TestJVM> list = new ArrayList<>();
+        while (true) {
+            list.add(new TestJVM());
+            Thread.sleep(50);
         }
+
+//        try {
+//            Thread.sleep(20000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         // test.stackLeakByThread();
         //test.permanOMM();
        // test.allocateByUnsafe();
-        try {
-            test.testThrowable();
-        } catch (Exception e) {
-            System.out.println(e.getClass().getName());
-        }
+//        try {
+//            test.testThrowable();
+//        } catch (Exception e) {
+//            System.out.println(e.getClass().getName());
+//        }
 
 
     }

@@ -30,7 +30,23 @@ dependencies {
     // Use JUnit test framework
     compile 'junit:junit:4.12'
     compile 'com.google.zxing:core:3.3.0'
-    implementation 'com.alipay.sdk:alipay-sdk-java:4.6.0.ALL'
+    implementation 'org.projectlombok:lombok:1.18.10@jar'
+    // httpClient
+    implementation 'org.apache.httpcomponents:httpclient:4.5.6@jar'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.13'
+    compile group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.12'
+    compile group: 'commons-logging', name: 'commons-logging', version: '1.2'
+
+    //feign
+    compile("io.github.openfeign:feign-core:9.5.0")
+    compile("io.github.openfeign:feign-jackson:9.5.0")
+    compile("io.github.openfeign:feign-slf4j:9.5.0")
+    compile("io.github.openfeign.form:feign-form:3.4.0")
+    compile("io.github.openfeign:feign-gson:9.4.0")
+
+    // compile("io.github.openfeign.form:feign-form-spring:3.8.0")
+
+
 }
 
 // In this section you declare where to find the dependencies of your project
@@ -38,4 +54,5 @@ repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenCentral()
 }

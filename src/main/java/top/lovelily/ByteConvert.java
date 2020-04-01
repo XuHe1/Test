@@ -1,7 +1,11 @@
 package top.lovelily;
 
+import java.io.UnsupportedEncodingException;
+import java.lang.String;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * 整型数和网络字节序(即 byte[]数组)之间的相互转换
@@ -391,7 +395,7 @@ public class ByteConvert {
         return (byte) re;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
         System.out.println("=================== test byte convert =============");
         byte[] byteArray;
 //		byteArray = long2Bytes(9223372036854775807L);
@@ -434,6 +438,9 @@ public class ByteConvert {
 //		//int转hex
 //		byteArray = int2Bytes(3067434);
 ////		System.out.println(bytes2HexString(byteArray));
+
+       byte[] bytes =  hexString2Bytes("80CE");
+        System.out.println(new String(bytes, Charset.forName("UTF-8").name()));
 
     }
 

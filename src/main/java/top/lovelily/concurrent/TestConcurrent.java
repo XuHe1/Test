@@ -1,7 +1,6 @@
 package top.lovelily.concurrent;
 
 import top.lovelily.User;
-import sun.misc.Unsafe;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -22,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TestConcurrent {
 
     // CAS
-    private static final Unsafe unsafe = Unsafe.getUnsafe();
+ //   private static final Unsafe unsafe = Unsafe.getUnsafe();
 
 
     volatile boolean  stop = false;

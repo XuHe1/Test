@@ -14,7 +14,8 @@ Java 底层实现,高级特性学习,持续更新
 		* CountDownLatch
 		* CyclicBarrier
 		* Semaphore
-	* Lock
+		* Exchanger
+	* Lock(AQS)
 		* synchronized(方法，对象，类)
 		* ReentrantLock
 		* 自旋锁
@@ -50,3 +51,4 @@ todo:
 * jdk 源码
 * spring 源码
 * tomcat8 源码 
+

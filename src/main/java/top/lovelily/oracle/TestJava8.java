@@ -131,6 +131,12 @@ public class TestJava8 {
         String string = null;
         stringOptional = Optional.ofNullable(string); // => of()  empty()
 
+        // ok
+        Integer intNum = null;
+        Optional<Integer> op = Optional.ofNullable(intNum).filter(n -> n == 1);
+        if (op.isPresent()) {
+            System.out.println(op.get());
+        }
 
         stringOptional = Optional.of("hello");
         System.out.println(stringOptional.get());
@@ -156,7 +162,7 @@ public class TestJava8 {
 //        numList.add(2);
 //        numList.add(4);
 //        numList.add(8);
-        numList.add(0);
+        // numList.add(0);
         if (numList != null) {
             numList = numList.stream().filter(c -> c > 0).map(c -> dividedBy(c)).collect(Collectors.toList());
             numList.stream().forEach(num -> System.out.println(num));

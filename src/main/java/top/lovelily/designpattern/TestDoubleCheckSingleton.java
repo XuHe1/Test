@@ -210,6 +210,7 @@ public class TestDoubleCheckSingleton{
 //        int b = a;
 //        /**
 //         *   javap -c  classfile 对代码进行反汇编
+//            *   javap -v
 //         *   todo: 汇编语言
 //         *   non-atomic:
 //         *        4: iload_1

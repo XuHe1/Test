@@ -1,4 +1,4 @@
-package top.lovelily.designpattern;
+package top.lovelily.designpattern.singleton;
 
 import org.junit.Test;
 
@@ -31,7 +31,7 @@ public class MultiThreadClient {
                         try {
                             //Class.forName("top.lovelily.designpattern.TestEagerMode"); // 加载类并初始化（静态变量和静态代码块
                             ClassLoader classLoader = this.getClass().getClassLoader();
-                            Class clazz = classLoader.loadClass("top.lovelily.designpattern.TestEagerMode");
+                            Class clazz = classLoader.loadClass("top.lovelily.designpattern.singleton.TestEagerMode");
                             clazz.newInstance();
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();

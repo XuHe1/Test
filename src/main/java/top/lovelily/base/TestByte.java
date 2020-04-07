@@ -89,5 +89,12 @@ public class TestByte {
         byte[] discovery = "discovery".getBytes();
         System.arraycopy(discovery, 0, company, 0, discovery.length);
         System.out.println(company.length);
+
+        byte ub = (byte) 0x87;
+        System.out.println(ub);
+
+       int cb  =  ub & 0xff;
+        System.out.println(cb);
+
     }
 }

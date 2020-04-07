@@ -1,4 +1,4 @@
-package top.lovelily.designpattern;
+package top.lovelily.designpattern.singleton;
 
 import org.junit.Test;
 

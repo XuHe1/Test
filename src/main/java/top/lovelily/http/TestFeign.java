@@ -9,17 +9,20 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
 import feign.*;
+import feign.codec.ErrorDecoder;
 import feign.form.FormEncoder;
 import feign.jackson.JacksonDecoder;
-import feign.jackson.JacksonEncoder;
-import lombok.Data;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
+
+import static feign.FeignException.errorStatus;
 
 /**
  * Desc: TestFeign
@@ -56,7 +59,6 @@ class PayInfo implements Serializable {
     }
 }
 
-@Data
 class Result<T> implements Serializable{
     private String code;
     private String msg;
@@ -110,6 +112,30 @@ interface OrderClient {
     @RequestLine("POST /user/xcx/bind") // auth 使用@RequestParam接收没问题
     Result<Map> xcxBinding(@HeaderMap Map headMap, @QueryMap Map<String, Object> value);
 
+    // get not 200 code
+    @RequestLine("GET /devices/sn/N000099")
+    Result getDevice();
+
+}
+ class FeignClientErrorDecoder implements ErrorDecoder {
+
+    @Override
+    public Exception decode(String methodKey, Response response) {
+        String body = null;
+        try {
+            body = Util.toString(response.body().asReader());
+        } catch (IOException e) {
+
+        }
+        if (response.status() >= 400 && response.status() <= 500) {
+          //  throw Exceptions.badRequestParams(body);
+            Gson gson = new Gson();
+            Map<String, String> map = new HashMap();
+            map = gson.fromJson(body, HashMap.class);
+            throw new BusinessException(map.get("code"), map.get("msg"));
+        }
+        return errorStatus(methodKey, response);
+    }
 }
 
 public class TestFeign {
@@ -130,6 +156,7 @@ public class TestFeign {
 
         String url = "http://localhost:9002";
         url = "https://gw.test.itransbit.info";
+        url = "http://treasure.test.getqood.com";
 
         HashMap headerMap = Maps.newHashMap();
         headerMap.put("Access-Token", "1194288477575840157.e28c30b4512f4cdbad43692e3f2cbfc6");
@@ -137,9 +164,17 @@ public class TestFeign {
         OrderClient client = Feign.builder()
                             .encoder(new FormEncoder())
                             .decoder(new JacksonDecoder(mapper))
+                            .errorDecoder(new FeignClientErrorDecoder()) // 非2xx返回处理
                             .target(OrderClient.class, url);
 
-        Result result = client.create(headerMap, "alipay", "9631140071604226");
+
+        //Result result = client.create(headerMap, "alipay", "9631140071604226");
+        try {
+            Result result = client.getDevice();
+        } catch (BusinessException e) {
+            System.out.println(e.getCode() + ": " + e.getMsg());
+        }
+
 
 
 //        url = "http://auth.test.getqood.com";
@@ -167,7 +202,7 @@ public class TestFeign {
 //        // paramMap.put("user_id", "12345");
 //        Result result = client.createByMap(headerMap, paramMap);
 
-        System.out.println(result);
+
 
         // pojo not work?
       //  OrderInfo result = client.createByPOJO(new PayInfo("alipay", "9631140071604226", "123"));

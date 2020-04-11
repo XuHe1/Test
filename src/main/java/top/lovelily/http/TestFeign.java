@@ -113,8 +113,8 @@ interface OrderClient {
     Result<Map> xcxBinding(@HeaderMap Map headMap, @QueryMap Map<String, Object> value);
 
     // get not 200 code
-    @RequestLine("GET /devices/sn/N000099")
-    Result getDevice();
+    @RequestLine("GET /devices/sn/{sn}")
+    Result getDevice(@Param("sn") String sn);
 
 }
  class FeignClientErrorDecoder implements ErrorDecoder {
@@ -170,7 +170,7 @@ public class TestFeign {
 
         //Result result = client.create(headerMap, "alipay", "9631140071604226");
         try {
-            Result result = client.getDevice();
+            Result result = client.getDevice("N000099");
         } catch (BusinessException e) {
             System.out.println(e.getCode() + ": " + e.getMsg());
         }

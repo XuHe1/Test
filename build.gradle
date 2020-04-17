@@ -14,6 +14,13 @@ plugins {
     id 'application'
 }
 
+//configurations {
+//    developmentOnly
+//    runtimeClasspath {
+//        extendsFrom developmentOnly
+//    }
+//}
+
 // Define the main class for the application
 mainClassName = 'Test'
 sourceCompatibility = 1.8
@@ -30,7 +37,8 @@ dependencies {
     // Use JUnit test framework
     compile 'junit:junit:4.12'
     compile 'com.google.zxing:core:3.3.0'
-    implementation 'org.projectlombok:lombok:1.18.10@jar'
+//    compileOnly 'org.projectlombok:lombok'
+//    annotationProcessor 'org.projectlombok:lombok'
     // httpClient
     implementation 'org.apache.httpcomponents:httpclient:4.5.6@jar'
     compile group: 'commons-codec', name: 'commons-codec', version: '1.13'

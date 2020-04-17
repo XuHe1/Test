@@ -19,8 +19,11 @@ public class Client {
             Socket socket = null;
             try {
                 socket = new Socket("localhost", 8888);
-                InputStream inputStream = socket.getInputStream();
-                System.out.println(inputStream.read());
+                socket.getKeepAlive();
+                int sendQ = socket.getSendBufferSize();
+                int recvQ = socket.getReceiveBufferSize();
+//                InputStream inputStream = socket.getInputStream(); // InputStream一次性的， 这里调用的话，下面调用无效
+//                System.out.println(inputStream.read());
 
 //                DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 //                dos.writeUTF("hello server");
@@ -28,12 +31,12 @@ public class Client {
 //                dos.flush();
 //                dos.close();
 
-//            DataInputStream dis = new DataInputStream(socket.getInputStream());
+            DataInputStream dis = new DataInputStream(socket.getInputStream());
 //            System.out.println(dis.readUTF()); //阻塞，等待有数据写入
-//            Thread.sleep(10000l);
-//            for (int i = 0; i < 10; i ++) {
-//                System.out.println(dis.readUTF()); //阻塞，等待有数据写入
-//            }
+            //Thread.sleep(10000l);
+            while (true){
+                System.out.println(dis.readUTF()); //阻塞，等待有数据写入
+            }
 //            System.out.println("do next thing");
             } catch (IOException e) {
 //                e.printStackTrace();

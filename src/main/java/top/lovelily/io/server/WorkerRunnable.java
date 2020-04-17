@@ -33,13 +33,14 @@ public class WorkerRunnable implements Runnable{
 //                    "").getBytes());
 
             byte[] responseDocument = ("<html><body>" +
-                    "Singlethreaded Server: " +  time + "</body></html>").getBytes("UTF-8");
+                    serverText + ": " +  time + "</body></html>").getBytes("UTF-8");
 
             byte[] responseHeader = ("HTTP/1.1 200 OK\r\n" +
                     "Content-Type: text/html; charset=UTF-8\r\n" +
                     "Content-Length: " + responseDocument.length +
                     "\r\n\r\n").getBytes("UTF-8");
 
+            // 根据http协议， 必须先发 header，再发body
             output.write(responseHeader);
             output.write(responseDocument);
             output.close();

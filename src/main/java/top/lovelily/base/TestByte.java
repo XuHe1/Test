@@ -2,8 +2,14 @@ package top.lovelily.base;
 
 
 import top.lovelily.User;
+import top.lovelily.util.ByteUtil;
 
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * Created by kaiitsugyou on 16/12/8.
@@ -86,9 +92,38 @@ public class TestByte {
 
         byte[] company = new byte[16];
 
-        byte[] discovery = "discovery".getBytes();
+        byte[] discovery = "discovery".getBytes(); // [100, 105, 115, 99, 111, 118, 101, 114, 121]  java是大端模式
         System.arraycopy(discovery, 0, company, 0, discovery.length);
-        System.out.println(company.length);
+
+        ByteBuffer byteBuffer = ByteBuffer.wrap(discovery).order(ByteOrder.LITTLE_ENDIAN); // 大小端不影响， 并没有排序
+        discovery = byteBuffer.array();
+        byteBuffer.put("discovery".getBytes());
+        System.out.println(Arrays.toString(discovery)); // 大端
+
+
+        System.out.println("discovery".toCharArray().length);
+        CharBuffer.wrap(new char[9]).order();
+        byteBuffer = ByteBuffer.wrap(new byte[discovery.length*2]).order(ByteOrder.LITTLE_ENDIAN);
+        byteBuffer.asCharBuffer().put("discovery");   // Character use utf-16
+        System.out.println(Arrays.toString(byteBuffer.array()));
+
+        byte[] str_LE = string2Bytes_LE("discovery");
+        System.out.println(Arrays.toString(str_LE));
+
+//        String hex = ByteUtil.bytes2Hex("Wiki".getBytes());
+//        System.out.println(hex); // 0x
+//        int wiki =  Integer.parseInt(hex, 16);
+//        ByteBuffer bb =  ByteBuffer.allocate(4).order(ByteOrder.BIG_ENDIAN); // Wiki,   LD:  ikiW
+//        bb.putInt(wiki);
+//        System.out.println(new String(bb.array()));
+
+        String hex = ByteUtil.bytes2Hex("discovery".getBytes());
+        ByteBuffer bb =  ByteBuffer.allocate(18).order(ByteOrder.LITTLE_ENDIAN); // Wiki,   LD:  ikiW
+        //bb.put(hex.getBytes());
+        BigInteger bigInteger = new BigInteger(hex, 16);
+        System.out.println(bigInteger);
+
+
 
         byte ub = (byte) 0x87;
         System.out.println(ub);
@@ -96,5 +131,31 @@ public class TestByte {
        int cb  =  ub & 0xff;
         System.out.println(cb);
 
+    }
+
+    private static byte[] chars2Bytes_LE(char[] chars){
+        if(chars == null)
+            return null;
+
+        int iCharCount = chars.length;
+        byte[] rst = new byte[iCharCount*2]; // utf16
+        int i = 0;
+        for( i = 0; i < iCharCount; i++){
+            rst[i*2] = (byte)(chars[i] & 0xFF);
+            rst[i*2 + 1] = (byte)(( chars[i] & 0xFF00 ) >> 8);
+        }
+
+        return rst;
+    }
+
+    private static byte[] string2Bytes_LE(String str) {
+        if(str == null){
+            return null;
+        }
+        char[] chars = str.toCharArray();
+
+        byte[] rst = chars2Bytes_LE(chars);
+
+        return rst;
     }
 }

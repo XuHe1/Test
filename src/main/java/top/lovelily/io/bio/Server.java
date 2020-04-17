@@ -18,19 +18,36 @@ public class Server {
             Socket socket = serverSocket.accept(); // 阻塞，等待client连接
             System.out.println("a client connected");
             DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-            Thread.sleep(10000l); // 阻塞client
+            //Thread.sleep(10000l); // 阻塞client
             dos.writeUTF("hello client");
-            for (int i = 0; i < 10; i ++){
-                dos.writeUTF("I am server"); // 异步写，写不阻塞，调用native方法，由操作系统完成真正的写操作，这时已经和socket没有关系了，即使socket已经close
+            for (int i = 0; i < 10; i++) {
+                dos.writeUTF("I am server " + i); //  并不是真正的写，写的缓存中（发送缓存）， 写调用native方法，由操作系统完成真正的写操作，这时已经和socket没有关系了，即使socket已经close
+                System.out.println("do next thing");
+                /**
+                 *
+                 * flush indicates thant previously written have been buffered by the implementation of the output
+                 *  stream, such bytes should immediately be written to their intended destination.
+                 *
+                 *  If the intended destination of this stream is an abstraction provided by
+                 *  the underlying operating system, for example a file, then flushing the
+                 *  stream guarantees only that bytes previously written to the stream are
+                 *  passed to the operating system for writing; it does not guarantee that
+                 *  they are actually written to a physical device such as a disk drive.
+                 *  TCP 发送队列（再内核空间）
+                 *
+                 */
+                dos.flush();
+                System.out.println("I am server " + i);
+                Thread.sleep(1000l);
+                // 停止Client, 发现还Server端可以继续发一条， 所以确定是写到缓存（send Queue)中的
             }
 
-            System.out.println("do next thing");
-            dos.flush();
             dos.close();
             socket.close();
             serverSocket.close();
             System.out.println(socket.isClosed());
             System.out.println(serverSocket.isClosed());
+
 
         } catch (IOException e) {
             e.printStackTrace();

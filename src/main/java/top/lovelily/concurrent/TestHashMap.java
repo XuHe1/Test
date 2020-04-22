@@ -1,5 +1,7 @@
 package top.lovelily.concurrent;
 
+import com.google.common.collect.Maps;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -50,6 +52,12 @@ public class TestHashMap {
         });
         thread2.start();
 
-        System.out.println(map.get(11));
+       // System.out.println(map.get(11));
+
+        long time = System.currentTimeMillis();
+        Map<Long, String> map = Maps.newHashMap();
+        map.put(time, "hello");
+        long t1 = time;
+        System.out.println(map.get(t1));
     }
 }

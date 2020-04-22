@@ -3,6 +3,7 @@ package top.lovelily.concurrent;
 import top.lovelily.User;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -82,8 +83,18 @@ public class TestConcurrent {
 
         System.out.println(test.inc);
 
-
+        // HashMap 会按key进行排序（与插入时顺序不一致）， LinkedHashMap通过双向链表保存插入顺序
         test.hashMap.put("name", "Tom");
+        test.hashMap.put("e", "e");
+        test.hashMap.put("d", "d");
+        test.hashMap.put("a", "a");
+        test.hashMap.put("b", "b");
+        test.hashMap.put("c", "c");
+        Iterator iterator = test.hashMap.keySet().iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
 
 
 //

@@ -113,33 +113,100 @@ interface OrderClient {
     Result<Map> xcxBinding(@HeaderMap Map headMap, @QueryMap Map<String, Object> value);
 
     // get not 200 code
-    @RequestLine("GET /devices/sn/{sn}")
+    @RequestLine("GET /devicess/sn/{sn}")
     Result getDevice(@Param("sn") String sn);
 
 }
  class FeignClientErrorDecoder implements ErrorDecoder {
+     private final ErrorDecoder defaultErrorDecoder = new Default();
 
     @Override
     public Exception decode(String methodKey, Response response) {
-        String body = null;
-        try {
-            body = Util.toString(response.body().asReader());
-        } catch (IOException e) {
+        Exception exception = defaultErrorDecoder.decode(methodKey, response); //FeignException
+        if(exception instanceof RetryableException){
+            return exception;
+        }
+        // IOException、网关异常 需要重试
+        if (response.status() > 500) {
+            return new RetryableException(String.valueOf(response.status()), exception, null);
+        }
 
+        return exception;
+        //if (response.status() >= 400 && response.status() <= 500) {
+
+//        if (exception instanceof FeignException) {
+//            FeignException feignException = (FeignException) exception;
+//            String body = feignException.getMessage();
+//            System.out.println("异常： " + body);
+//            Gson gson = new Gson();
+//            Map<String, String> map = new HashMap();
+//            map = gson.fromJson(body, HashMap.class);
+//            // 正常有返回值
+//            if (map.get("code") != null) {
+//                return new BusinessException(map.get("code"), map.get("msg"));
+//            } else {
+//                return new RetryableException(String.valueOf(response.status()), exception, null);
+//            }
+//
+//        }
+
+//        String body = null;
+//        try {
+//            body = Util.toString(response.body().asReader());
+//        } catch (IOException e) {
+//
+//        }
+//        if (response.status() >= 400 && response.status() <= 500) {
+//          //  throw Exceptions.badRequestParams(body);
+//            Gson gson = new Gson();
+//            Map<String, String> map = new HashMap();
+//            map = gson.fromJson(body, HashMap.class);
+//            //return new BusinessException(map.get("code"), map.get("msg"));
+//            Exception exception = defaultErrorDecoder.decode(methodKey, response);
+//            throw  new RetryableException(String.valueOf(response.status()), exception, null);
+//        } else {
+//            Exception exception = defaultErrorDecoder.decode(methodKey, response);
+//            return new RetryableException(String.valueOf(response.status()), exception, null);
+//        }
+        //return errorStatus(methodKey, response);
+    }
+}
+
+class MyRetryer implements Retryer {
+    private int retryMaxAttempt;
+
+    private long retryInterval;
+
+    private int attempt = 1;
+
+    public MyRetryer(int retryMaxAttempt, Long retryInterval) {
+        this.retryMaxAttempt = retryMaxAttempt;
+        this.retryInterval = retryInterval;
+    }
+
+    @Override
+    public void continueOrPropagate(RetryableException e) {
+        if (attempt++ >= retryMaxAttempt) {
+           // throw e;
+            System.out.println("重试完毕");
+            throw e;
         }
-        if (response.status() >= 400 && response.status() <= 500) {
-          //  throw Exceptions.badRequestParams(body);
-            Gson gson = new Gson();
-            Map<String, String> map = new HashMap();
-            map = gson.fromJson(body, HashMap.class);
-            throw new BusinessException(map.get("code"), map.get("msg"));
+        try {
+            System.out.println(Thread.currentThread().getName());
+            Thread.sleep(retryInterval);
+        } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
         }
-        return errorStatus(methodKey, response);
+    }
+
+    @Override
+    public Retryer clone() {
+        return new MyRetryer(retryMaxAttempt, retryInterval);
     }
 }
 
 public class TestFeign {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SimpleModule customModule = new SimpleModule("ecallModule", new Version(1, 0, 0, "", "", ""));
         customModule.addSerializer(Long.class, new ToStringSerializer());
         // json读写
@@ -164,6 +231,8 @@ public class TestFeign {
         OrderClient client = Feign.builder()
                             .encoder(new FormEncoder())
                             .decoder(new JacksonDecoder(mapper))
+                            .logLevel(Logger.Level.FULL)
+                            .retryer(new MyRetryer(5, 2000l))
                             .errorDecoder(new FeignClientErrorDecoder()) // 非2xx返回处理
                             .target(OrderClient.class, url);
 
@@ -171,11 +240,13 @@ public class TestFeign {
         //Result result = client.create(headerMap, "alipay", "9631140071604226");
         try {
             Result result = client.getDevice("N000099");
-        } catch (BusinessException e) {
-            System.out.println(e.getCode() + ": " + e.getMsg());
+        } catch (Exception e) {
+            System.out.println(e instanceof RetryableException);
+            System.out.println("重试失败, 保存数据库" + ": " + e.getMessage());
+           // System.out.println(e.getCode() + ": " + e.getMsg());
         }
 
-
+        Thread.sleep(10000l);
 
 //        url = "http://auth.test.getqood.com";
 //        OrderClient client = Feign.builder()

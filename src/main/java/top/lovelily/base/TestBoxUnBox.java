@@ -15,9 +15,13 @@ public class TestBoxUnBox {
         User user = new User(1, "xuhe");
         user.setId(id);
     }
+    private static  Integer a = new Integer(0);
 
     public static void main(String[] args) {
-        TestBoxUnBox test = new TestBoxUnBox();
-        test.updateUser(null);
+//        TestBoxUnBox test = new TestBoxUnBox();
+//        test.updateUser(null);
+//
+
+        System.out.println(Integer.valueOf(0) == a);
     }
 }

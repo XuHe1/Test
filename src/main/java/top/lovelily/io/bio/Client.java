@@ -18,7 +18,7 @@ public class Client {
         for (int i = 0; i < num; i++) {
             Socket socket = null;
             try {
-                socket = new Socket("localhost", 8888);
+                socket = new Socket("47.92.55.13", 8888);
                 socket.getKeepAlive();
                 int sendQ = socket.getSendBufferSize();
                 int recvQ = socket.getReceiveBufferSize();
@@ -34,8 +34,16 @@ public class Client {
             DataInputStream dis = new DataInputStream(socket.getInputStream());
 //            System.out.println(dis.readUTF()); //阻塞，等待有数据写入
             //Thread.sleep(10000l);
+                int pre = -1;
             while (true){
-                System.out.println(dis.readUTF()); //阻塞，等待有数据写入
+                String s = dis.readUTF(); //阻塞，等待有数据写入
+                int cur = Integer.valueOf(s);
+              //  System.out.println(cur);
+                if (cur < pre) {
+                    System.out.println("OUT OF ORDER!");
+                }
+                pre = cur;
+
             }
 //            System.out.println("do next thing");
             } catch (IOException e) {

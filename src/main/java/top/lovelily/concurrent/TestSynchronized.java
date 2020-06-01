@@ -47,4 +47,23 @@ public class TestSynchronized {
         }
     }
 
+    public static void resetCount() {
+        count = 1;
+    }
+    public static void main(String[] args) {
+        for (int i = 0 ; i < 1000; i ++) {
+            getCount();
+            resetCount();
+            System.out.println(count);
+        }
+
+      new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getCount();
+                System.out.println(Thread.currentThread().getName());
+            }
+        }).start();
+    }
+
 }

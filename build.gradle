@@ -52,6 +52,7 @@ dependencies {
     compile("io.github.openfeign.form:feign-form:3.4.0")
     compile("io.github.openfeign:feign-gson:9.4.0")
 
+    compile 'org.openjdk.jol:jol-core:0.9'
     // compile("io.github.openfeign.form:feign-form-spring:3.8.0")
 
 

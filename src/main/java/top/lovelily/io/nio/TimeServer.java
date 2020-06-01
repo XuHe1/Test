@@ -86,16 +86,23 @@ public class TimeServer {
     // Service the next request to come in on the given channel
     //
     private static void serve(ServerSocketChannel ssc) throws IOException {
-        SocketChannel sc = ssc.accept();
-        try {
-            String now = new Date().toString();
-            sc.write(encoder.encode(CharBuffer.wrap(now + "\r\n")));
-            System.out.println(sc.socket().getInetAddress() + " : " + now);
-            sc.close();
-        } finally {
-            // Make sure we close the channel (and hence the socket)
-            sc.close();
+        ssc.configureBlocking(false);
+        SocketChannel sc = ssc.accept(); // nonblocking, return null
+       // sc.configureBlocking(false);
+        System.out.println("Client: " + sc);
+        if (sc != null) {
+            try {
+                String now = new Date().toString();
+                //sc.configureBlocking(false);
+                sc.write(encoder.encode(CharBuffer.wrap(now + "\r\n")));
+                System.out.println(sc.socket().getInetAddress() + " : " + now);
+                sc.close();
+            } finally {
+                // Make sure we close the channel (and hence the socket)
+                sc.close();
+            }
         }
+
     }
 
     public static void main(String[] args) throws IOException {

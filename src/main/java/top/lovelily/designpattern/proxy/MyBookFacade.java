@@ -1,4 +1,4 @@
-package top.lovelily.proxy;
+package top.lovelily.designpattern.proxy;
 
 /**
  * Desc: BookFacadeImpl

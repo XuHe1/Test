@@ -1,4 +1,4 @@
-package top.lovelily.proxy;
+package top.lovelily.designpattern.proxy;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;

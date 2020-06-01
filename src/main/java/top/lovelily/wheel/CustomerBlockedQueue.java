@@ -1,5 +1,7 @@
 package top.lovelily.wheel;
 
+import org.openjdk.jol.info.ClassLayout;
+
 import java.util.LinkedList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -33,6 +35,7 @@ public class CustomerBlockedQueue<E> {
     public E take() {
         ReentrantLock lock = this.lock;
         lock.lock();
+        System.out.println(lock.getHoldCount());
 
         try {
            while (linkedList.size() == 0) {
@@ -51,7 +54,10 @@ public class CustomerBlockedQueue<E> {
     // 如果队列满了，线程阻塞直到返回true
     public boolean put(E e) {
         ReentrantLock lock = this.lock;
+        System.out.println(ClassLayout.parseInstance(lock).toPrintable());
         lock.lock();
+        System.out.println(Thread.currentThread().getState());
+        System.out.println(ClassLayout.parseInstance(lock).toPrintable());
         try {
             while (linkedList.size() >= maxSize) {  // while ?
                 notFull.await(); // cause current thread to wait, release monitor
@@ -68,10 +74,14 @@ public class CustomerBlockedQueue<E> {
 
     }
 
+    private void getLockState() {
+        // 的确在调用了await方法后，释放了锁
+        System.out.println(this.lock.getHoldCount());
+    }
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         CustomerBlockedQueue<Integer> blockedQueue = new CustomerBlockedQueue(10);
         Thread consumer = new Thread(new Runnable() {
             @Override
@@ -88,7 +98,7 @@ public class CustomerBlockedQueue<E> {
             @Override
             public void run() {
                     for (int i = 0; i < 20; i++) {
-                        blockedQueue.put(i);
+                        System.out.println(blockedQueue.put(i));
                     }
                 }
 
@@ -101,8 +111,16 @@ public class CustomerBlockedQueue<E> {
          *
          */
 
-        producer.start();
+       // producer.start();
         consumer.start();
+
+        Thread.sleep(2000L);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                blockedQueue.getLockState();
+            }
+        }).start();
 
     }
 }

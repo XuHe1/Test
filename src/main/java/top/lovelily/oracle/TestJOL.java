@@ -17,5 +17,9 @@ public class TestJOL {
         synchronized (o) {
             System.out.println(ClassLayout.parseInstance(o).toPrintable());
         }
+
+        Thread t = new Thread();
+
+
     }
 }

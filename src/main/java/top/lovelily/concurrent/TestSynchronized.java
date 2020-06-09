@@ -30,6 +30,7 @@ public class TestSynchronized {
 
     // 类锁
     public synchronized static int getCount() {
+        System.out.println(Thread.currentThread().getName());
         return count;
     }
 
@@ -50,20 +51,35 @@ public class TestSynchronized {
     public static void resetCount() {
         count = 1;
     }
-    public static void main(String[] args) {
-        for (int i = 0 ; i < 1000; i ++) {
-            getCount();
-            resetCount();
-            System.out.println(count);
-        }
-
-      new Thread(new Runnable() {
+    public static void main(String[] args) throws InterruptedException {
+        // t1 t2共用一把锁
+      Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                getCount();
-                System.out.println(Thread.currentThread().getName());
+                for (int i = 0; i< 10; i++) {
+                    try {
+                        Thread.sleep(1000L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    getCount(); // 可重入， 一个线程可多次加锁
+                }
+
             }
-        }).start();
+        });
+
+      Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i< 10; i++) {
+                    getCount();
+                }
+            }
+        });
+      t1.start();
+      t2.start();
+      t1.join();
+      t2.join();
     }
 
 }

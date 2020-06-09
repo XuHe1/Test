@@ -9,6 +9,24 @@ package top.lovelily.exception;
  * Created by xuhe on 2018/5/12.
  */
 public class TestException {
+    private static final int count; // 常量，只能被初始化一次，定义时初始化，或静态代码里初始化
+    private static int a = 1;
+
+    static {
+      //  a = 2;
+       count = 0;
+    }
+
+    public  TestException() {
+        // count = 1;
+    }
+
+    private abstract static class Inner {
+        public abstract void test();
+        // public abstract static void test1(); // 错误
+    }
+
+
 
     public int multiply() {
         try {
@@ -27,6 +45,9 @@ public class TestException {
 
 
     public static void main(String[] args) throws Exception {
+        TestException testException = new TestException();
+        System.out.println(testException.a);
+
         try {
 
             int a = 10/1;
@@ -40,7 +61,7 @@ public class TestException {
             System.out.println("finally");
             // return; // 后续不再执行
         }
-        //System.out.println("hello");
+        System.out.println("hello");
 
 
         TestException test = new TestException();

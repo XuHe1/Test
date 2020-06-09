@@ -56,7 +56,7 @@ public class TestDoubleCheckSingleton{
 
 
     /**
-     *  虚拟机指令
+     *  虚拟机指令,符号引用（存放在常量池中）
      *       0: getstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
      *        3: ifnonnull     45
      *        6: ldc           #6                  // class com/etianxia/designpattern/TestDoubleCheckSingleton

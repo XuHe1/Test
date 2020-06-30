@@ -104,7 +104,7 @@ public class TestByte {
         System.out.println("discovery".toCharArray().length);
         CharBuffer.wrap(new char[9]).order();
         byteBuffer = ByteBuffer.wrap(new byte[discovery.length*2]).order(ByteOrder.LITTLE_ENDIAN);
-        byteBuffer.asCharBuffer().put("discovery");   // Character use utf-16
+        byteBuffer.asCharBuffer().put("discovery");   // Character use utf-16 2B
         System.out.println(Arrays.toString(byteBuffer.array()));
 
         byte[] str_LE = string2Bytes_LE("discovery");

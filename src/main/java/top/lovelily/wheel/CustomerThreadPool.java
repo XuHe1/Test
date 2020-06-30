@@ -42,7 +42,7 @@ public class CustomerThreadPool {
             if (workers.size() > coreSize) {
                 return taskQueue.poll(keepAliveTime, timeUnit);
             } else {
-                return taskQueue.take(); // 阻塞核心线程
+                return taskQueue.take(); // 阻塞核心线程， 并释放锁， 其他线程进入，直到队列有数据，所以，只会唤醒获取到锁的线程，解决了惊群效应；
             }
 
         } catch (InterruptedException e) {
@@ -64,7 +64,7 @@ public class CustomerThreadPool {
 
         if (workers.size() < coreSize) {
             addWorker(task);
-        } else if (!taskQueue.offer(task)) {
+        } else if (!taskQueue.offer(task)) { //  队列已满，添加队列失败
             addWorker(task);
             if (runningCount.get() >= maxPoolSize) {
                 throw new TaskRejectedException("任务拒绝！");

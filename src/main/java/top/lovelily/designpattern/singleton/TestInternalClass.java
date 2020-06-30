@@ -24,6 +24,12 @@ public class TestInternalClass {
 
     public static void main(String[] args) {
         TestInternalClass test = new TestInternalClass();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
        // System.out.println(getInstance());
     }
 

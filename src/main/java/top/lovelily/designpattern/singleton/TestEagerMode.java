@@ -1,4 +1,4 @@
-package top.lovelily.designpattern.singleton.designpattern;
+package top.lovelily.designpattern.singleton;
 
 /**
  *

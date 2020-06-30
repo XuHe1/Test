@@ -12,6 +12,23 @@ import java.util.List;
  **/
 
 public class TestFinal {
+    // 都只只能初始化一次；
+    final  int a ; // 必须初始化，构造方法
+    private static final int b = 0; // 显示初始化，static块中；不可以构造方法
+
+    public TestFinal() {
+        a = 0;
+        // b= 1; error
+    }
+
+    final void sayHello() {
+       // a = 2; 不能初始化第二次
+    }
+
+    final static void sayBye() {
+
+    }
+
     public static void main(String[] args) {
         try {
             Thread.sleep(20000);

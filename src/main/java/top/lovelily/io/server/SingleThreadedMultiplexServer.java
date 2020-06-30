@@ -107,6 +107,7 @@ public class SingleThreadedMultiplexServer {
             sc.write(encoder.encode(CharBuffer.wrap(responseHeader)));
             sc.write(encoder.encode(CharBuffer.wrap(responseDocument)));
             sc.register(key.selector(), SelectionKey.OP_READ,ByteBuffer.allocateDirect(BUF_SIZE));
+            key.interestOps(SelectionKey.OP_READ);
         } catch (IOException e) {
             String m = e.getMessage();
             if (!m.equals("Broken pipe") &&

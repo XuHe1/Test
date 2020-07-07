@@ -12,6 +12,7 @@ import java.util.List;
 
 public class TestJVM {
     private byte[] b = new byte[1024*100]; //100KB
+    private byte[] M2 = new byte[1024*100*1024*2]; //2M
 
     // StackOverflowError: stack
     public void recurse() {
@@ -20,7 +21,14 @@ public class TestJVM {
     }
 
     /**
-     * OutOfMemoryError: Java heap space
+     *
+     * 内存泄漏: 无意地创建了很多对象被一个长生命对象引用，无法被GC回收 （ OutOfMemoryError: Java heap space）
+     * 内存溢出:
+     *          1. new 大对象，超出剩余对空间（ OutOfMemoryError: Java heap space）
+     *          2. 本地内存溢出（创建过多的线程）
+     *          3. 栈溢出
+     *          4. 方法区溢出
+     *
      *
      * -Xms5m -Xmx5m
      */
@@ -142,11 +150,14 @@ public class TestJVM {
         // StackOverflowError: stack
        // test.heapLeakByObject();
 
-        List<TestJVM> list = new ArrayList<>();
-        while (true) {
-            list.add(new TestJVM());
-            Thread.sleep(50);
-        }
+//        List<TestJVM> list = new ArrayList<>();
+//        while (true) {
+//            list.add(new TestJVM());
+//            Thread.sleep(50);
+//        }
+
+
+         byte[] M2 = new byte[1024*1024]; //2M
 
 //        try {
 //            Thread.sleep(20000);

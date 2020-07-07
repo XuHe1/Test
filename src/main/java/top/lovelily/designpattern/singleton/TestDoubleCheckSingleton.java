@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class TestDoubleCheckSingleton{
 
-    private  int a;
+    private int a = 8;
     private static AtomicBoolean locked = new AtomicBoolean(false);
 
     /**
@@ -43,9 +43,10 @@ public class TestDoubleCheckSingleton{
 
     private static ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
+    // todo: volatile这里的作用有几个?
     // private static  volatile TestDoubleCheckSingleton INSTANCE;
 
-    private static   TestDoubleCheckSingleton INSTANCE;
+    private static   TestDoubleCheckSingleton INSTANCE; // todo: INSTANCE多线程可见性如何保证的？
 
     private static  AtomicReference<TestDoubleCheckSingleton> atomicReference = new AtomicReference<>(null);
 
@@ -68,9 +69,11 @@ public class TestDoubleCheckSingleton{
      *       17: getstatic     #7                  // Field java/lang/System.out:Ljava/io/PrintStream;
      *       20: ldc           #8                  // String 实例化
      *       22: invokevirtual #9                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     *       // new 操作开始
      *       25: new           #6                  // class com/etianxia/designpattern/TestDoubleCheckSingleton
      *       28: dup
-     *       29: invokespecial #10                 // Method "<init>":()V
+     *       29: invokespecial #10                 // Method "<init>":()V // 构造方法
+     *       // new 操作完成
      *       32: putstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
      *       35: aload_0
      *       36: monitorexit                       // todo: 内存屏障 volatile， 多核CPU架构下，防止其他cpu执行的指令重排到实例化语句前
@@ -228,5 +231,9 @@ public class TestDoubleCheckSingleton{
 //
 //        TestDoubleCheckSingleton.getInstance();
 
+    }
+
+    public int getA() {
+        return a;
     }
 }

@@ -24,8 +24,9 @@ public class TestConcurrent {
     // CAS
  //   private static final Unsafe unsafe = Unsafe.getUnsafe();
 
+    int i = 0;
 
-    volatile boolean  stop = false;
+      boolean  stop = true;
 
     //private volatile int inc = 0;
 
@@ -48,6 +49,7 @@ public class TestConcurrent {
     HashMap<String, String> hashMap = new HashMap<String, String>();//
 
 
+
     public void increase() {
        // inc++; // 非原子操作 包括读取变量的原始值、进行加1操作、写入工作内存
         inc.getAndIncrement();
@@ -55,13 +57,29 @@ public class TestConcurrent {
 
 
     public void doSomething() {
-        while (!stop) {  // 基本类型的read是原子操作，
-            System.out.println(System.currentTimeMillis());
+        /**
+         *        0: aload_0
+         *        1: getfield      #2                  // Field stop:Z
+         *        4: ifne          10
+         *        7: goto          0
+         *       10: getstatic     #22                 // Field java/lang/System.out:Ljava/io/PrintStream;
+         */
+
+        while (stop) {  // 基本类型的read是原子操作，
+           //System.out.println("hello");
+            i ++;
+
         }
+        System.out.println(System.currentTimeMillis());
     }
 
     public void stop() {
-        stop = true; // 基本类型的assign是原子操作
+        try {
+            Thread.sleep(100L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        stop = false; // 基本类型的assign是原子操作
     }
 
     public static void main(String[] args) {
@@ -98,22 +116,22 @@ public class TestConcurrent {
 
 
 //
-//        Thread thread1 = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                test.doSomething();
-//            }
-//        });
-//
-//        Thread thread2 = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                test.stop();
-//            }
-//        });
-//
-//        thread1.start();
-//        thread2.start();
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                test.doSomething();
+            }
+        });
+
+        Thread thread2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                test.stop();
+            }
+        });
+
+        thread1.start();
+        thread2.start();
 
     }
 }

@@ -28,7 +28,7 @@ public class TestThreadSwitch {
                 }
             }
         });
-        t.setName("thread1");
+        t.setName("thread0");
 
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -38,7 +38,7 @@ public class TestThreadSwitch {
                 }
             }
         });
-        t1.setName("thread2");
+        t1.setName("thread1");
 
         Thread t2 = new Thread(new Runnable() {
             @Override
@@ -58,9 +58,9 @@ public class TestThreadSwitch {
                 }
             }
         });
-        t2.setName("thread3");
+        t2.setName("thread2");
 
-        //t.start();
+        t.start();
         t1.start();
         t2.start();
 

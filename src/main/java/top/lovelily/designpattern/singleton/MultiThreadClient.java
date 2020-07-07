@@ -14,32 +14,35 @@ import java.util.concurrent.CountDownLatch;
 public class MultiThreadClient {
     private static CountDownLatch latch = new CountDownLatch(1);
 
+    public static void main(String[] args) {
 
-    @Test
-    public void testMultiThread() {
-        for (int i = 0; i < 100; i++) {
+//    }
+//    @Test
+//    public void testMultiThread() {
+        for (int i = 0; i < 1000; i++) {
 
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         latch.await();
-                        // System.out.println(TestDoubleCheckSingleton.getInstance()); // 单例
+                        int a = TestDoubleCheckSingleton.getInstance().getA();
+                        System.out.println(a == 0); // 单例
                         // System.out.println(TestDoubleCheckSingleton.getInstance1()); // 非单例
                        // System.out.println(TestInternalClass.getInstance());
                         //System.out.println(TestEagerMode.getInstance());
-                        try {
-                            //Class.forName("top.lovelily.designpattern.TestEagerMode"); // 加载类并初始化（静态变量和静态代码块
-                            ClassLoader classLoader = this.getClass().getClassLoader();
-                            Class clazz = classLoader.loadClass("top.lovelily.designpattern.singleton.TestEagerMode");
-                            clazz.newInstance();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        } catch (InstantiationException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            //Class.forName("top.lovelily.designpattern.TestEagerMode"); // 加载类并初始化（静态变量和静态代码块
+//                            ClassLoader classLoader = this.getClass().getClassLoader();
+//                            Class clazz = classLoader.loadClass("top.lovelily.designpattern.singleton.TestEagerMode");
+//                            clazz.newInstance();
+//                        } catch (ClassNotFoundException e) {
+//                            e.printStackTrace();
+//                        } catch (IllegalAccessException e) {
+//                            e.printStackTrace();
+//                        } catch (InstantiationException e) {
+//                            e.printStackTrace();
+//                        }
                         //  System.out.println(TestDoubleCheckSingleton.lock());
                         // TestDoubleCheckSingleton.getInstance2();
                         //System.out.println(TestSnowFlake.generateSn("B"));

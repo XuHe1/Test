@@ -61,6 +61,8 @@ public class TestJVM {
      * http://www.oracle.com/technetwork/java/javase/8-whats-new-2157071.html
      */
     public void permanOMM() {
+//        String str = "";
+//        str.intern();
         List<String> stringList = new ArrayList<>();
         int i = 0;
         while (true) {

@@ -113,7 +113,7 @@ public class TestThreadBase {
                 try {
                     //Thread.sleep(1000);  // TIMED_WAITING
                     //while (true) {
-                        System.out.println("线程在执行。。。。。。");
+                        System.out.println("线程在执行。。。。。。" + Thread.currentThread().getState());
                         System.out.println(Thread.currentThread().isInterrupted());
                         Thread.interrupted();
                   //  }

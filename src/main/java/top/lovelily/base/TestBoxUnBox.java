@@ -17,11 +17,63 @@ public class TestBoxUnBox {
     }
     private static  Integer a = new Integer(0);
 
+    public static void updateInteger(Integer a) {
+       // a = 100;
+        a = new Integer(128); // todo:new的对象会在方法结束后立刻回收吗？
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("方法结束");
+    }
+
+    public static void updateString(String s) {
+        s = "Hello, World";
+        //s = new String("Hello, World");
+    }
+
+    public static void updateUser(User user) {
+        user = new User(1, "Xuhe"); // 重新指向了新的空间， 方法结束被回收，所以调用方法里还是老的地址；
+       // user.setName("Xuhe"); // 改的是原先指向的堆内存地址的对象
+    }
+
     public static void main(String[] args) {
 //        TestBoxUnBox test = new TestBoxUnBox();
 //        test.updateUser(null);
 //
-
+        // Integer.valueOf会自动缓存 -128～127的数据, 否则直接new
         System.out.println(Integer.valueOf(0) == a);
+        System.out.println(Integer.valueOf(0) == Integer.valueOf(0)); // true
+        System.out.println(Integer.valueOf(128) == Integer.valueOf(128)); //false
+
+
+        //User user = null;
+        User user = new User(1, "tom");
+        updateUser(user);
+        System.out.println(user.getName());
+
+        // 不可变对象， value是final类型
+        Integer num  = null;//= new Integer(0);
+        new Thread(() -> {
+            updateInteger(num);
+        }).start();
+
+        System.out.println(num);
+
+        Integer var1 = 1;
+        Integer var2 = 1;
+        Integer var3 = new Integer(1);
+        Integer var4 = new Integer(1);
+        System.out.println(var1 == var2); // true
+        System.out.println(var1 == var3); // false
+        System.out.println(var3 == var4); // false
+
+
+        String str = "abc";
+        updateString(str);
+
+        System.out.println(str);
+
     }
 }

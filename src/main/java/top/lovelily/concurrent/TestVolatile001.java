@@ -13,7 +13,7 @@ public class TestVolatile001 {
     //  private boolean isStop = false;
     private  boolean isStop = false;
 
-
+    // 同一个对象调用下面两个方法使用的是同一把锁；
     // synchronized 也能保证可见性：进入synchronized块，读取全局变量会从主存读取；
     public synchronized boolean isStop() {
         return this.isStop;
@@ -28,7 +28,7 @@ public class TestVolatile001 {
 
         new Thread(() -> {
             while (true) {
-                if (t1.isStop) {  // t1.isStop()
+                if (t1.isStop()) {  // t1.isStop()
                     System.out.println("结束");
                     return;
                 }
@@ -37,7 +37,8 @@ public class TestVolatile001 {
 
         try {
             TimeUnit.SECONDS.sleep(3);
-            t1.isStop = true;   // t1.setStop(true)
+            //t1.isStop = true;
+            t1.setStop(true);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

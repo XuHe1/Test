@@ -1,6 +1,7 @@
 package top.lovelily.base;
 
 
+import org.openjdk.jol.info.ClassLayout;
 import top.lovelily.User;
 import top.lovelily.util.ByteUtil;
 
@@ -56,13 +57,16 @@ public class TestByte {
         System.out.println(1 & 1);
 
         String zw = "字";
-        // utf-8 3个字节
+        // utf-8 3个字节 变长编码 1-6个字节
         System.out.println("一个中文UTF-8： " + zw.getBytes(Charset.forName("UTF-8")).length);
         // gbk 2个字节
         System.out.println("一个中文GBK：" + zw.getBytes(Charset.forName("GBK")).length);
         String yw = "a";
         // 1个字节
-        System.out.println("一个非中文："  + yw.getBytes().length);
+        System.out.println("一个非中文(UTF-8)："  + yw.getBytes().length);
+
+        // UTF-16 使用2个字节来编码unicode, 遇到英文字母时会浪费空间，中文会比较省空间，比utf-8 少占一个字节
+        System.out.println("一个非中文(UTF-16)："  + yw.getBytes(Charset.forName("UTF-16BE")).length);
 
         StringBuffer stringBuffer = new StringBuffer("CREATE TABLE car_cox (");
         for (int i = 0; i < 200; i++) {
@@ -101,6 +105,7 @@ public class TestByte {
         System.out.println(Arrays.toString(discovery)); // 大端
 
 
+        System.out.println("=============================");
         System.out.println("discovery".toCharArray().length);
         CharBuffer.wrap(new char[9]).order();
         byteBuffer = ByteBuffer.wrap(new byte[discovery.length*2]).order(ByteOrder.LITTLE_ENDIAN);
@@ -130,6 +135,12 @@ public class TestByte {
 
        int cb  =  ub & 0xff;
         System.out.println(cb);
+
+        char A = 'A';
+        byte A1 = (byte) A;
+        System.out.println(A1);
+        Character character = new Character('c');
+        System.out.println(ClassLayout.parseInstance(character).toPrintable());
 
     }
 

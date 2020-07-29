@@ -14,6 +14,10 @@ package top.lovelily.concurrent;
  *
  * 悲观锁乐观锁
  *
+ * https://docs.oracle.com/javase/tutorial/essential/concurrency/syncmeth.html
+ * synchronized语义：
+ * 1. 多线程调用同一对象的同一方法，是串行的；
+ * 2. synchronized 保证了可见性；
  *
  * Desc: TestSynchronized
  * Author: xuhe
@@ -23,8 +27,14 @@ package top.lovelily.concurrent;
 public class TestSynchronized {
     private static int count = 0;
 
-    // 方法锁(对象锁)
+    // 方法锁(对象锁), 多线程调用同一对象：同一把锁
     public synchronized void increase() {
+        try {
+            Thread.sleep(1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println(Thread.currentThread().getName());
         count ++;
     }
 
@@ -52,17 +62,20 @@ public class TestSynchronized {
         count = 1;
     }
     public static void main(String[] args) throws InterruptedException {
+        TestSynchronized testSynchronized = new TestSynchronized();
+
         // t1 t2共用一把锁
       Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i< 10; i++) {
-                    try {
-                        Thread.sleep(1000L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    getCount(); // 可重入， 一个线程可多次加锁
+//                    try {
+//                        Thread.sleep(1000L);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                   // getCount(); // 可重入， 一个线程可多次加锁
+                    testSynchronized.increase();
                 }
 
             }
@@ -72,7 +85,8 @@ public class TestSynchronized {
             @Override
             public void run() {
                 for (int i = 0; i< 10; i++) {
-                    getCount();
+                    //getCount();
+                    testSynchronized.increase();
                 }
             }
         });

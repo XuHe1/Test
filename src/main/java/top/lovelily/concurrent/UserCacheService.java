@@ -40,7 +40,7 @@ public class UserCacheService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        user = new User(1, "xuhe", 20, 175, "Shanghai, China.");
+        user = new User(1, "xuhe", 20, 175);
         cache.put(user.getName(), user);
         return user;
 
@@ -60,7 +60,7 @@ public class UserCacheService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        user = new User(1, "xuhe", 20, 175, "Shanghai, China.");
+        user = new User(1, "xuhe", 20, 175);
         cache.put(user.getName(), user);
         return user;
 
@@ -86,7 +86,7 @@ public class UserCacheService {
                 e.printStackTrace();
             }
             System.out.println("================query from db success!==================");
-            user = new User(1, "xuhe", 20, 175, "Shanghai, China.");
+            user = new User(1, "xuhe", 20, 175);
             cache.put(user.getName(), user);
         }
 
@@ -114,7 +114,7 @@ public class UserCacheService {
                 e.printStackTrace();
             }
             System.out.println("================query from db success!==================");
-            user = new User(1, "xuhe", 20, 175, "Shanghai, China.");
+            user = new User(1, "xuhe", 20, 175);
             cache.put(user.getName(), user);
         }
 
@@ -154,7 +154,7 @@ public class UserCacheService {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        user = new User(1, "xuhe", 20, 175, "Shanghai, China.");
+        user = new User(1, "xuhe", 20, 175);
         cache.put(user.getName(), user);
         System.out.println("================query from db success!==================");
         readWriteLock.writeLock().unlock();
@@ -183,7 +183,7 @@ public class UserCacheService {
                 writeLock.unlock();
                 return user;
             }
-            user = new User(1, "xuhe", 20, 175, "Shanghai, China.");
+            user = new User(1, "xuhe", 20, 175);
             System.out.println("================query from db success!==================");
             cache.put(user.getName(), user);
             writeLock.unlock();
@@ -215,7 +215,7 @@ public class UserCacheService {
                         System.out.println("================get from cache success!==================");
                         return user;
                     }
-                    user = new User(1, "xuhe", 20, 175, "Shanghai, China.");
+                    user = new User(1, "xuhe", 20, 175);
                     System.out.println("================query from db success!==================");
                     cache.put(user.getName(), user);
                 } finally {
@@ -302,7 +302,7 @@ public class UserCacheService {
         return getFromCache(key, new CacheLoadable<User>() {
             @Override
             public User load() {
-               return new User(1, "xuhe", 20, 175, "Shanghai, China.");
+               return new User(1, "xuhe", 20, 175);
             }
         });
 

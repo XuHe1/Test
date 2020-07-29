@@ -150,14 +150,14 @@ public class TestJVM {
         // StackOverflowError: stack
        // test.heapLeakByObject();
 
-//        List<TestJVM> list = new ArrayList<>();
-//        while (true) {
-//            list.add(new TestJVM());
-//            Thread.sleep(50);
-//        }
+        List<TestJVM> list = new ArrayList<>();
+        while (true) {
+            list.add(new TestJVM());
+            Thread.sleep(50);
+        }
 
 
-         byte[] M2 = new byte[1024*1024]; //2M
+        // byte[] M2 = new byte[1024*1024]; //2M
 
 //        try {
 //            Thread.sleep(20000);

@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * 并发场景调用get会进入死循环?? todo: jdk1.8 之前
+ * 并发场景调用get会进入死循环?? jdk1.8 之前, 1.7 就可以
  * 容量大于总量*负载因子发生扩容时会出现环形链表从而导致死循环
  */
 public class TestHashMap {

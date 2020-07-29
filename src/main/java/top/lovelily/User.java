@@ -10,18 +10,18 @@ public class User implements Serializable {
     private String name;
     private int age;
     private float height;
-    private String addr;
+    private Address addr;
+    public User() {}
     public User(int id, String name){
         this.id = id;
         this.name = name;
     }
 
-    public User(int id, String name, int age, float height, String addr){
+    public User(int id, String name, int age, float height){
         this.id = id;
         this.name = name;
         this.age = age;
         this.height = height;
-        this.addr = addr;
     }
 
     public int getId() {
@@ -38,5 +38,15 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        System.out.println("An User instance is finalized");
+    }
+
+    public void setAddr(Address address) {
+        this.addr = address;
     }
 }

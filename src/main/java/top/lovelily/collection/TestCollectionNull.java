@@ -111,6 +111,7 @@ public class TestCollectionNull {
             System.out.println(key);
         }
 
+        // Collections.synchronizedList()
 
     }
 }

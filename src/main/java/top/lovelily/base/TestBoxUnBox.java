@@ -9,6 +9,23 @@ import top.lovelily.User;
  * Version: 1.0
  */
 public class TestBoxUnBox {
+    String test2;
+
+    /**
+     * 逃逸
+     */
+    void test02() {
+        test2 = "test2";
+    }
+
+    /**
+     * 无逃逸
+     */
+    void test01() {
+        String test1 = "test1";
+    }
+
+
 
     // 注意： 由于model里是基本类型， 参数里是引用类型， 实际项目中，如果参数optional就会出现NPE
     public void updateUser(Integer id) {
@@ -19,7 +36,7 @@ public class TestBoxUnBox {
 
     public static void updateInteger(Integer a) {
        // a = 100;
-        a = new Integer(128); // todo:new的对象会在方法结束后立刻回收吗？
+        a = new Integer(128); // todo:new的对象会在方法结束后立刻回收吗？如果没有引用是的，
         try {
             Thread.sleep(1000L);
         } catch (InterruptedException e) {

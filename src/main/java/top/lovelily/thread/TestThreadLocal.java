@@ -2,6 +2,9 @@ package top.lovelily.thread;
 
 import org.openjdk.jol.info.ClassLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Desc: TestThreadLocal， 不同线程数据隔离，同线程多方法间数据共享
  * Author: xuhe
@@ -41,59 +44,63 @@ public class TestThreadLocal {
 
     public static void main(String[] args) {
         TestThreadLocal test = new TestThreadLocal("Tom");
-        Thread thread = Thread.currentThread();
-        System.out.println(thread.getName() + ": " + test.getString());
+//        Thread thread = Thread.currentThread();
+//        System.out.println(thread.getName() + ": " + test.getString());
 
 //        // 关闭强引用，gc后会回收threadLocalMap的ThreadLocal（通过弱引用）， Entry key会变成null
 //        test.localName = null;
-//        System.gc(); // 如果threadLocalMap对ThreadLocal是强引用， 无法回收（线程没有结束）
+//        System.gc(); // 如果threadLocalMap对ThreadLocal是强引用， 无法回收（线程没有结束），如果线程一直跑，就会导致内存泄漏
 //        // test.localName.remove();
 //        System.out.println(thread);
 
 
-//        for (int i = 0; i < 10; i++) {
-//            if (i % 2 == 0) {
-//                Thread thread = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        System.out.println(test.getString());
-//
-//                    }
-//                });
-//                thread.start();
-//                System.out.println(thread);
-//
-//
-//            } else {
-//                Thread thread = new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        test.setString(Thread.currentThread().getName());
-//                        System.out.println(test.getString());
-//
-//                    }
-//                });
-//                thread.start();
-//            }
-//
-//            System.out.println(ClassLayout.parseInstance(test.localName).toPrintable());
-//
-//        }
+        List<Thread> threadList = new ArrayList<Thread>();
 
-        TestThreadLocal test1 = test;
+        for (int i = 0; i < 10; i++) {
+            if (i % 2 == 0) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
 
-        ThreadLocal tl = test.localName;
-        // 引用ThreadLocal的对象被回收了，但是ThreadLocalMap还引用着ThreadLocal(前提是线程还活着），
-        test = null;
-        System.gc();
+                        System.out.println(test.getString());
 
-        try {
-            Thread.sleep(2000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+                    }
+                });
+                thread.start();
+                System.out.println(thread);
+
+
+            } else {
+                int finalI = i;
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        test.setString(Thread.currentThread().getName());
+                        System.out.println(test.getString());
+                        test.setString(String.valueOf(finalI));
+
+                    }
+                });
+                thread.start();
+            }
+
+           // System.out.println(ClassLayout.parseInstance(test.localName).toPrintable());
+
         }
-        System.out.println(tl.get());
-        System.out.println(test1.getString());
+
+//        TestThreadLocal test1 = test;
+//
+//        ThreadLocal tl = test.localName;
+//        // 引用ThreadLocal的对象被回收了，但是ThreadLocalMap还引用着ThreadLocal(前提是线程还活着），
+//        test = null;
+//        System.gc();
+//
+//        try {
+//            Thread.sleep(2000L);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(tl.get());
+//        System.out.println(test1.getString());
     }
 }

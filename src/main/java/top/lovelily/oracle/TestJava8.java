@@ -119,7 +119,7 @@ public class TestJava8 {
 
         // test Optional
         Optional<String> stringOptional = Optional.empty();
-        System.out.println(stringOptional.isPresent());
+        System.out.println(stringOptional.isPresent()); // false
 
 
         str = stringOptional.orElse("default");
@@ -130,6 +130,9 @@ public class TestJava8 {
 
         String string = null;
         stringOptional = Optional.ofNullable(string); // => of()  empty()
+
+        str = stringOptional.orElse("default1");
+        System.out.println(str);
 
         // ok
         Integer intNum = null;

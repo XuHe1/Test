@@ -17,14 +17,18 @@ public class TestString {
         String s1  = "abc";
         String ab = "ab";
         String c = "c";
-        String str1 = new String("abc"); // str1在栈里，堆里新建了个String对象，内容为"abc"，如果常量池不存在，加入常量池
+        String str1 = new String("abc"); // str1在栈里，堆里新建了个String对象，内容为"常量池地址"，如果常量池不存在，加入常量池
         System.out.println(str1 == s); // false
-        System.out.println(s == s1);
+        System.out.println("s==s1: " + (s == s1));
         System.out.println(str1.intern()==s); // true
         System.out.println(str1.intern() == (ab + c)); // false
         System.out.println(str1.intern() == (ab + "c")); // false
         System.out.println(str1.intern() == ("ab" + c)); // false
         System.out.println(str1.intern() == ("ab" + "c")); // true 都是静态字符串的结果会添加到字符串池，如果其中含有变量（如f中的e）则不会进入字符串池中
+        System.out.println("s == \"ab\" + \"c\" : " + (s == "ab" + "c"));
+        System.out.println("s == ab + c: " + (s == ab + c));
+        System.out.println("s == ab + \"c\" : " + (s == ab + "c"));
+
 
 
         String str2 = new String("abc");

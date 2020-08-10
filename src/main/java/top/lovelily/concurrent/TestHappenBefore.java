@@ -35,6 +35,11 @@ public class TestHappenBefore {
                 count = 1;
                 j = count;
                 System.out.println(j);
+                try {
+                    Thread.sleep(10000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 // 调用方法
                 user.setName("lisi");
                 String name = user.getName();
@@ -48,7 +53,7 @@ public class TestHappenBefore {
             e.printStackTrace();
         }
 
-        System.out.println(Thread.currentThread().getName());
+        System.out.println(Thread.currentThread().getName()); // 主线程执行完后，仍会执行自线程，对操作系统而言，并不存在父子线程关系
     }
 
 }

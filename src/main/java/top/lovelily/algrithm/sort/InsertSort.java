@@ -1,4 +1,4 @@
-package top.lovelily.algrithm;
+package top.lovelily.algrithm.sort;
 
 import java.util.Arrays;
 

@@ -88,7 +88,7 @@ public class TestThreadBase {
         System.out.println("MAIN");
 
         /**
-         *             WAITING(wait())
+         *             WAITING(wait(), join())
          *                 ^
          *                 |
          *                 |

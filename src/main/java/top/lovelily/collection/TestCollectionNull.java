@@ -8,6 +8,7 @@ import java.util.*;
  * Created by XuHe on 17/4/27.
  */
 public class TestCollectionNull {
+
     public static void main(String[] args) {
         // map结构
         Map<Integer, String> table = new Hashtable<>();  //线程安全的，每个方法都synchronized
@@ -112,6 +113,25 @@ public class TestCollectionNull {
         }
 
         // Collections.synchronizedList()
+
+
+        List list = new ArrayList(3);
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.remove(0);
+        System.out.println(list.size());
+
+
+      //  list.stream().flatMap();
+        User tmp = new User(2, "Bye");
+
+        User user1 = new User(1,"Hello");
+        userList1.add(user1);
+        user1.setName("Hello World"); //会影响到userList1
+        //user1 = tmp; // 不影响
+        //user1 = new User(2, "Bye"); // 不影响
+        System.out.println(userList1.get(userList1.size() - 1).getName());
 
     }
 }

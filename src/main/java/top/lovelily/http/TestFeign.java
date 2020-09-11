@@ -59,6 +59,12 @@ class PayInfo implements Serializable {
     }
 }
 
+class Device {
+    private String sn;
+    private String hwId;
+
+}
+
 class Result<T> implements Serializable{
     private String code;
     private String msg;
@@ -113,8 +119,8 @@ interface OrderClient {
     Result<Map> xcxBinding(@HeaderMap Map headMap, @QueryMap Map<String, Object> value);
 
     // get not 200 code
-    @RequestLine("GET /devicess/sn/{sn}")
-    Result getDevice(@Param("sn") String sn);
+    @RequestLine("GET /devices/sn/{sn}")
+    Result<Device> getDevice(@Param("sn") String sn);
 
 }
  class FeignClientErrorDecoder implements ErrorDecoder {

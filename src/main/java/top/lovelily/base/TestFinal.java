@@ -13,7 +13,7 @@ import java.util.List;
 
 public class TestFinal {
     // 都只只能初始化一次；
-    final  int a ; // 必须初始化，构造方法
+    final  int a ; // 必须初始化，显示初始化，构造方法
     private static final int b = 0; // 显示初始化，static块中；不可以构造方法
 
     public TestFinal() {
@@ -21,8 +21,10 @@ public class TestFinal {
         // b= 1; error
     }
 
+    // final方法不可以被重写
     final void sayHello() {
        // a = 2; 不能初始化第二次
+       // b = 2;
     }
 
     final static void sayBye() {

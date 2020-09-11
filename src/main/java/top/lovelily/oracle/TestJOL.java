@@ -12,7 +12,7 @@ import top.lovelily.User;
  */
 public class TestJOL {
     public static void main(String[] args) {
-        // 8B MarkWord + 4B ClassPointer + 4B 对齐 = 16B
+        // 8B MarkWord + 4B ClassPointer + 4B 对齐 = 16B   // 8的整数倍
         Object o = new Object();
         System.out.println(ClassLayout.parseInstance(o).toPrintable());
 
@@ -21,7 +21,7 @@ public class TestJOL {
         }
 
         Thread t = new Thread();
-        //String s = new String("hello, World."); // 24 B
+        //String s = new String("hello, World."); // 24 B   8B MarkWord + 4B ClassPointer +  4B value + 4B hash + 4B 对齐 = 24B
         String s = s = "hello, World.";
         System.out.println(ClassLayout.parseInstance(s).toPrintable());
 
@@ -40,7 +40,7 @@ public class TestJOL {
 
         User user = new User(1, "xuhe", 30, 172f);
         user.setAddr(new Address());
-        System.out.println(ClassLayout.parseInstance(user).toPrintable());  // 32B, 对象引用只占4个字节，被引用对象不计入引用对象的内存空间内
+        System.out.println(ClassLayout.parseInstance(user).toPrintable());  // 32B, 对象引用只占4个字节(-XX:+UseCompressedOops, 否则是8B)，被引用对象不计入引用对象的内存空间内
 
         Integer i = 0;
         System.out.println(ClassLayout.parseInstance(i).toPrintable());

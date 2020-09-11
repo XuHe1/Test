@@ -2,6 +2,8 @@ package top.lovelily.designpattern.singleton;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -14,7 +16,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class TestDoubleCheckSingleton{
 
-    private int a = 8;
+    private int a;
     private static AtomicBoolean locked = new AtomicBoolean(false);
 
     /**
@@ -43,15 +45,24 @@ public class TestDoubleCheckSingleton{
 
     private static ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
-    // todo: volatile这里的作用有几个?
+    // todo: volatile这里的作用有几个： 1. 可见性  2. 防止指令重排
     // private static  volatile TestDoubleCheckSingleton INSTANCE;
 
     private static   TestDoubleCheckSingleton INSTANCE; // todo: INSTANCE多线程可见性如何保证的？
 
     private static  AtomicReference<TestDoubleCheckSingleton> atomicReference = new AtomicReference<>(null);
 
+    private static int i = 1;
+
+    private List<Integer> integerList= new ArrayList<Integer>();
+
     public TestDoubleCheckSingleton(){
-        System.out.println("new TestDoubleCheckSingleton()");
+        System.out.println("constructing");
+        do {
+            integerList.add(new Integer(1));
+        } while (integerList.size() < 10000);
+
+        System.out.println("constructed");
 
     }
 
@@ -71,7 +82,7 @@ public class TestDoubleCheckSingleton{
      *       22: invokevirtual #9                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
      *       // new 操作开始
      *       25: new           #6                  // class com/etianxia/designpattern/TestDoubleCheckSingleton
-     *       28: dup
+     *       28: dup                               // 调用构造方法
      *       29: invokespecial #10                 // Method "<init>":()V // 构造方法
      *       // new 操作完成
      *       32: putstatic     #5                  // Field INSTANCE:Lcom/etianxia/designpattern/TestDoubleCheckSingleton;
@@ -100,9 +111,9 @@ public class TestDoubleCheckSingleton{
                      *  1. memory = allocate();
                      *  2. init(memory);
                      *  3. instance = memory;
-                     *  2依赖于1，3不依赖于2，可能发生指令重排序： 1 3 2， 执行3未执行2，另一条线程调用getInstance()就获得了个未被初始化的对象
+                     *  2依赖于1，3不依赖于2，可能发生指令重排序： 1 3 2， 执行3未执行2，另一条线程调用getInstance()就获得了个 todo:未被初始化的对象
                      */
-                    System.out.println("实例化");
+                   // System.out.println("实例化");
                     INSTANCE = new TestDoubleCheckSingleton();
                 }
             }
@@ -234,6 +245,6 @@ public class TestDoubleCheckSingleton{
     }
 
     public int getA() {
-        return a;
+        return integerList.size();
     }
 }

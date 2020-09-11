@@ -53,7 +53,7 @@ public class TestHappenBefore {
             e.printStackTrace();
         }
 
-        System.out.println(Thread.currentThread().getName()); // 主线程执行完后，仍会执行自线程，对操作系统而言，并不存在父子线程关系
+        System.out.println(Thread.currentThread().getName()); // 主线程执行完后，仍会执行子线程，对操作系统而言，并不存在父子线程关系
     }
 
 }

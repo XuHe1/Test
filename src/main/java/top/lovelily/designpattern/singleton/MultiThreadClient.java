@@ -1,6 +1,7 @@
 package top.lovelily.designpattern.singleton;
 
 import org.junit.Test;
+import org.openjdk.jol.info.ClassLayout;
 
 import java.util.concurrent.CountDownLatch;
 
@@ -15,24 +16,23 @@ public class MultiThreadClient {
     private static CountDownLatch latch = new CountDownLatch(1);
 
     public static void main(String[] args) {
-
-//    }
-//    @Test
-//    public void testMultiThread() {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 2000; i++) {
 
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         latch.await();
-                        int a = TestDoubleCheckSingleton.getInstance().getA();
-                        System.out.println(a == 0); // 单例
+//                        int a = TestDoubleCheckSingleton.getInstance().getA();
+//                        System.out.println(a == 8); // 单例
+
+                       // System.out.println(TestDoubleCheckSingleton.getInstance().getA());
+                       // System.out.println();
                         // System.out.println(TestDoubleCheckSingleton.getInstance1()); // 非单例
                        // System.out.println(TestInternalClass.getInstance());
                         //System.out.println(TestEagerMode.getInstance());
 //                        try {
-//                            //Class.forName("top.lovelily.designpattern.TestEagerMode"); // 加载类并初始化（静态变量和静态代码块
+//                            Class.forName("top.lovelily.designpattern.TestEagerMode"); // 加载类并初始化（静态变量和静态代码块
 //                            ClassLoader classLoader = this.getClass().getClassLoader();
 //                            Class clazz = classLoader.loadClass("top.lovelily.designpattern.singleton.TestEagerMode");
 //                            clazz.newInstance();

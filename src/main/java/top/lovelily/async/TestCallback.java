@@ -12,19 +12,25 @@ public class TestCallback {
         public static void getSalary(Consumer<Double> callback) {
             double salary = 50_000.00;
             System.out.println("Get salary...");
-            //callback.accept(salary);
-            // call back our callback function in a thread
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(10000L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    callback.accept(salary);
-                }
-            }, "Asyn-Thread-1").start();
+            try {
+                Thread.sleep(10000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // 同步回调会阻塞
+            callback.accept(salary);
+            // 异步回调，不会阻塞线程
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        Thread.sleep(10000L);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    callback.accept(salary);
+//                }
+//            }, "Callback-Thread-1").start();
 
         }
         public static void main(String... args) {
@@ -46,33 +52,29 @@ public class TestCallback {
 //                System.out.println("稍后存银行！");
 //            }));
 
-          new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    getSalary(new Consumer<Double>() {
-                        @Override
-                        public void accept(Double salary) {
-                            // 同步回调
-//                            System.out.println(Thread.currentThread().getName());
-//                            System.out.println("Gross salary :" + salary);
+                getSalary(new Consumer<Double>() {
+                    @Override
+                    public void accept(Double salary) {
+                        // 同步回调
+                            System.out.println(Thread.currentThread().getName());
+                            System.out.println("Gross salary :" + salary);
 
-                            // 异步回调
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    System.out.println(Thread.currentThread().getName());
-                                    System.out.println("Gross salary :" + salary);
-                                }
-                            }).start();
+                        // 异步回调
+/*                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println(Thread.currentThread().getName());
+                                System.out.println("Gross salary :" + salary);
+                            }
+                        }).start();*/
 
-                        }
-                    }.andThen(s -> {
-                                System.out.println("稍后存银行！");
-                    }));
-                }
-            }).start();
+                    }
+                }.andThen(s -> {
+                            System.out.println("存银行: " + s);
+                }));
 
-            System.out.println("MAIN END");
+
+            System.out.println("MAIN END： Do other thing....");
 
             new Thread(new Runnable() {
                 @Override

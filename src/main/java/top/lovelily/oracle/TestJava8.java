@@ -1,5 +1,6 @@
 package top.lovelily.oracle;
 
+import com.google.common.collect.Maps;
 import top.lovelily.User;
 
 import java.lang.reflect.Method;
@@ -44,6 +45,8 @@ public class TestJava8 {
 
     /**
      *
+     *
+     *
      *        Optional.ofNullable(str).ifPresent(t -> {
      *             // do something with the non-null str
      *         });
@@ -55,6 +58,16 @@ public class TestJava8 {
      *
      *         numList.stream().filter(c -> c > 0).map(c -> dividedBy(c)).collect(Collectors.toList());
      */
+
+
+    static Optional<String> getFromRemote(String key){
+        // throw a exception
+        if ("h".equals(key)) {
+            throw new RuntimeException();
+        }
+
+        return Optional.ofNullable(key);
+    }
 
     public static void main(String[] args) {
         User u = new User(1, "xuhe");
@@ -78,6 +91,13 @@ public class TestJava8 {
             // do something with the non-null str
         });
 
+
+        Map<String, String> map = Maps.newConcurrentMap();
+        // 一定保证getFromRemote方法不能异常中断：catch所有异常，返回个空的Optional, 否则orElse没办法执行
+        map.computeIfAbsent("h", key -> getFromRemote(key).orElse(null));
+
+
+        System.out.println(map.get("h"));
 
 
 
@@ -104,8 +124,6 @@ public class TestJava8 {
         // lambda: no arg
         Thread thread = new Thread(() -> System.out.println(11));
 
-
-
         Movable movable = new Movable() {
             @Override
             public void move() {
@@ -128,9 +146,10 @@ public class TestJava8 {
         String str1 = stringOptional.orElseGet(()-> getVal());
         System.out.println(str1);
 
+
+        // if(obj == null) {obj = default;}
         String string = null;
         stringOptional = Optional.ofNullable(string); // => of()  empty()
-
         str = stringOptional.orElse("default1");
         System.out.println(str);
 
@@ -169,6 +188,10 @@ public class TestJava8 {
         if (numList != null) {
             numList = numList.stream().filter(c -> c > 0).map(c -> dividedBy(c)).collect(Collectors.toList());
             numList.stream().forEach(num -> System.out.println(num));
+            System.out.println("=================================");
+            numList.stream().mapToDouble(value -> {
+                return Double.valueOf(value);
+            }).forEach(System.out::print);
         }
 
 

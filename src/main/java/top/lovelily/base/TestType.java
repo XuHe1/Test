@@ -24,5 +24,21 @@ public class TestType {
         long c = a * b;
         System.out.println(c); // -2
 
+
+        double d = 138.918248864067381; // 小数点后14位
+        System.out.println(d);
+
+        float f = 138.91824886406738f; // 小数点后5位
+        System.out.println(f);
+
+        int DEFAULT_INITIAL_CAPACITY = 1 << 4; // 16
+        System.out.println(DEFAULT_INITIAL_CAPACITY);
+
+        float DEFAULT_LOAD_FACTOR = 0.75f;
+
+        int threshold = (int)(DEFAULT_INITIAL_CAPACITY * DEFAULT_LOAD_FACTOR);
+        System.out.println(threshold);
+
+
     }
 }

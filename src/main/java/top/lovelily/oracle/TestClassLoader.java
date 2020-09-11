@@ -2,6 +2,7 @@ package top.lovelily.oracle;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 
 /**
  * Desc: TestClassLoader
@@ -43,6 +44,25 @@ public class TestClassLoader {
         System.out.println(obj.getClass());
         System.out.println(top.lovelily.oracle.TestClassLoader.class.getClassLoader()); // sun.misc.Launcher$AppClassLoader
         System.out.println(obj instanceof top.lovelily.oracle.TestClassLoader);
+
+
+
+        try {
+            //加载， 并初始化： todo: new, getstatic, putstatic, or invokestatic
+            Class cls = Class.forName("top.lovelily.designpattern.singleton.TestEagerMode");  // 初始化： 执行static block, static变量初始化， 普通变量不变
+            Field field = cls.getField("a");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+
+//        try {
+//            Class clazz = classLoader.loadClass("top.lovelily.designpattern.singleton.TestEagerMode");
+//            //clazz.newInstance();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

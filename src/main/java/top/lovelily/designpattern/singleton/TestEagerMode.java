@@ -9,11 +9,13 @@ package top.lovelily.designpattern.singleton;
  * Version: 1.0
  */
 public class TestEagerMode {
-    private static TestEagerMode instance; // = new TestLazyMode();
+    private static TestEagerMode instance; //= new TestEagerMode();
+    private static Test test = new Test("static"); // 类初始化： 会被初始化
+    private  Test test1 = new Test(); // 类初始化不会被初始化
+    public static int a = 9;
 
     static {
-        System.out.println("static");
-        instance = new TestEagerMode();
+        System.out.println("static block");
     }
 
     public TestEagerMode() {
@@ -21,5 +23,15 @@ public class TestEagerMode {
     }
     public static TestEagerMode getInstance() {
         return instance;
+    }
+}
+
+class Test {
+    public Test() {
+        System.out.println("初始化了普通成员变量");
+    }
+
+    public Test(String s) {
+        System.out.println("初始化了static成员变量");
     }
 }

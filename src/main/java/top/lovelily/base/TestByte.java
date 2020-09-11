@@ -17,6 +17,10 @@ import java.util.Arrays;
  */
 public class TestByte {
     public static void main(String[] args) {
+        System.out.println(7 & (8 - 1));
+        System.out.println(8 & (8 - 1));
+        System.out.println(9 & (8 - 1));
+
         String str = new String("L000001");
         System.out.println(str.getBytes().length); // 7
 

@@ -28,6 +28,7 @@ public class TestCompletableFuture {
         task.thenAccept(user -> {
             System.out.println(user.getName());
         });
+        task.join();
 
         System.out.println("do other thing");
 

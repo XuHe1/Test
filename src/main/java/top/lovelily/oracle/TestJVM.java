@@ -11,8 +11,9 @@ import java.util.List;
  **/
 
 public class TestJVM {
-    private byte[] b = new byte[1024*100]; //100KB
-    private byte[] M2 = new byte[1024*100*1024*2]; //2M
+//    private byte[] b = new byte[1024*100]; //100KB
+//    private byte[] M2 = new byte[1024*100*1024*2]; //2M
+    private User u = new User(1, "xuhe");
 
     // StackOverflowError: stack
     public void recurse() {
@@ -44,6 +45,8 @@ public class TestJVM {
     /**
      *  OutOfMemoryError: unable to create new native thread
      *  -Xss1m
+     *
+     *  线程数量=（机器本身可用内存-JVM分配的堆内存）/Xss的值
      */
 
     public void stackLeakByThread() {
@@ -153,7 +156,7 @@ public class TestJVM {
         List<TestJVM> list = new ArrayList<>();
         while (true) {
             list.add(new TestJVM());
-            Thread.sleep(50);
+         //   Thread.sleep(50);
         }
 
 

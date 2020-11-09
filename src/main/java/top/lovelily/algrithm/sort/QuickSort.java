@@ -13,41 +13,43 @@ public class QuickSort {
         recSort(arr,0,arr.length-1);
     }
     public static void recSort(int[] arr,int start, int end){
-        if(start>=end){
-            return;
-        }
-        int partitionIndex = partition(arr, start, end);
-        recSort(arr,start,partitionIndex);
-        recSort(arr,partitionIndex+1,end);
-    }
-    /**
-     * 返回划分后，左指针和右指针相遇的下标
-     */
-    public static int partition(int[] arr,int start,int end){
-        int pivot=getPivot(arr,start,end);
-        int left_pointer=start-1;
-        int right_pointer=end+1;
-        while (true){
-            while (arr[++left_pointer]<pivot);//left_pointer当遇到比基准值大的元素，停下来
-            while (arr[--right_pointer]>pivot);//right_pointer当遇到比基准值小的元素，停下来
-            if(left_pointer>=right_pointer){break;}
-            swap(arr,left_pointer,right_pointer);
-        }
-        return right_pointer;
-    }
+        //直到start>=end时结束递归
+        if(start<end){
+            int left = start;
+            int right = end;
+            // 基数定义为第一个元素
+            int temp = arr[start];
 
-    /**
-     * 获得基准值
-     */
-    private static int getPivot(int[] arr, int start, int end) {
-        return arr[start];
-    }
+            while(left<right){
 
-    //交换数组中两个元素的位置
-    private static void swap(int[] arr, int i, int j) {
-        int temp= arr[i];
-        arr[i] =arr[j];
-        arr[j]=temp;
+                //右面的数字大于标准数时，右边的数的位置不变，指针向左移一个位置
+                while(left<right && arr[right]>temp){
+                    right--;
+                }
+
+
+                //右边的数字及下标小于或等于基本数，将右边的数放到左边
+                if(left<right) {
+                    arr[left] = arr[right];
+                    left++;
+                }
+
+                ////左边的数字小于或等于标准数时，左边的数的位置不变，指针向右移一个位置
+                while(left<right && arr[left]<=temp){
+                    left++;
+                }
+
+                //左边的数字大于基本数，将左边的数放到右边
+                arr[right] = arr[left];
+            }
+
+            //一趟循环结束，此时left=right，将基数放到这个重合的位置，
+            arr[left] = temp;
+
+            //将数组从left位置分为两半，继续递归下去进行排序
+            recSort(arr,start,left);
+            recSort(arr,left+1,end);
+        }
     }
 
     public static void main(String[] args) {

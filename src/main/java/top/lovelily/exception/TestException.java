@@ -10,20 +10,21 @@ package top.lovelily.exception;
  */
 public class TestException {
     private static final int count; // 常量，只能被初始化一次，定义时初始化，或静态代码里初始化
-    private static int a = 1;
+    private static int a;
 
     static {
-      //  a = 2;
+        a = 3;
        count = 0;
     }
 
     public  TestException() {
+        a = 4 ;
         // count = 1;
     }
 
     private abstract static class Inner {
         public abstract void test();
-        // public abstract static void test1(); // 错误
+        //public abstract static void test1(); // 错误 abstract 不能和static一起修饰方法
     }
 
 

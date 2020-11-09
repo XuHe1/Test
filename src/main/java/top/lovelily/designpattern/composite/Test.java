@@ -16,7 +16,7 @@ public class Test {
         // 分公司
         ConcreteCompany company = new ConcreteCompany("上海华东分公司");
         company.add(new HRDepartment("华东分公司人力资源部"));
-        company.add(new HRDepartment("华东分公司财务部"));
+        company.add(new FinanceDepartment("华东分公司财务部"));
 
         // 办事处
         ConcreteCompany hzOffice = new ConcreteCompany("杭州办事处");

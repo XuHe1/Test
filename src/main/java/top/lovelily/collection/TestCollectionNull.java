@@ -12,16 +12,16 @@ public class TestCollectionNull {
     public static void main(String[] args) {
         // map结构
         Map<Integer, String> table = new Hashtable<>();  //线程安全的，每个方法都synchronized
-//        table.put(1, null);  // NullPointerException
+//        table.put(1, null);  // value不可以为空 NullPointerException
+       // table.put(null, "null"); // key也不可以为空 NullPointerException
         System.out.println("==========Test Table=======");
-//        System.out.println(table.get(null));
 
         Map<Integer, String> map = new HashMap<>();
-        map.put(1, null);
+        map.put(1, null); // value值可以有多个null
         map.put(2, null);
         map.put(new Integer(3), "3");
-        map.put(null, null);
-        map.put(null, "NULL");
+        map.put(null, null); // key可以为null
+        map.put(null, "NULL"); // 会覆盖
         System.out.println("==========Test Map=======");
         System.out.println(map.get(1));
         System.out.println(map.get(2));

@@ -24,8 +24,10 @@ public class TestOperator {
         System.out.println(string);
 
 
-        System.out.println(10>>1); // 右移， 相当于除以2
-        System.out.println(10<<1); // 左移， 相当于乘以2
+        System.out.println(15>>1); // 右移， 相当于除以2的一次幂
+        System.out.println(10<<1); // 左移1位， 相当于乘以2，左移n位相当于乘以2的n次方
+
+        System.out.println(1 << 3); // 1 * 2的3次方
 
         // 11111111 11111111 65535  >>> 16   0
         //100000000 00000000 65536  >>> 16   000000000
@@ -35,12 +37,18 @@ public class TestOperator {
 
         //
         int SHARED_SHIFT   = 16;
-        int SHARED_UNIT    = (1 << SHARED_SHIFT);
-        int MAX_COUNT      = (1 << SHARED_SHIFT) - 1;
-        int EXCLUSIVE_MASK = (1 << SHARED_SHIFT) - 1;
+        int SHARED_UNIT    = (1 << SHARED_SHIFT); // 32
+        int MAX_COUNT      = (1 << SHARED_SHIFT) - 1; // 31
+        int EXCLUSIVE_MASK = (1 << SHARED_SHIFT) - 1; // 31
+        System.out.println(SHARED_UNIT + " " + MAX_COUNT + " " + EXCLUSIVE_MASK);
 
 
+        long time = 1604479971000l;
+        long time2 = 1604479971000l + 300000l;
+        long duration = (time2-time)/1000;
 
+
+        System.out.println((int)duration);
 
     }
 

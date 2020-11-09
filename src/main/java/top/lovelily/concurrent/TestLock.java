@@ -1,5 +1,6 @@
 package top.lovelily.concurrent;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -25,6 +26,23 @@ public class TestLock {
     private Condition condition = bankLock.newCondition();
 
     public void transfer(int from, int to, int amount) {
+        /*
+        try {
+            if (bankLock.tryLock(1000, TimeUnit.MILLISECONDS)) {
+                try {
+
+                } finally {
+                    bankLock.unlock();
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+         */
+
+//        condition.await();
+//        condition.signal();
         bankLock.lock();
         try {
             System.out.print(Thread.currentThread());

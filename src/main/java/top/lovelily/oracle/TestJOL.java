@@ -4,6 +4,10 @@ import org.openjdk.jol.info.ClassLayout;
 import top.lovelily.Address;
 import top.lovelily.User;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
 /**
  * Desc: TestJOL
  * Author: xuhe
@@ -11,6 +15,24 @@ import top.lovelily.User;
  * Version: 1.0
  */
 public class TestJOL {
+
+    public static byte[] objectToByte(java.lang.Object obj)  {
+        byte[] bytes;
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream oo = new ObjectOutputStream(bo);
+            oo.writeObject(obj);
+            bytes = bo.toByteArray();
+            bo.close();
+            oo.close();
+            return bytes;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public static void main(String[] args) {
         // 8B MarkWord + 4B ClassPointer + 4B 对齐 = 16B   // 8的整数倍
         Object o = new Object();
@@ -41,6 +63,8 @@ public class TestJOL {
         User user = new User(1, "xuhe", 30, 172f);
         user.setAddr(new Address());
         System.out.println(ClassLayout.parseInstance(user).toPrintable());  // 32B, 对象引用只占4个字节(-XX:+UseCompressedOops, 否则是8B)，被引用对象不计入引用对象的内存空间内
+
+        byte[] bytes = objectToByte(user);
 
         Integer i = 0;
         System.out.println(ClassLayout.parseInstance(i).toPrintable());

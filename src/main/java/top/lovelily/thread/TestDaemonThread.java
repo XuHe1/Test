@@ -9,6 +9,32 @@ import java.time.LocalTime;
  * Version: 1.0
  */
 
+public class TestDaemonThread {
+    public static void main(String[] args) {
+        System.out.println("main start...");
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("non daemon thread start");
+                try {
+                    Thread.sleep(2000l);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("non daemon thread end");
+            }
+        });
+        t1.start();
+
+        Thread t = new TimerThread();
+        t.setDaemon(true);
+        t.start();
+
+        System.out.println("main end...");
+
+    }
+}
+
 class TimerThread extends Thread {
     @Override
     public void run() {
@@ -20,14 +46,5 @@ class TimerThread extends Thread {
                 break;
             }
         }
-    }
-}
-
-public class TestDaemonThread {
-    public static void main(String[] args) {
-        System.out.println("hello");
-        Thread t = new TimerThread();
-        t.setDaemon(true);
-        t.start();
     }
 }

@@ -4,7 +4,7 @@ import java.lang.ref.SoftReference;
 
 /**
  * Desc: TestSoft
- * 软引用包装的对象一旦发生gc,会被立刻回收
+ * 软引用包装的对象发生gc不会被立刻回收，只有再次申请内存，内存不够时会被回收
  * Author: xuhe
  * Date: 2020/7/10 2:51 下午
  * Version: 1.0

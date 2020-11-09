@@ -17,9 +17,11 @@ import java.util.Arrays;
  */
 public class TestByte {
     public static void main(String[] args) {
+        // 与运算
         System.out.println(7 & (8 - 1));
         System.out.println(8 & (8 - 1));
-        System.out.println(9 & (8 - 1));
+
+        System.out.println(7 >>> 1);
 
         String str = new String("L000001");
         System.out.println(str.getBytes().length); // 7
@@ -110,11 +112,14 @@ public class TestByte {
 
 
         System.out.println("=============================");
-        System.out.println("discovery".toCharArray().length);
+        System.out.println("discovery".toCharArray().length);  // 9 个 char
         CharBuffer.wrap(new char[9]).order();
         byteBuffer = ByteBuffer.wrap(new byte[discovery.length*2]).order(ByteOrder.LITTLE_ENDIAN);
         byteBuffer.asCharBuffer().put("discovery");   // Character use utf-16 2B
         System.out.println(Arrays.toString(byteBuffer.array()));
+
+        char ch = 'c';
+        System.out.println();
 
         byte[] str_LE = string2Bytes_LE("discovery");
         System.out.println(Arrays.toString(str_LE));
@@ -145,6 +150,9 @@ public class TestByte {
         System.out.println(A1);
         Character character = new Character('c');
         System.out.println(ClassLayout.parseInstance(character).toPrintable());
+
+        System.out.println("xxxxxxxxxxxxxxxxxxxxxx");
+        System.out.println(8028 & 0xFF); // 取一个字节，忽略其他字节 0x1F5C & 0xFF  0x5C(92)
 
     }
 

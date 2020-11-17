@@ -9,6 +9,12 @@ public class TestCompletableFuture {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
         ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(5000));
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
         CompletableFuture<User> task = CompletableFuture.supplyAsync(() -> {
             System.out.println("Sleeping...");
             try {

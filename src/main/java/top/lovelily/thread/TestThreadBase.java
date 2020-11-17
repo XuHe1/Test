@@ -3,6 +3,7 @@ package top.lovelily.thread;
 import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * Desc: TestThreadBase
@@ -88,7 +89,7 @@ public class TestThreadBase {
         System.out.println("MAIN");
 
         /**
-         *             WAITING(wait(), join())
+         *             WAITING(wait(), join(), park)
          *                 ^
          *                 |
          *                 |
@@ -149,6 +150,32 @@ public class TestThreadBase {
         System.runFinalization();
         System.gc();
         System.out.println(thread);
+
+//        Thread.currentThread().interrupt();
+
+        Thread baseThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    System.out.println("线程睡眠了");
+                    Thread.sleep(1000l);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                LockSupport.park(); // Lock里等待锁的线程通过此方法阻塞  WAITING
+                System.out.println("线程醒了： " + Thread.currentThread().getState());
+            }
+        });
+        System.out.println(baseThread.getState()); // NEW
+        baseThread.start();
+        System.out.println(baseThread.getState()); // RUNNABLE
+        Thread.sleep(2000l);
+        System.out.println(baseThread.getState()); // WAITING
+
+        LockSupport.unpark(baseThread);
+        Thread.sleep(1000l);
+        System.out.println(baseThread.getState());
 
     }
 }

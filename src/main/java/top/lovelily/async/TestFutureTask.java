@@ -23,12 +23,18 @@ public class TestFutureTask {
         System.out.println("pre...");
 
         ExecutorService exec = Executors.newFixedThreadPool(5);
-        exec.submit(task);
+
+        // submit & execute
+        Future<User> future = (Future<User>) exec.submit(task);
+        exec.execute(task); // worker-thread直接
 
         System.out.println("do other thing");
 
-        User user = task.get(); // call方法已经在执行了,get阻塞直到处理完毕, java8提供了CompletableFuture真正实现了异步获取处理结果
-        System.out.println(user.getName());
+      //  User user = task.get(); // call方法已经在执行了,get阻塞直到处理完毕, java8提供了CompletableFuture真正实现了异步获取处理结果
+      //  System.out.println(user.getName());
+
+        System.out.println(future.get().getName());
+
         exec.shutdown();
 
         System.out.println("after");

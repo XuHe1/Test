@@ -39,5 +39,9 @@ public class TestString {
         System.out.println(str3.intern() == s); // true
 
         String str4 = "ab" + "cd"; // 3个
+
+        // TestStatic.Inner inner =  new TestStatic.Inner();
+        TestStatic.Inner inner =  new TestStatic().new Inner();
+        TestStatic.StaticInner staticInner = new TestStatic.StaticInner();
     }
 }

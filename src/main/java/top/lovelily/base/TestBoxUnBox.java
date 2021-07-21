@@ -94,10 +94,16 @@ public class TestBoxUnBox {
         System.out.println(str);
 
 
-        Integer a = 100, b = 100;    // 直接赋值实际调用的是Integer.valueOf()
+        Integer a = 100, b = 100;    // [-128, 127] 会被缓存！直接赋值实际调用的是Integer.valueOf() !!
         Integer c = 1000, d = 1000;
         System.out.println(a==b); // true
         System.out.println(c==d); // false
+        System.out.println("a==100 " + (a == 100));
+
+        // Long 和 Integer也是，因此比较两个 Integer 或 Long 变量时一定要用equals
+        Long l1 = -129l;
+        Long l2 = -129l;
+        System.out.println("l1==l2 "+ (l1 == l2));
 
     }
 }

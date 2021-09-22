@@ -36,9 +36,13 @@ public class BookFacadeCglibProxy implements MethodInterceptor {
     }
 
     public static void main(String[] args) {
+        MyBookFacade target = new MyBookFacade();
+
         BookFacadeCglibProxy cglibProxy = new BookFacadeCglibProxy();
-        // MyBookFacade myBookFacade = (MyBookFacade) cglibProxy.getInstance(new MyBookFacade());
-        MyBookFacade myBookFacade = (MyBookFacade) cglibProxy.getInstance(MyBookFacade.class);
+
+         target.setBookName("《三国演义》");
+        MyBookFacade myBookFacade = (MyBookFacade) cglibProxy.getInstance(target);
+        //MyBookFacade myBookFacade = (MyBookFacade) cglibProxy.getInstance(MyBookFacade.class);
         myBookFacade.addBook();
     }
 

@@ -19,6 +19,9 @@ public class FutureTask_Test {
 
         executor.shutdown();
         System.out.println("MAIN");
+
+
+        //Thread t = new Thread(new MyCallable(1000)); error
     }
 
     static class MyCallable implements Callable<String> {

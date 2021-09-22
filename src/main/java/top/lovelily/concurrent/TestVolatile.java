@@ -11,8 +11,8 @@ import java.util.concurrent.CountDownLatch;
 public class TestVolatile {
     // 没有volatile，类成员变量和对象成员变量都无法保证可见性
       //  boolean flag = true;
-     private static boolean flag = true;
-     //private volatile  boolean flag = true;
+     //private static boolean flag = true;
+     private volatile  boolean flag = true;
 
     static int count = 0;
 

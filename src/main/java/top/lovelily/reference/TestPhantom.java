@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Desc: TestPhantom
+ * Desc: 虚引用，为了在被引用的对象回收后，收到通知，然后做其他事情，应用：直接内存
  * Author: xuhe
  * Date: 2020/7/10 2:57 下午
  * Version: 1.0

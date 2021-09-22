@@ -20,7 +20,7 @@ public class TestLock {
 
     // LinkedBlockingQueue 实现原理就是使用了ReentrantLock
     // 引申：ConcurrentLinkedQueue 使用CAS保证并发性,CAS是在硬件层面实现的原子操作
-    private Lock bankLock = new ReentrantLock(); // ReentrantLock implements the Lock interface ...
+    private Lock bankLock = new ReentrantLock(); // ReentrantLock implements the Lock interface ...  CAS设置state:  compareAndSetState
 
     // Condition 锁
     private Condition condition = bankLock.newCondition();

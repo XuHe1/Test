@@ -144,11 +144,13 @@ public class TestThreadBase {
 
         System.out.println(threadPool.get("thread-1"));
 
-        // 线程不会被回收吗
+        // 线程不会被回收，GC-ROOT
         System.gc();
         System.runFinalization();
         System.gc();
         System.out.println(thread);
+
+        Thread.currentThread().interrupt();
 
     }
 }

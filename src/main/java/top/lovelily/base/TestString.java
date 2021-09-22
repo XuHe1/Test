@@ -39,5 +39,10 @@ public class TestString {
         System.out.println(str3.intern() == s); // true
 
         String str4 = "ab" + "cd"; // 3个
+
+
+        String string = "a" + "b" + "c";// 5个： a, b, c, ab, abc, string，优化后：只创建一个，abc
+
+
     }
 }

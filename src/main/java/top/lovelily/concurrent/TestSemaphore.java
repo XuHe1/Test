@@ -15,14 +15,13 @@ public class TestSemaphore {
 
         // 线程池
         //ExecutorService exec = Executors.newCachedThreadPool();
-        ExecutorService exec = Executors.newFixedThreadPool(5);
+        ExecutorService exec = Executors.newFixedThreadPool(6);
 
         // 只能5个线程同时访问
         final Semaphore semp = new Semaphore(5);
 
         // 模拟20个客户端访问
         for (int index = 0; index < 20; index++) {
-            System.out.println(Thread.currentThread().getName());
             final int NO = index;
             Runnable run = new Runnable() {
                 public void run() {
@@ -38,10 +37,12 @@ public class TestSemaphore {
                         Thread.sleep((long) (Math.random() * 10000));
 
                         //Thread.sleep((long) (10000));
-                        // 访问完后，释放
-                        semp.release();
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    } finally {
+                        // 访问完后，释放
+                        semp.release();
                     }
 
                 }

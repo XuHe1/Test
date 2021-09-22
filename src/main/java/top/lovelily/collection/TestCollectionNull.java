@@ -92,6 +92,7 @@ public class TestCollectionNull {
         // set.add("1");
         iterator = set.iterator();
         System.out.println(iterator.getClass().getName());
+        System.out.println("HashMap key: ");
         while (iterator.hasNext()) {
             String key = (String)iterator.next();
             System.out.println(key);

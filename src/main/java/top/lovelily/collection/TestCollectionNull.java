@@ -134,5 +134,19 @@ public class TestCollectionNull {
         //user1 = new User(2, "Bye"); // 不影响
         System.out.println(userList1.get(userList1.size() - 1).getName());
 
+        Map<String, List<User>> map1 = new HashMap<>();
+        List<User> users = map1.get("1");
+        if (users == null) {
+            users = new ArrayList<>();
+            // 必须, 否则下面为null
+            map1.put("1", users);
+        }
+        // null
+        System.out.println(map1.get("1"));
+        users.add(new User(1, "ll"));
+        System.out.println(users);
+        System.out.println(map1.get("1"));
+
+
     }
 }

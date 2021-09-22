@@ -8,7 +8,7 @@ package top.lovelily.algrithm;
  */
 public class TestFib {
 
-    public static int getByRecursion(int index) {
+    public static long getByRecursion(int index) {
         if (index == 0 || index == 1) {
             return 1;
         } else {
@@ -16,14 +16,14 @@ public class TestFib {
         }
     }
     // 1 1 2 3 5 8 13 ...
-    public static int get(int index) {
+    public static long get(int index) {
         if (index == 0 || index == 1) {
             return 1;
         } else {
-            int num1 = 1;
-            int num2 = 1;
+            long num1 = 1;
+            long num2 = 1;
             for (int i = 2; i <= index; i++) {
-                int tmp = num1 + num2;
+                long  tmp = num1 + num2;
                 num1 = num2;
                 num2 = tmp;
             }
@@ -32,6 +32,15 @@ public class TestFib {
     }
 
     public static void main(String[] args) {
-        System.out.println(get(5));
+        long start = System.nanoTime();
+        System.out.println(get(50));
+        long end = System.nanoTime();
+        System.out.println("use for cost: " + (end - start));
+
+        // 调用栈过深， 比较耗时
+        start = System.nanoTime();
+        System.out.println(getByRecursion(50));
+        end = System.nanoTime();
+        System.out.println("use recursion cost: " + (end - start));
     }
 }

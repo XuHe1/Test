@@ -47,6 +47,12 @@ public class TestStatic {
         }
     }
 
+    public void m1() {
+        TestStatic testStatic = new TestStatic();
+         Inner inner = new TestStatic.Inner(); // 外部不能这样使用，编译报错！!
+        inner = testStatic.new Inner();
+    }
+
     public static void main(String[] args) {
         TestStatic test = new TestStatic();
         test.increment(1);
@@ -57,6 +63,8 @@ public class TestStatic {
         System.out.println(test1.getCount());
 
         StaticInner staticInner = new StaticInner();
+
+
 
     }
 

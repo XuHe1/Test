@@ -40,6 +40,7 @@ public class CustomerThreadPool {
         try {
             mainLock.lock();
             if (workers.size() > coreSize) {
+                // taskQueue.wait(1000l);
                 return taskQueue.poll(keepAliveTime, timeUnit);
             } else {
                 return taskQueue.take(); // 阻塞核心线程， 并释放锁， 其他线程进入，直到队列有数据，所以，只会唤醒获取到锁的线程，解决了惊群效应；

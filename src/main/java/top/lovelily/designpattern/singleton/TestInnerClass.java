@@ -1,5 +1,8 @@
 package top.lovelily.designpattern.singleton;
 
+import top.lovelily.User;
+import top.lovelily.base.Apple;
+
 /**
  * Desc: TestInternalClass
  * Author: xuhe
@@ -10,7 +13,18 @@ package top.lovelily.designpattern.singleton;
 public class TestInnerClass {
     private static TestInnerClass instance;
 
-    class Inner{
+    // 多实现
+    class Inner implements Comparable, Cloneable{
+
+        @Override
+        public int compareTo(Object o) {
+            return 0;
+        }
+    }
+
+    // 单继承
+    class Inner1 extends User {
+
 
     }
 

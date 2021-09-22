@@ -185,6 +185,7 @@ public class TestJava8 {
 //        numList.add(4);
 //        numList.add(8);
         // numList.add(0);
+        // 只要集合不为null就可以进行流操作
         if (numList != null) {
             numList = numList.stream().filter(c -> c > 0).map(c -> dividedBy(c)).collect(Collectors.toList());
             numList.stream().forEach(num -> System.out.println(num));

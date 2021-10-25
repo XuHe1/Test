@@ -27,7 +27,17 @@ public class TestOperator {
         System.out.println(15>>1); // 右移， 相当于除以2的一次幂
         System.out.println(10<<1); // 左移1位， 相当于乘以2，左移n位相当于乘以2的n次方
 
-        System.out.println(1 << 3); // 1 * 2的3次方
+
+        // hashMap扩容
+        int defaultCapacity = 1 << 4;
+        int oldCap = defaultCapacity;
+        int newCap = oldCap << 1;
+        System.out.println("oldCap=" + oldCap);
+        System.out.println("newCap=" + newCap);
+
+//        for (int binCount = 0; ; ++binCount) {
+//            System.out.println("hello");
+//        }
 
         // 11111111 11111111 65535  >>> 16   0
         //100000000 00000000 65536  >>> 16   000000000

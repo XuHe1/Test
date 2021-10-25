@@ -51,9 +51,10 @@ public class TestBoxUnBox {
     }
 
     public static void updateUser(User user) {
+        user.setName("Tom"); // 改的是原先指向的堆内存地址的对象
         // 方法参数传递是副本传递，基本类型存的是数值， 引用类型存的是地址，没有真正的"应用传递"，这里的user 跟实参并不是同一个， 只是值相同的一个副本。
         user = new User(1, "Xuhe"); // 重新指向了新的空间， 方法结束被回收，所以调用方法里还是老的地址；
-       // user.setName("Xuhe"); // 改的是原先指向的堆内存地址的对象
+        user.setName("Xuhe"); //改的是新对象的属性
     }
 
     public static void main(String[] args) {

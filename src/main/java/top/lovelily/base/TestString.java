@@ -41,6 +41,10 @@ public class TestString {
 
         String str4 = "ab" + "cd"; // 3个
 
+
+        String string = "a" + "b" + "c";// 5个： a, b, c, ab, abc, string，优化后：只创建一个，abc
+
+
         // TestStatic.Inner inner =  new TestStatic.Inner();
         TestStatic.Inner inner =  new TestStatic().new Inner();
         TestStatic.StaticInner staticInner = new TestStatic.StaticInner();

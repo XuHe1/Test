@@ -27,7 +27,7 @@ public class TestThreadLocal {
     }
 
     private String getString() {
-        return localName.get();
+        return Thread.currentThread().getName() + ":" + localName.get();
     }
 
     private void setString(String string) {
@@ -104,6 +104,7 @@ public class TestThreadLocal {
         List<Thread> threadList = new ArrayList<Thread>();
 
         for (int i = 0; i < 10; i++) {
+            // 偶数线程
             if (i % 2 == 0) {
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -114,6 +115,7 @@ public class TestThreadLocal {
                 thread.start();
 
             } else {
+                // 奇数线程
                 int finalI = i;
                 Thread thread = new Thread(new Runnable() {
                     @Override
@@ -126,8 +128,6 @@ public class TestThreadLocal {
                 });
                 thread.start();
             }
-
-           // System.out.println(ClassLayout.parseInstance(test.localName).toPrintable());
 
         }
 

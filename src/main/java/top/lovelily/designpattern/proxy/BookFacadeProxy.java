@@ -12,6 +12,7 @@ import java.lang.reflect.Proxy;
  */
 public class BookFacadeProxy implements InvocationHandler {
     private Object target;
+
     public Object bind(Object target) {
         this.target = target;
         // 被代理类必须实现接口

@@ -22,13 +22,13 @@ public class QuickSort {
 
             while(left<right){
 
-                //右面的数字大于标准数时，右边的数的位置不变，指针向左移一个位置
+                //右面的数字大于标准数时，右边的数的位置不变，right指针向左移一个位置
                 while(left<right && arr[right]>temp){
                     right--;
                 }
 
 
-                //右边的数字及下标小于或等于基本数，将右边的数放到左边
+                //右边的数字及下标小于或等于基本数，将右边的数放到左边，left指针右移一个位置
                 if(left<right) {
                     arr[left] = arr[right];
                     left++;
@@ -41,6 +41,8 @@ public class QuickSort {
 
                 //左边的数字大于基本数，将左边的数放到右边
                 arr[right] = arr[left];
+
+                System.out.println(Arrays.toString(arr));
             }
 
             //一趟循环结束，此时left=right，将基数放到这个重合的位置，
@@ -56,6 +58,28 @@ public class QuickSort {
         int[] arr={3,1,9,0,4,7,2,6,5,8};
         System.out.println("排序前数组:"+ Arrays.toString(arr));
         sort(arr);
-        System.out.println("排序前数后:"+ Arrays.toString(arr));
+        System.out.println("排序前数组:"+ Arrays.toString(arr));
+    }
+
+    void sort1(int[] arrays) {
+        int temp = arrays[0];
+        int start = 0;
+        int end = arrays.length - 1;
+        int left = start;
+        int right = end;
+        while (right > left & arrays[right] > temp ) {
+            right --;
+        }
+        if (left < right) {
+            arrays[left] = arrays[right];
+            left ++;
+        }
+
+        while (arrays[left] < temp && left < right) {
+            left ++;
+        }
+
+        arrays[left] = arrays[right];
+
     }
 }

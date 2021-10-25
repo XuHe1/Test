@@ -4,6 +4,7 @@ import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
+import javax.annotation.Resource;
 import java.lang.reflect.Method;
 
 /**
@@ -22,7 +23,7 @@ public class BookFacadeCglibProxy implements MethodInterceptor {
         enhancer.setCallback(this);
         return enhancer.create();
     }
-
+    // 为被代理对象的类生成子类对象
     public  Object getInstance(Class clazz) {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(clazz);
@@ -32,7 +33,14 @@ public class BookFacadeCglibProxy implements MethodInterceptor {
 
     @Override
     public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-        return proxy.invokeSuper(obj, args);
+       // 方法拦截，（对指定方法）做增强操作
+        if (method.getName().equals("addBook")) {
+            System.out.println("开始添加图书");
+            return proxy.invokeSuper(obj, args);
+           // return  method.invoke(obj, args);
+        }
+        return null;
+       //
     }
 
     public static void main(String[] args) {

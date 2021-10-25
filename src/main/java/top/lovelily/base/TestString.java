@@ -21,6 +21,7 @@ public class TestString {
         System.out.println(str1 == s); // false
         System.out.println("s==s1: " + (s == s1));
         System.out.println(str1.intern()==s); // true
+        System.out.println(str1.intern()==str1); // false
         System.out.println(str1.intern() == (ab + c)); // false
         System.out.println(str1.intern() == (ab + "c")); // false
         System.out.println(str1.intern() == ("ab" + c)); // false

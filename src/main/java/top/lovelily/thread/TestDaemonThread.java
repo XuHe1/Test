@@ -27,6 +27,7 @@ public class TestDaemonThread {
         t1.start();
 
         Thread t = new TimerThread();
+        // 在 start 前使用，当所有用户线程结束后，程序会退出，同时杀死所有守护线程！
         t.setDaemon(true);
         t.start();
 

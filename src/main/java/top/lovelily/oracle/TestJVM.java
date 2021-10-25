@@ -11,9 +11,9 @@ import java.util.List;
  **/
 
 public class TestJVM {
-//    private byte[] b = new byte[1024*100]; //100KB
+    //private byte[] b = new byte[1024*100]; //100KB
 //    private byte[] M2 = new byte[1024*100*1024*2]; //2M
-    private User u = new User(1, "xuhe");
+    private  User u = new User(1, "xuhe");
 
     // StackOverflowError: stack
     public void recurse() {
@@ -37,7 +37,8 @@ public class TestJVM {
        List<TestJVM> list = new ArrayList<>();
         while (true) {
             list.add(new TestJVM());
-            Thread.sleep(50);
+            // todo：线程睡眠会给 gc 让出机会？？
+          //Thread.sleep(50);
         }
     }
 
@@ -124,7 +125,7 @@ public class TestJVM {
 
         // Checked Exception: 非RuntimeException，IOException, InterruptedException
         try {
-            Thread.sleep(10000l);
+            Thread.sleep(4000l);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -147,17 +148,17 @@ public class TestJVM {
 //
 //        }
 
-        // TestJVM test = new TestJVM();
+         TestJVM test = new TestJVM();
         //test.recurse();
         // OutOfMemoryError : stack  heap
         // StackOverflowError: stack
-       // test.heapLeakByObject();
+        test.heapLeakByObject();
 
-        List<TestJVM> list = new ArrayList<>();
-        while (true) {
-            list.add(new TestJVM());
-         //   Thread.sleep(50);
-        }
+//        List<TestJVM> list = new ArrayList<>();
+//        while (true) {
+//            list.add(new TestJVM());
+//         //   Thread.sleep(50);
+//        }
 
 
         // byte[] M2 = new byte[1024*1024]; //2M
@@ -177,5 +178,12 @@ public class TestJVM {
 //        }
 
 
+
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        System.out.println("TestJVM 销毁了");
     }
 }

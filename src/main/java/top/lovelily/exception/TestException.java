@@ -1,5 +1,9 @@
 package top.lovelily.exception;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 /**
  *
  * 终止方法：
@@ -69,19 +73,23 @@ public class TestException {
         System.out.println(test.multiply());
 
 
-        while (true) {
-            try {
-                int b = 10/0;
-                System.out.println(b);
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw e; // 跳出循环, 不catch 也会跳出循环
-            }
+//        while (true) {
+//            try {
+//                int b = 10/0;
+//                System.out.println(b);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                throw e; // 跳出循环, 不catch 也会跳出循环
+//            }
+//
+//        }
 
+        try {
+            FileInputStream fileReader = new FileInputStream(new File("/Users/xuhe/a.txt"));
+        } catch (FileNotFoundException e) {
+            System.out.println(e instanceof Exception);
+            System.out.println(e instanceof Throwable);
         }
-
-
-
 
     }
 }

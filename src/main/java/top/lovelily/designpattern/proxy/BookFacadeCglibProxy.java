@@ -23,7 +23,7 @@ public class BookFacadeCglibProxy implements MethodInterceptor {
         enhancer.setCallback(this);
         return enhancer.create();
     }
-    // 为被代理对象的类生成子类对象
+    // 为被代理对象的类生成子类对象， 引申：@Transactional 失效？ private 方法无法被子类重载
     public  Object getInstance(Class clazz) {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(clazz);

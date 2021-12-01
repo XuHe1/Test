@@ -21,14 +21,17 @@ public class BookFacadeCglibProxy implements MethodInterceptor {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(target.getClass());
         enhancer.setCallback(this);
-        return enhancer.create();
+        Object o = enhancer.create();
+        return o;
     }
     // 为被代理对象的类生成子类对象， 引申：@Transactional 失效？ private 方法无法被子类重载
     public  Object getInstance(Class clazz) {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(clazz);
         enhancer.setCallback(this);
-        return enhancer.create();
+        Object o = enhancer.create();
+        return o;
+
     }
 
     @Override
@@ -45,13 +48,11 @@ public class BookFacadeCglibProxy implements MethodInterceptor {
 
     public static void main(String[] args) {
         MyBookFacade target = new MyBookFacade();
-
+         // top.lovelily.designpattern.proxy.MyBookFacade$$EnhancerByCGLIB$$e6bfbc53
         BookFacadeCglibProxy cglibProxy = new BookFacadeCglibProxy();
-
-         target.setBookName("《三国演义》");
         MyBookFacade myBookFacade = (MyBookFacade) cglibProxy.getInstance(target);
         //MyBookFacade myBookFacade = (MyBookFacade) cglibProxy.getInstance(MyBookFacade.class);
-        myBookFacade.addBook();
+        myBookFacade.addBook("《西游记》");
     }
 
 }

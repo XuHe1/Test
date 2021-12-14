@@ -16,7 +16,7 @@ import java.rmi.server.UnicastRemoteObject;
 public class RemoteServer {
     public static void main(String[] args) {
         try {
-            // -Djava.security.manager -Djava.security.policy=E:\IdeaProjects\Test\src\main\resources\my.policy
+            //-Djava.security.debug=access,failure -Djava.security.manager -Djava.security.policy=E:\IdeaProjects\Test\src\main\resources\my.policy
             System.out.println(System.getSecurityManager() == null);
             if (System.getSecurityManager() == null) {
                 System.setSecurityManager(new SecurityManager());

@@ -27,17 +27,19 @@ public class ComputeEngine implements Compute {
     }
 
     public static void main(String[] args) {
+        // -Djava.security.debug=access,failure -Djava.security.manager -Djava.security.policy=E:\IdeaProjects\Test\src\main\resources\my.policy
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
         try {
             String name = "Compute";
             Compute engine = new ComputeEngine();
-            Compute stub =
-                    (Compute) UnicastRemoteObject.exportObject(engine, 1099);
             // 这就话是必须的！官方案例有错误
-            LocateRegistry.createRegistry(1099);
-            Registry registry = LocateRegistry.getRegistry();
+            LocateRegistry.createRegistry(9999);
+            Compute stub =
+                    (Compute) UnicastRemoteObject.exportObject(engine, 9999);
+
+            Registry registry = LocateRegistry.getRegistry(9999);
             registry.rebind(name, stub);
             System.out.println("ComputeEngine bound");
         } catch (Exception e) {

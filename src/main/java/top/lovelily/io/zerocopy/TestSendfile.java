@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 /**
- * Desc: TestSendfile
+ * Desc: TestSendfile 零拷贝
  * Author: xuhe
  * Date: 2020/7/24 11:10 下午
  * Version: 1.0

@@ -32,8 +32,10 @@ public class RemoteServer {
             Reference ref = new Reference("top.lovelily.remote.EvilObject", "top.lovelily.remote.EvilObject", null);
             ReferenceWrapper remote = new ReferenceWrapper(ref);
 
+
             registry.rebind("evil", remote);
             System.out.println("启动 RMI 服务端");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

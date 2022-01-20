@@ -60,6 +60,8 @@ dependencies {
     compile 'org.openjdk.jol:jol-core:0.9'
     // compile("io.github.openfeign.form:feign-form-spring:3.8.0")
 
+    compile 'com.facebook.presto:presto-jdbc:0.261'
+
 
 }
 

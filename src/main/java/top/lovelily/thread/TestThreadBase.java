@@ -89,14 +89,14 @@ public class TestThreadBase {
         System.out.println("MAIN");
 
         /**
-         *             WAITING(wait(), join(), park)
+         *             WAITING(wait(), join(), LockSupport.park)
          *                 ^
          *                 |
          *                 |
-         *        start()  |     sleep()             finished/interruptException
-         *   NEW -----> RUNNABLE-----> TIMED_WAITING -----------> TERMINATED
+         *        start()  |     wait(long),join(long),sleep(long),parkNanos()             finished/interruptException
+         *   NEW -----> RUNNABLE-----------------------------------------------> TIMED_WAITING ------------------------> TERMINATED
          *                 |
-         *                 |
+         *                 |wait()/synchronized
          *                 V
          *             BLOCKED(waiting for monitor)
          *

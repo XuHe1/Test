@@ -13,11 +13,11 @@ public class TestStringIntern {
             // intern ： 如果字符串已经存在常量池，就直接返回字符串，否则加入常量池，并返回对该字符串的引用
             // 首次遇到，返回引用，常量池已经放入堆里，所以是同一个引用，1.6 常量池放在永久代里所以不同（一个是指向永久代里的引用，一个是指向堆里的引用）
             // 1.6 会将首次出现的字符串复制到永久代的常量池中，返回的也是永久代中对该字符串的引用（地址）
-            // 1.7 后没有永久代，new 的字符串会放在常量池中，intern 方法会检查常量池检查，如果存在则返回该引用
+            // 1.7 后没有永久代，new 的字符串会放在常量池中，intern 方法会检查常量池是否有相等equals的字符串，如果存在则返回该引用
             String str1 = new StringBuilder("计算机").append("软件").toString();
             System.out.println(str1 == str1.intern()); // true
 
-            // 不是首次遇到，intern 返回的是字符串而非引用！！！
+
             // 在堆中，指向常量池
             String str2 = new StringBuilder("ja").append("va").toString();
             // 常量池里的引用（系统预创建的引用）
@@ -25,6 +25,11 @@ public class TestStringIntern {
 
             String str3 = "计算机软件1";
             System.out.println(str3.intern() == str3); // true
+
+            // 指向常量池里的 java 字符串
+            //String str2 = "java";
+            // 常量池里的引用（系统预创建的引用），两个都是常量池 java 的地址，因此是同一个引用！
+            //System.out.println(str2.intern() == str2); // true
 
 
             String str = "计算机软件2";

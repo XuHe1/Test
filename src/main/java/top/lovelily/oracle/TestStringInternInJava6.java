@@ -1,3 +1,4 @@
+package top.lovelily.oracle;
 
 /**
  * Desc: TestStringIntern

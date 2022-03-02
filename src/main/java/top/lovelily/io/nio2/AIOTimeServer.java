@@ -42,11 +42,15 @@ package top.lovelily.io.nio2;
  * maintenance of any nuclear facility.
  */
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.*;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.util.jar.JarOutputStream;
 
 // Listen on a port for connections and write back the current time.
 
@@ -89,11 +93,37 @@ public class AIOTimeServer {
             @Override
             public void completed(AsynchronousSocketChannel result, AIOTimeServer attachment) {
                 //attachment.
+                System.out.println("completed");
+//                ByteBuffer byteBuffer = ByteBuffer.allocate(100);
+//                result.read(byteBuffer);
+//                System.out.println(new String(byteBuffer.array()));
+                // GET / HTTP/1.1
+                //Host: localhost:8900
+                //Connection: keep-alive
+                //Cache-Control: max-age=0
+                //sec-ch-ua: "
+
+
+                String responseDocument = ("<html><body>" +
+                        "AIO Server: " +  System.currentTimeMillis() + "</body></html>");
+
+                String responseHeader = ("HTTP/1.1 200 OK\r\n" +
+                        "Content-Type: text/html; charset=UTF-8\r\n" +
+                        "Content-Length: " + responseDocument.length() +
+                        "\r\n\r\n");
+
+                try {
+                    result.write(encoder.encode(CharBuffer.wrap(responseHeader)));
+                    result.write(encoder.encode(CharBuffer.wrap(responseDocument)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             @Override
             public void failed(Throwable exc, AIOTimeServer attachment) {
-
+                System.out.println("failed");
             }
         });
     }
@@ -104,6 +134,8 @@ public class AIOTimeServer {
         // create a new time server (no arguments yet)
         try {
             AIOTimeServer nbt = new AIOTimeServer();
+            System.out.println("已经启动了");
+            Thread.sleep(10000l);
         } catch(Exception e) {
             e.printStackTrace();
         }

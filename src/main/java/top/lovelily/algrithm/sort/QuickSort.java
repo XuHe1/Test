@@ -58,7 +58,7 @@ public class QuickSort {
         int[] arr={3,1,9,0,4,7,2,6,5,8};
         System.out.println("排序前数组:"+ Arrays.toString(arr));
         sort(arr);
-        System.out.println("排序前数组:"+ Arrays.toString(arr));
+        System.out.println("排序后数组:"+ Arrays.toString(arr));
     }
 
     void sort1(int[] arrays) {

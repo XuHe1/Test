@@ -8,5 +8,11 @@ import static org.junit.Assert.*;
 public class AppTest {
     @Test public void testAppHasAGreeting() {
 
+        String formater = "修改了specialApprovalStrategy，修改前：%s， 修改后： %s， 说明：%s";
+        String remark = String.format(formater, null, 1, "");
+        System.out.println(remark);
+
     }
+
+
 }

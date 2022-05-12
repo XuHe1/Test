@@ -1,5 +1,7 @@
 package top.lovelily.base;
 
+import top.lovelily.User;
+
 /**
  * Desc: TestStatic
  * Author: xuhe
@@ -13,6 +15,8 @@ public class TestStatic {
 
     private static final int num = 0;
     private static final int num2;
+
+    private static User user;
 
     static {
         System.out.println("static block");
@@ -63,6 +67,14 @@ public class TestStatic {
         System.out.println(test1.getCount());
 
         StaticInner staticInner = new StaticInner();
+
+        // 静态变量作为缓存
+        TestStatic.user = new User(1, "xuhe");
+        System.out.println(TestStatic.user.getName());
+
+        TestStatic.user = new User(1, "xuhe2");
+        System.out.println(TestStatic.user.getName());
+
 
 
 

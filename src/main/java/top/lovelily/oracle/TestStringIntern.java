@@ -27,7 +27,8 @@ public class TestStringIntern {
             // 1.6 会将首次出现的字符串复制到永久代的常量池中，返回的也是永久代中对该字符串的引用（地址）
             // 1.7 后没有永久代，new 的字符串会放在常量池中，intern 方法会检查常量池是否有相等equals的字符串，如果存在则返回该引用
             String str = "计算机软件";
-            String str1 = new StringBuilder("计算机").append("软件").toString();
+            //String str1 = new StringBuilder("计算机").append("软件").toString();
+            String str1 = new StringBuilder("计算机软件").toString();
             String intern = str1.intern();
             //String str = "计算机软件"; // 放在 str1 上面一行，true false false
             System.out.println("**********************************************");

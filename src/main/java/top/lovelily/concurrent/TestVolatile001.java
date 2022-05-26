@@ -14,12 +14,12 @@ public class TestVolatile001 {
 
     private static volatile boolean  isStop = false;
 
-    public void setIsStop() {
+    public synchronized void setIsStop() {
         /**
          *  0x0000000115064f53: lock addl $0x0,(%rsp)     ;*putstatic isStop
          *                                                 ; - top.lovelily.concurrent.TestVolatile001::<clinit>@1 (line 13)
          */
-        isStop = true;  // 反汇编后： lock addl$0x0，(%rsp) 指令把修改同步到内存，同时使其他cpu缓存失效
+        //isStop = true;  // 反汇编后： lock addl$0x0，(%rsp) 指令把修改同步到内存，同时使其他cpu缓存失效
         int a = 1;
     }
 
@@ -33,9 +33,9 @@ public class TestVolatile001 {
 //        return this.isStop;
 //    }
 //    // synchronized 也能保证可见性：退出synchronized块，本地内存对全局变量副本的写会强制刷新到主存；lock cmpxchg 指令直接操作的是主存？
-//    public synchronized void setStop(boolean isStop) {
-//        this.isStop = isStop;
-//    }
+    public synchronized void setStop(boolean isStop) {
+        this.isStop = isStop;
+    }
 
     public static void main(String[] args) {
         new TestVolatile001().setIsStop();

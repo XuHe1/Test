@@ -94,9 +94,10 @@ public class AIOTimeServer {
             public void completed(AsynchronousSocketChannel result, AIOTimeServer attachment) {
                 //attachment.
                 System.out.println("completed");
-//                ByteBuffer byteBuffer = ByteBuffer.allocate(100);
-//                result.read(byteBuffer);
-//                System.out.println(new String(byteBuffer.array()));
+                ByteBuffer byteBuffer = ByteBuffer.allocate(2000);
+                result.read(byteBuffer);
+                System.out.println(new String(byteBuffer.array()));
+                System.out.println("reading...");
                 // GET / HTTP/1.1
                 //Host: localhost:8900
                 //Connection: keep-alive
@@ -119,6 +120,13 @@ public class AIOTimeServer {
                     e.printStackTrace();
                 }
 
+
+                try {
+                    result.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             @Override
@@ -135,7 +143,9 @@ public class AIOTimeServer {
         try {
             AIOTimeServer nbt = new AIOTimeServer();
             System.out.println("已经启动了");
-            Thread.sleep(10000l);
+            while (true){
+
+            }
         } catch(Exception e) {
             e.printStackTrace();
         }

@@ -77,6 +77,16 @@ public class TestOperator {
         // false
         System.out.println((a2==1 && a3==3));
 
+        int size = 5;
+
+        int k = --size;
+        System.out.println("k=" + k); // 4
+        System.out.println("size=" + size); //4
+
+        //int k = size--;
+        System.out.println("k=" + k); // 5
+        System.out.println("size=" + size); //4
+
     }
 
 

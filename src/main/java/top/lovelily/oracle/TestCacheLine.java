@@ -1,6 +1,7 @@
 package top.lovelily.oracle;
 
 /**
+ * 编写 cache friendly 代码， 现代系统 cache line 大小 64B
  * Desc: TestCacheLine
  * Author: xuhe
  * Date: 2020/5/29 4:33 下午

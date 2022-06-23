@@ -35,8 +35,8 @@ public class TestBoxUnBox {
     private static  Integer a = new Integer(0);
 
     public static void updateInteger(Integer a) {
-       // a = 100;
-        a = new Integer(128); // todo:new的对象会在方法结束后立刻回收吗？如果没有引用是的，
+        a = 100;
+        //a = new Integer(128); // todo:new的对象会在方法结束后立刻回收吗？如果没有引用是的，
         try {
             Thread.sleep(1000L);
         } catch (InterruptedException e) {
@@ -77,8 +77,12 @@ public class TestBoxUnBox {
         new Thread(() -> {
             updateInteger(num);
         }).start();
-
-        System.out.println(num);
+        // 仍然是 NULL
+        System.out.println("num 仍然是：" + num);
+        // 引用数据类型 == 比较会进行 unbox 操作，导致NPE！！！
+        // 可以用 equals 比较，一方面避免了 NPE ,另一方面也防止 -128～127 外的数据 == 判断不准确问题
+        //System.out.println(num == 1);
+        System.out.println(Integer.valueOf(100).equals(num));
 
         Integer var1 = 1;
         Integer var2 = 1;

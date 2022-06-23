@@ -42,8 +42,10 @@ public class TestOperator {
         // 11111111 11111111 65535  >>> 16   0
         //100000000 00000000 65536  >>> 16   000000000
 
-        System.out.println(65536 >>> 16);
-        System.out.println(65536 >> 16);
+        System.out.println("65536 >>> 16 :" + (65536 >>> 16)); // 1
+        System.out.println("9 >>> 1:" + (9>>>1));  // 无符号右移
+        System.out.println("65535 >> 16:" + (65535 >> 16)); //0
+
 
         //
         int SHARED_SHIFT   = 16;
@@ -59,6 +61,31 @@ public class TestOperator {
 
 
         System.out.println((int)duration);
+
+
+
+
+        int a1 = 0, a2 = 1,a3=2;
+        // 平级的，依次执行
+        System.out.println(a1==0 && a2==1 || a3==3);
+        // true
+        System.out.println(a1==0 || a2==1 && a3==3);
+        // true
+        System.out.println(a1==0 || (a2==1 && a3==3));
+        // true
+        System.out.println((a2==1 && a3==3) || a1==0);
+        // false
+        System.out.println((a2==1 && a3==3));
+
+        int size = 5;
+
+        int k = --size;
+        System.out.println("k=" + k); // 4
+        System.out.println("size=" + size); //4
+
+        //int k = size--;
+        System.out.println("k=" + k); // 5
+        System.out.println("size=" + size); //4
 
     }
 

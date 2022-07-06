@@ -3,6 +3,8 @@ package top.lovelily.wheel;
 import org.openjdk.jol.info.ClassLayout;
 
 import java.util.LinkedList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -109,12 +111,39 @@ public class CustomerBlockedQueue<E> {
          * "Consumer" #10 prio=5 os_prio=31 tid=0x00007f8019134000 nid=0x4703 waiting on condition [0x000070000aa02000]
          *    java.lang.Thread.State: WAITING (parking)
          *
+         * java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject@3f6a0493上的WAITING
+         *
+         * 堆栈信息：
+         * sun.misc.Unsafe.park(Native Method)
+         * java.util.concurrent.locks.LockSupport.park(LockSupport.java:175)
+         * java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2039)
+         * top.lovelily.wheel.CustomerBlockedQueue.take(CustomerBlockedQueue.java:42)
          */
 
        // producer.start();
         consumer.start();
 
-        Thread.sleep(2000L);
+
+
+
+        LinkedBlockingQueue queue = new LinkedBlockingQueue(20);
+        // main 线程 TIMED_WAITING
+        Object poll = queue.poll(100l, TimeUnit.SECONDS);
+        /**
+         * 名称: main
+         * 状态: java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject@7c892627上的TIMED_WAITING
+         * 总阻止数: 0, 总等待数: 1
+         *
+         * 堆栈跟踪:
+         * sun.misc.Unsafe.park(Native Method)
+         * java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:215)
+         * java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2078)
+         * java.util.concurrent.LinkedBlockingQueue.poll(LinkedBlockingQueue.java:467)
+         * top.lovelily.wheel.CustomerBlockedQueue.main(CustomerBlockedQueue.java:127)
+         */
+
+
+        Thread.sleep(20000L);
         new Thread(new Runnable() {
             @Override
             public void run() {

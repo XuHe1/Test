@@ -23,6 +23,10 @@ public class TestStatic {
         num2 = 2;
     }
 
+    static void incre() {
+        count ++;
+    }
+
     public void increment(int increment) {
         count = count + increment;
     }
@@ -61,6 +65,8 @@ public class TestStatic {
         TestStatic test = new TestStatic();
         test.increment(1);
 
+        System.out.println(TestStatic.count);
+        TestStatic.count = 3;
         System.out.println(TestStatic.count);
 
         TestStatic test1 = new TestStatic();

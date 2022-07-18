@@ -1,5 +1,7 @@
 package top.lovelily.base;
 
+import top.lovelily.User;
+
 /**
  * @author h.xu
  * @create 2017-11-28 上午10:00
@@ -48,5 +50,13 @@ public class TestString {
         // TestStatic.Inner inner =  new TestStatic.Inner();
         TestStatic.Inner inner =  new TestStatic().new Inner();
         TestStatic.StaticInner staticInner = new TestStatic.StaticInner();
+
+
+        User user = new User(1,"xuhe");
+        String name = user.getName();
+        name = "xuhe2";
+        user.setName(name);
+        System.out.println(user.getName());
+
     }
 }

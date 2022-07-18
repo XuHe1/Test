@@ -1,5 +1,10 @@
 package top.lovelily.base;
 
+import top.lovelily.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Desc: TestOperator: >> <<  &  |
  *
@@ -67,7 +72,10 @@ public class TestOperator {
 
         int a1 = 0, a2 = 1,a3=2;
         // 平级的，依次执行
+        //true
         System.out.println(a1==0 && a2==1 || a3==3);
+        // true
+        System.out.println(a1==0 && a2==2 || a3==2);
         // true
         System.out.println(a1==0 || a2==1 && a3==3);
         // true
@@ -87,6 +95,14 @@ public class TestOperator {
         System.out.println("k=" + k); // 5
         System.out.println("size=" + size); //4
 
+
+
+        List<String> strings = new ArrayList<>();
+        System.out.println("=====================");
+        for (String s : strings) {
+            System.out.println(s);
+
+        }
     }
 
 

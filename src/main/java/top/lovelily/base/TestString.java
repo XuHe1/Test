@@ -2,6 +2,8 @@ package top.lovelily.base;
 
 import top.lovelily.User;
 
+import java.util.Arrays;
+
 /**
  * @author h.xu
  * @create 2017-11-28 上午10:00
@@ -57,6 +59,8 @@ public class TestString {
         name = "xuhe2";
         user.setName(name);
         System.out.println(user.getName());
+
+        System.out.println(Arrays.toString("aa".split(",")));
 
     }
 }

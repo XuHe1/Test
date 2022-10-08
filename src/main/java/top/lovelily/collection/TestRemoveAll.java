@@ -22,5 +22,12 @@ public class TestRemoveAll {
         System.out.println(Arrays.toString(list1.toArray()));
 
 
+
+        for (int i = 1; i < list1.size(); i++) {
+            list1.remove(i);
+        }
+        System.out.println(Arrays.toString(list1.toArray()));
+
+
     }
 }

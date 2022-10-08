@@ -34,28 +34,8 @@ public class TestBoxUnBox {
     }
     private static  Integer a = new Integer(0);
 
-    public static void updateInteger(Integer a) {
-        a = 100;
-        //a = new Integer(128); // todo:new的对象会在方法结束后立刻回收吗？如果没有引用是的，
-        try {
-            Thread.sleep(1000L);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("方法结束");
-    }
 
-    public static void updateString(String s) {
-        s = "Hello, World";
-        //s = new String("Hello, World");
-    }
 
-    public static void updateUser(User user) {
-        user.setName("Tom"); // 改的是原先指向的堆内存地址的对象
-        // 方法参数传递是副本传递，基本类型存的是数值， 引用类型存的是地址，没有真正的"应用传递"，这里的user 跟实参并不是同一个， 只是值相同的一个副本。
-        user = new User(1, "Xuhe"); // 重新指向了新的空间， 方法结束被回收，所以调用方法里还是老的地址；
-        user.setName("Xuhe"); //改的是新对象的属性
-    }
 
     public static void main(String[] args) {
 //        TestBoxUnBox test = new TestBoxUnBox();
@@ -66,23 +46,10 @@ public class TestBoxUnBox {
         System.out.println(Integer.valueOf(0) == Integer.valueOf(0)); // true
         System.out.println(Integer.valueOf(128) == Integer.valueOf(128)); //false
 
-
-        //User user = null;
-        User user = new User(1, "tom");
-        updateUser(user);
-        System.out.println(user.getName());
-
-        // 不可变对象， value是final类型
-        Integer num  = null;//= new Integer(0);
-        new Thread(() -> {
-            updateInteger(num);
-        }).start();
-        // 仍然是 NULL
-        System.out.println("num 仍然是：" + num);
         // 引用数据类型 == 比较会进行 unbox 操作，导致NPE！！！
         // 可以用 equals 比较，一方面避免了 NPE ,另一方面也防止 -128～127 外的数据 == 判断不准确问题
         //System.out.println(num == 1);
-        System.out.println(Integer.valueOf(100).equals(num));
+
 
         Integer var1 = 1;
         Integer var2 = 1;
@@ -91,13 +58,6 @@ public class TestBoxUnBox {
         System.out.println(var1 == var2); // true
         System.out.println(var1 == var3); // false
         System.out.println(var3 == var4); // false
-
-
-        String str = "abc";
-        updateString(str);
-
-        System.out.println(str);
-
 
         Integer a = 100, b = 100;    // [-128, 127] 会被缓存！直接赋值实际调用的是Integer.valueOf() !!
         Integer c = 1000, d = 1000;

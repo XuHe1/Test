@@ -1,10 +1,12 @@
 package top.lovelily;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Created by XuHe on 17/2/27.
  */
+
 public class User implements Serializable {
     private int id;
     private String name;
@@ -49,4 +51,21 @@ public class User implements Serializable {
     public void setAddr(Address address) {
         this.addr = address;
     }
+
+
+    public int getAge() {
+        return age;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", height=" + height +
+                ", addr=" + addr +
+                '}';
+    }
+
 }

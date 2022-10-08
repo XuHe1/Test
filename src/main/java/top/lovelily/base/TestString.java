@@ -2,6 +2,7 @@ package top.lovelily.base;
 
 import top.lovelily.User;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 /**
@@ -61,6 +62,17 @@ public class TestString {
         System.out.println(user.getName());
 
         System.out.println(Arrays.toString("aa".split(",")));
+
+        String url = "https://api.weixin.qq.com/wxa/business/getuserphonenumber?access_token=ACCESS_TOKEN";
+        url = url.replace("ACCESS_TOKEN", "hello");
+        System.out.println(url);
+
+        url = url.replace("ACCESS_TOKEN", "hello2");
+        System.out.println(url);
+
+        BigDecimal a = new BigDecimal(2.22);
+        BigDecimal b = new BigDecimal(2.220);
+        System.out.println(a.equals(b));
 
     }
 }

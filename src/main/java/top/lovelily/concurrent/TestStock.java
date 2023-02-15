@@ -3,6 +3,7 @@ package top.lovelily.concurrent;
 import org.junit.Before;
 import org.junit.Test;
 import org.redisson.Redisson;
+import org.redisson.RedissonRedLock;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -144,6 +145,17 @@ public class TestStock {
 
         RedissonClient redissonClient = Redisson.create(config);
         RLock lock = redissonClient.getLock("Stock-Lock");
+        // RedLock 多实例，更安全，不会像主从一样，会有多个线程同时获取锁，多个 master 互相独立的。
+        //RedissonRedLock
+
+        config.useSingleServer().setAddress("redis://redis.test.getqood.com:6380");
+        RedissonClient redissonClient2 = Redisson.create(config);
+        RLock lock2 = redissonClient.getLock("Stock-Lock");
+
+        // <a href="org.redisson.RedissonMultiLock.java"></a>
+
+        RedissonRedLock redLock = new RedissonRedLock(lock, lock2);
+
         System.out.println(lock); // org.redisson.RedissonLock@1da2cb77
         if (lock.tryLock(3000l, 3000l, TimeUnit.MILLISECONDS)) {
             try {

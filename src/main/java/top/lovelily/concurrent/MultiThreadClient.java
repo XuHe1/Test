@@ -87,6 +87,7 @@ public class MultiThreadClient {
      */
     @Test
     public void testJoin() {
+
         UserCacheService userCacheService = new UserCacheService();
         for (int i = 0; i < 10; i++) {
             Thread thread = new Thread(new Runnable() {
@@ -98,7 +99,8 @@ public class MultiThreadClient {
 
             thread.start();
             try {
-                thread.join();
+                thread.join(1); //等待 1毫秒没执行完，主线程就继续走了，
+                //thread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

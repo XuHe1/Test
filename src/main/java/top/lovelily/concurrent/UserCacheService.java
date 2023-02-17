@@ -156,6 +156,11 @@ public class UserCacheService {
         }
         user = new User(1, "xuhe", 20, 175);
         cache.put(user.getName(), user);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("================query from db success!==================");
         readWriteLock.writeLock().unlock();
 

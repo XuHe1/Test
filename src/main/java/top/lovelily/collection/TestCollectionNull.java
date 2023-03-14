@@ -99,7 +99,7 @@ public class TestCollectionNull {
         }
 
         // LinkedHashMap有序：遍历顺序与放入顺序一致, 额外维护了一个双向链表来保存放入顺序
-        Map<String, String> linkedHashMap = new LinkedHashMap<>();
+        LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>();
         linkedHashMap.put("1", "one");
         linkedHashMap.put("3", "three");
         linkedHashMap.put("2", "two");

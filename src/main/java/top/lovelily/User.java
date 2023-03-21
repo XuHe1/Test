@@ -68,4 +68,14 @@ public class User implements Serializable {
                 '}';
     }
 
+    public static void main(String[] args) {
+        User user = new User();
+        print(user);
+    }
+
+    public static void print(Object o) {
+        String str = o.toString();
+        System.out.println(str);
+    }
+
 }

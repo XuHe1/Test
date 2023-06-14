@@ -103,6 +103,9 @@ public class TestOperator {
             System.out.println(s);
 
         }
+        // 从左往右顺序执行
+        System.out.println(false || true && true);
+        System.out.println(true || false && true);
     }
 
 

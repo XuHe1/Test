@@ -62,6 +62,8 @@ dependencies {
 
     compile 'com.facebook.presto:presto-jdbc:0.261'
 
+    implementation 'com.alibaba.fastjson2:fastjson2:2.0.33'
+
 
 }
 

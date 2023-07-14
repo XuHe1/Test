@@ -34,7 +34,7 @@ public class ComputeEngine implements Compute {
         try {
             String name = "Compute";
             Compute engine = new ComputeEngine();
-            // 这就话是必须的！官方案例有错误
+            // 这句话是必须的！官方案例有错误
             LocateRegistry.createRegistry(9999);
             Compute stub =
                     (Compute) UnicastRemoteObject.exportObject(engine, 9999);

@@ -2,6 +2,9 @@ package top.lovelily.base;
 
 import top.lovelily.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Desc: TestBoxUnBox
  * Author: xuhe
@@ -69,6 +72,14 @@ public class TestBoxUnBox {
         Long l1 = -129l;
         Long l2 = -129l;
         System.out.println("l1==l2 "+ (l1 == l2));
+
+        // Map中的装箱与拆箱
+        Map<String, Integer> map1 = new HashMap<>();
+        Map<String, Integer> map2 = new HashMap<>();
+        map1.putIfAbsent("a", 131);
+        map2.put("a",131);
+        System.out.println(map1.get("a").equals(map2.get("a"))); // true
+        System.out.println(map1.get("a") == map2.get("a"));  // false
 
     }
 }

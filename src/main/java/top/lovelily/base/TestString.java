@@ -74,5 +74,8 @@ public class TestString {
         BigDecimal b = new BigDecimal(2.220);
         System.out.println(a.equals(b));
 
+        // 1
+        System.out.println("AA".split("&").length);
+
     }
 }

@@ -43,5 +43,22 @@ public class TestRegularExpress {
         }
         System.out.println(wxparams.toJSONString());
 
+        String dingWebhook = "https://oapi.dingtalk.com/robot/send?access_token=XXXXXX&timestamp=XXX&sign=XXX&key=SEC0847dfe3cdcf489a57517bc9c4541ae6380107afa9351596c4f6120e24d949ec";
+        System.out.println(dingWebhook);
+        if (dingWebhook.contains("key")) {
+            String[] paramArry = dingWebhook.split("&");
+            // 有密钥，需要签名
+            for (String param : paramArry) {
+                if (param.contains("key")) {
+                    String key = param.split("=")[1];
+                    int len = key.length();
+                    dingWebhook = dingWebhook.replaceAll("&key=[A-Za-z0-9]{"+ len + "}", "");
+
+                }
+            }
+        }
+
+        System.out.println(dingWebhook);
+
     }
 }

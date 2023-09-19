@@ -56,6 +56,9 @@ public class TestEscape {
         // 逃逸
         User user = new User(1, "tom");
         updateUser(user);
+        User user2 = user; // user2 指向 user 指向的堆内存
+        user = null;  // user 指向空
+        System.out.println(user2.getName());
         System.out.println(user.getName()); // Tom
 
 

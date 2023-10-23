@@ -10,6 +10,7 @@ import java.util.Arrays;
  */
 public class SelectSort {
     public static void sort(int[] arr,boolean asc){
+        // 每个元素与后面的元素一一比较
         for (int i = 0; i < arr.length; i++) {
             int index=i;
             for (int j = i+1; j < arr.length; j++) {

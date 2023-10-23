@@ -15,15 +15,17 @@ public class BubbleSort {
      * @return 排序后的数组
      */
     public static void sort(int[] arr,boolean asc){
+        // n-1 趟
         for (int i = 0; i < arr.length; i++) {
-            for (int j=i+1;j<arr.length;j++){
+            // 相邻元素两两比较
+            for (int j=0;j<arr.length-1;j++){
                 if(asc){
-                    if(arr[i]>arr[j]){//升序
-                        swap(arr, i, j);
+                    if(arr[j]>arr[j+1]){//升序
+                        swap(arr, j, j+1);
                     }
                 }else{
-                    if(arr[i]<arr[j]){//降序
-                        swap(arr, i, j);
+                    if(arr[j]<arr[j+1]){//降序
+                        swap(arr, j, j+1);
                     }
                 }
             }

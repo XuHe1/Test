@@ -2,7 +2,9 @@ package top.lovelily.base;
 
 import top.lovelily.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,6 +82,21 @@ public class TestBoxUnBox {
         map2.put("a",131);
         System.out.println(map1.get("a").equals(map2.get("a"))); // true
         System.out.println(map1.get("a") == map2.get("a"));  // false
+
+
+        List<Long> roleIds = new ArrayList<>();
+        roleIds.add(76l);
+        roleIds.add(1l);
+        roleIds.add(78l);
+        roleIds.add(142l);
+        System.out.println(roleIds.contains(76l));// true
+        System.out.println(roleIds.contains(76)); // false
+
+        Long  num = 76l;
+        System.out.println(num==76); // true
+        System.out.println(num.equals(76)); // false
+        System.out.println(num.equals(76l)); // true
+
 
     }
 }

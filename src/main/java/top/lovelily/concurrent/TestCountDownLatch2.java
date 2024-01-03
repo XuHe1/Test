@@ -31,6 +31,8 @@ public class TestCountDownLatch2 {
         }
 
         System.out.println(executorService);
+        // The Java Virtual Machine exits when the only threads running are all daemon threads.
+        // 只有所有运行的线程都是守护线程，jvm 才会退出，换句话说：如果有 非守护线程再运行，jvm 就不会退出，即使main 线程也结束了（main线程只是个普通的非守护线程罢了）
         // 如果不关闭线程池，线程池核心线程会阻塞，从队列中拿任务，main线程虽然结束，但是 jvm 不会退出，继续运行线程池线程
         try {
             executorService.shutdown();

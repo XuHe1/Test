@@ -1,3 +1,5 @@
+package top.lovelily.concurrent;
+
 import java.util.concurrent.locks.LockSupport;
 
 public class TestLockSupport {
@@ -14,7 +16,7 @@ public class TestLockSupport {
         t1.start();
 
         //LockSupport.unpark(t1);
-       // t1.interrupt();
+       // t1.interrupt(); // 都会唤醒线程
 
 
     }

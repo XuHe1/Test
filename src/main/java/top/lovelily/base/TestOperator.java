@@ -82,6 +82,7 @@ public class TestOperator {
         System.out.println(a1==0 || (a2==1 && a3==3));
         // true
         System.out.println((a2==1 && a3==3) || a1==0);
+        System.out.println(a2==1 && a3==3 || a1==0);
         // false
         System.out.println((a2==1 && a3==3));
 

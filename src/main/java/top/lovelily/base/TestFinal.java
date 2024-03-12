@@ -16,8 +16,12 @@ public class TestFinal {
     final  int a ; // 必须初始化，显示初始化，构造方法
     private static final int b = 0; // 显示初始化，static块中；不可以构造方法
 
+    static {
+        // a = 0; 错误
+    }
+
     public TestFinal() {
-        a = 0;
+        a = 0;// 增加了内存屏障，在对象返回前执行，保证返回的对象 final 都是已经初始化过的！！
         // b= 1; error
     }
 

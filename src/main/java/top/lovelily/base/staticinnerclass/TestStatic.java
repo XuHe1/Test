@@ -1,4 +1,4 @@
-package top.lovelily.base;
+package top.lovelily.base.staticinnerclass;
 
 import top.lovelily.User;
 
@@ -9,7 +9,7 @@ import top.lovelily.User;
  * Version: 1.0
  */
 public class TestStatic {
-
+    // clinit
     private static int count = 1;
     private int b = 2;
 
@@ -43,6 +43,7 @@ public class TestStatic {
     class Inner {
         private int i;
         private  int j;
+        // private static int a; 非静态内部类不能定义static属性
     }
 
     static class StaticInner {

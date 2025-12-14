@@ -69,9 +69,9 @@ class B extends A{
     interface  C  {
         void a();
         public double b();
-        protected int c();
+      //  protected int c();
         abstract int d();
-        final int e();
+      //  final int e();
         static void f(){};
     }
 

@@ -1,4 +1,4 @@
-package event;
+package top.lovelily.designpattern.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;

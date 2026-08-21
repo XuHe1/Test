@@ -1,4 +1,4 @@
-package event;
+package top.lovelily.designpattern.event;
 
 // 具体监听器（处理点击事件）
 class ClickListener implements EventListener {

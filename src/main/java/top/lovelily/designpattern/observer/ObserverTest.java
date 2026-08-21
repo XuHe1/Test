@@ -1,4 +1,4 @@
-package observer;
+package top.lovelily.designpattern.observer;
 
 public class ObserverTest {
     public static void main(String[] args) {

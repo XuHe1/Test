@@ -1,7 +1,7 @@
-package event;
+package top.lovelily.designpattern.event;
 
 /*
- * 事件源依赖中间的时间管理器
+ * 事件源依赖中间的事件管理器
  */
 public class EventTest {
     public static void main(String[] args) {

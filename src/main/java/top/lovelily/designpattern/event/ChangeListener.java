@@ -1,4 +1,4 @@
-package event;
+package top.lovelily.designpattern.event;
 
 // 具体监听器（处理变更事件）
 class ChangeListener implements EventListener {

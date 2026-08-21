@@ -1,4 +1,4 @@
-package event;
+package top.lovelily.designpattern.event;
 
 // 事件对象（通信载体）
 class Event {

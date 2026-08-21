@@ -24,6 +24,7 @@ public class TestSPI {
        // clazz.newInstance(); // new, 初始化
 
         System.out.println("Hello World!");
+        // 无区别load所有的实现，并且非单例，多次load，创建多次
         ServiceLoader<Search> s = ServiceLoader.load(Search.class);
         Iterator<Search> searchList = s.iterator();
         while (searchList.hasNext()) {

@@ -1,4 +1,4 @@
-package observer;
+package top.lovelily.designpattern.observer;
 
 import java.util.ArrayList;
 import java.util.List;

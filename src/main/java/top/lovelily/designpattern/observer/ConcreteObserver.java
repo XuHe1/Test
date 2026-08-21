@@ -1,4 +1,4 @@
-package observer;
+package top.lovelily.designpattern.observer;
 
 // 具体观察者
 class ConcreteObserver implements Observer {

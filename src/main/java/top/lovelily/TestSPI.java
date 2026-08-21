@@ -24,7 +24,8 @@ public class TestSPI {
        // clazz.newInstance(); // new, 初始化
 
         System.out.println("Hello World!");
-        // 无区别load所有的实现，并且非单例，多次load，创建多次
+        // 无区别load所有的实现，并且非单例，多次load，创建多次，Dubbo spi 可以按需(实现类的全限定名）加载
+        // jdbc加载驱动：ServiceLoader.load(Driver.class)
         ServiceLoader<Search> s = ServiceLoader.load(Search.class);
         Iterator<Search> searchList = s.iterator();
         while (searchList.hasNext()) {
